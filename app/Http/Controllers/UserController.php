@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Cart; //
+use App\Models\User;
 
-class CartController extends Controller
+class UserController extends Controller
 {
     //
 }

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('rental_id')->constrained()->onDelete('cascade');
+            $table->foreignId('rental_id')->unique()->constrained()->onDelete('cascade');
             $table->string('metode_pembayaran');
             $table->integer('jumlah_bayar');
             $table->enum('status_pembayaran', ['pending', 'paid', 'failed'])->default('pending');

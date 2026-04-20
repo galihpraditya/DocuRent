@@ -6,5 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class RentalItem extends Model
 {
-    //
+    public function rental()
+    {
+        return $this->belongsTo(Rental::class);
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }

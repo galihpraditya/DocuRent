@@ -6,5 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Rental extends Model
 {
-    //
+    public function user()
+    {
+        return $this-belongsTo(User::class);
+    }
+
+    public function rentalItems()
+    {
+        return $this-hasMany(RentalItem::class);
+    }
+    
+    public function payment()
+    {
+        return $this->hasOne(Payment::class);
+    }
 }
