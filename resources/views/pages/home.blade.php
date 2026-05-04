@@ -14,6 +14,10 @@
             Selamat datang, 
             <strong>{{ Auth::user()->username }}</strong>
         </p>
+        <form method="POST" action="/logout">
+            @csrf
+            <button type="submit">Logout</button>
+        </form>
     @else
         <p>Anda belum login</p>
     @endif

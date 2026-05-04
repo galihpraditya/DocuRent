@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             [
                 'nama' => 'Admin',
                 'username' => 'admin',
-                'email' => 'admin@mail.com',
+                'email' => 'admin@gmail.com',
                 'password' => Hash::make('123456'),
                 'no_hp' => '0811111111',
                 'alamat' => 'Malang',
@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
             [
                 'nama' => 'User1',
                 'username' => 'user1',
-                'email' => 'user1@mail.com',
+                'email' => 'user1@gmail.com',
                 'password' => Hash::make('123456'),
                 'no_hp' => '0822222222',
                 'alamat' => 'Blitar',
