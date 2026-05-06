@@ -8,7 +8,7 @@ use App\Models\Product;
 class AdminDashboardController extends Controller
 {   
     public function __construct() {
-        $this->middleware('IsAdmin');
+        $this->middleware('isAdmin');
     }
 
     public function index()
