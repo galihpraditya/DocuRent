@@ -16,4 +16,7 @@ Route::get('/register', [AuthController::class, 'showRegister']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout']);
 
-Route::resource('products', ProductController::class);
+// Admin route
+Route::prefix('admin')->group(function () {
+    Route::resource('products', ProductController::class);
+});
