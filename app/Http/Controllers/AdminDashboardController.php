@@ -14,6 +14,6 @@ class AdminDashboardController extends Controller
     public function index()
     {
         $products = Product::orderBy('nama_produk', 'asc')->get();
-        return view('adminpages.dashboard', compact('products'));
+        return view('admin-pages.dashboard', compact('products'));
     }
 }
