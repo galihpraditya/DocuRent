@@ -6,8 +6,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminDashboardController;
 
-Route::get('/', [HomeController::class, 'index']);
-Route::get('/admin', [AdminDashboardController::class, 'index']);
+Route::get('/', [UserPageController::class, 'home']);
+Route::get('/admin', [AdminPageController::class, 'dashboard']);
 
 // Auth Route
 Route::get('/login', [AuthController::class, 'showLogin']);
@@ -16,7 +16,10 @@ Route::get('/register', [AuthController::class, 'showRegister']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout']);
 
-// Admin route
+// Admin Route
 Route::prefix('admin')->group(function () {
     Route::resource('products', ProductController::class);
 });
+
+// Guest & User Route
+Route::get('/login', [AuthController::class, 'showLogin']);
