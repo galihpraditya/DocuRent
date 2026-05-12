@@ -13,7 +13,7 @@ class UserPageController extends Controller
 
         $catalogs = Product::all();
 
-        return view('home-page', compact(
+        return view('home.home-page', compact(
             'recommendations',
             'catalogs'
         ));
