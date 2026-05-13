@@ -3,8 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\UserPageController;
+use App\Http\Controllers\AdminPageController;
 
 Route::get('/', [UserPageController::class, 'home']);
 Route::get('/admin', [AdminPageController::class, 'dashboard']);
