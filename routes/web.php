@@ -5,7 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserPageController;
-use App\Http\Controllers\AdminPageDashboardController;
+use App\Http\Controllers\AdminPageController;
 
 Route::get('/', [UserPageController::class, 'home']);
 Route::get('/admin', [AdminPageController::class, 'dashboard']);
