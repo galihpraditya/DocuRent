@@ -7,7 +7,7 @@
 
     <h1>Daftar Produk</h1>
 
-    <a href="{{ route('products.create') }}">Tambah Produk</a>
+    <a href="{{ route('admin.products.create') }}">Tambah Produk</a>
 
     <hr>
 
@@ -30,12 +30,12 @@
                 Detail
             </a>
             <br>
-            <a href="{{ route('products.edit', $product->id) }}">
+            <a href="{{ route('admin.products.edit', $product->id) }}">
                 Edit
             </a>
 
             <form 
-                action="{{ route('products.destroy', $product->id) }}" 
+                action="{{ route('admin.products.destroy', $product->id) }}" 
                 method="POST"
             >
                 @csrf

@@ -8,7 +8,7 @@
     <h1>Tambah Produk</h1>
 
     <form 
-        action="{{ route('products.store') }}" 
+        action="{{ route('admin.products.store') }}" 
         method="POST"
         enctype="multipart/form-data"
     >

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserPageController;
 use App\Http\Controllers\AdminPageController;
@@ -17,9 +18,9 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout']);
 
 // Admin Route
-Route::prefix('admin')->group(function () {
-    Route::resource('products', ProductController::class);
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('products', AdminProductController::class);
 });
 
 // Guest & User Route
-Route::get('/login', [AuthController::class, 'showLogin']);
+Route::resource('products', ProductController::class)->only(['show']);
