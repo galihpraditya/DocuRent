@@ -28,7 +28,14 @@
                     <li><a class="dropdown-item" href="#">Profil</a></li>
                     <li><a class="dropdown-item" href="#">Pesanan Saya</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item text-danger" href="#">Logout</a></li>
+                    <li>
+                        <form action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="dropdown-item text-danger">
+                                Logout
+                            </button>
+                        </form>
+                    </li>
                 </ul>
             </div>
         </div>
