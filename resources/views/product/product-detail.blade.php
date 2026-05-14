@@ -21,6 +21,25 @@
 
     <p>Stok: {{ $product->stok }}</p>
 
+    <form action="{{ route('cart-items.store') }}" method="POST">
+
+        @csrf
+
+        <input type="hidden" 
+            name="product_id" 
+            value="{{ $product->id }}">
+
+        <input type="number" 
+            name="jumlah" 
+            value="1" 
+            min="1">
+
+        <button type="submit">
+            Add to Cart
+        </button>
+
+    </form>
+
     <a href="/">
         Kembali
     </a>
