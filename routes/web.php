@@ -55,6 +55,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/cart/items/{cartItem}', [CartItemController::class, 'destroy'])
         ->name('cart-items.destroy');
 
+    // hitung total harga di cart
+    Route::post('/rentals/calculate', [RentalController::class, 'calculate'])
+        ->name('rentals.calculate');
     // checkout rental
     Route::post('/rentals', [RentalController::class, 'store'])
         ->name('rentals.store');

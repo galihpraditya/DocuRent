@@ -11,100 +11,87 @@
 
     @if($cart && $cart->cartItems->count() > 0)
 
-    <table border="1" cellpadding="10" cellspacing="0">
-
-        <tr>
-            <th>Product</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Subtotal</th>
-            <th>Action</th>
-        </tr>
-
-        @php
-            $total = 0;
-        @endphp
-
-        @foreach($cart->cartItems as $item)
-
-        @php
-            $subtotal = $item->product->harga_sewa * $item->jumlah;
-            $total += $subtotal;
-        @endphp
-
-        <tr>
-            <td>{{ $item->product->nama_produk }}</td>
-
-            <td>
-                Rp {{ number_format($item->product->harga_sewa) }}
-            </td>
-
-            <td>
-                {{ $item->jumlah }}
-            </td>
-
-            <td>
-                Rp {{ number_format($subtotal) }}
-            </td>
-
-            <td>
-
-                <!-- update quantity -->
-                <form action="{{ route('cart-items.update', $item->id) }}"
-                    method="POST">
-
-                    @csrf
-                    @method('PUT')
-
-                    <input type="number"
-                        name="jumlah"
-                        value="{{ $item->jumlah }}"
-                        min="1">
-
-                    <button type="submit">
-                        Update
-                    </button>
-
-                </form>
-
-                <br>
-
-                <!-- remove item -->
-                <form action="{{ route('cart-items.destroy', $item->id) }}"
-                    method="POST">
-
-                    @csrf
-                    @method('DELETE')
-
-                    <button type="submit">
-                        Remove
-                    </button>
-
-                </form>
-
-            </td>
-        </tr>
-
-        @endforeach
-
-    </table>
-
-    <h3>
-        Total: Rp {{ number_format($total) }}
-    </h3>
-
-    <br>
-
-    <!-- checkout -->
-    <form action="{{ route('rentals.store') }}" method="POST">
+    <form action="{{ route('rentals.calculate') }}" method="POST">
 
         @csrf
 
+        <label>Rental Start Date</label>
+        <input 
+            type="date" 
+            name="tanggal_mulai"
+            value="{{ $tanggalMulai ?? '' }}"
+            required
+        >
+
+        <br><br>
+
+        <label>Rental End Date</label>
+        <input 
+            type="date" 
+            name="tanggal_selesai"
+            value="{{ $tanggalSelesai ?? '' }}"
+            required
+        >
+
+        <br><br>
+
+        <table border="1" cellpadding="10" cellspacing="0">
+
+            <tr>
+                <th>Product</th>
+                <th>Price / Day</th>
+                <th>Quantity</th>
+            </tr>
+
+            @foreach($cart->cartItems as $item)
+
+            <tr>
+                <td>{{ $item->product->nama_produk }}</td>
+
+                <td>
+                    Rp {{ number_format($item->product->harga_sewa) }}
+                </td>
+
+                <td>
+                    {{ $item->jumlah }}
+                </td>
+            </tr>
+
+            @endforeach
+
+        </table>
+
+        <br>
+
         <button type="submit">
-            Checkout Rental
+            Calculate Total Price
         </button>
 
     </form>
+
+    @if(isset($totalHarga))
+
+        <h3>Total Price: Rp {{ number_format($totalHarga) }}</h3>
+
+        <form action="{{ route('rentals.store') }}" method="POST">
+
+            @csrf
+
+            <input type="hidden" 
+                name="tanggal_mulai" 
+                value="{{ $tanggalMulai }}">
+
+            <input type="hidden" 
+                name="tanggal_selesai" 
+                value="{{ $tanggalSelesai }}">
+
+            <button type="submit">
+                Checkout Rental
+            </button>
+
+        </form>
+
+    @endif
 
     @else
 
