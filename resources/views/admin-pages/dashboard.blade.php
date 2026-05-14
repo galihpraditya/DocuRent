@@ -16,6 +16,13 @@
             </button>
         </a>
 
+        {{-- tombol rentals --}}
+        <a href="{{ route('admin.rentals.index') }}">
+            <button>
+                Manage Rentals
+            </button>
+        </a>
+
         {{-- tombol logout --}}
         <form action="/logout" method="POST">
             @csrf

@@ -8,10 +8,6 @@ use Illuminate\Support\Facades\Storage;
 
 class AdminProductController extends Controller
 {
-    public function __construct() {
-        $this->middleware('isAdmin');
-    }
-
     public function index()
     {
         $products = Product::latest()->get();
