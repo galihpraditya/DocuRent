@@ -59,6 +59,12 @@
         <button class="nav-button">Gallery</button>
     </a>
 
+    <a href="{{ route('cart.index') }}">
+        <button>
+            View Cart
+        </button>
+    </a>
+
     {{-- include sections --}}
     @include('sections.recommendation')
 
