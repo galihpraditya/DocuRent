@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Rental;
+use App\Models\RentalItem;
 
 class AdminPageController extends Controller
 {   
@@ -13,7 +15,13 @@ class AdminPageController extends Controller
 
     public function dashboard()
     {
-        $products = Product::orderBy('nama_produk', 'asc')->get();
-        return view('admin-pages.dashboard', compact('products'));
+        $totalProducts = Product::count();
+
+        $activeRentals = Rental::where('status', 'ongoing')->count();
+
+        return view('admin-pages.dashboard', compact(
+            'totalProducts',
+            'activeRentals'
+        ));
     }
 }
