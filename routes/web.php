@@ -14,9 +14,10 @@ Route::get('/login', [AuthController::class, 'showLogin']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/register', [AuthController::class, 'showRegister']);
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/logout', [AuthController::class, 'logout']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Admin Route
+Route::get('/admin', [AdminPageController::class, 'dashboard'])->name('dashboard');
 Route::prefix('admin')->group(function () {
     Route::resource('products', ProductController::class);
 });
