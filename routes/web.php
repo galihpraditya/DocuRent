@@ -9,6 +9,7 @@ use App\Http\Controllers\AdminPageController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\RentalController;
+use App\Http\Controllers\PaymentController;
 
 Route::get('/', [UserPageController::class, 'home']);
 Route::get('/admin', [AdminPageController::class, 'dashboard']);
@@ -42,25 +43,37 @@ Route::middleware('auth')->group(function () {
     // halaman cart
     Route::get('/cart', [CartController::class, 'index'])
         ->name('cart.index');
-
     // tambah product ke cart
     Route::post('/cart/items', [CartItemController::class, 'store'])
         ->name('cart-items.store');
-
     // update jumlah item
     Route::put('/cart/items/{cartItem}', [CartItemController::class, 'update'])
         ->name('cart-items.update');
-
     // hapus item dari cart
     Route::delete('/cart/items/{cartItem}', [CartItemController::class, 'destroy'])
         ->name('cart-items.destroy');
-
     // hitung total harga di cart
-    Route::post('/rentals/calculate', [RentalController::class, 'calculate'])
-        ->name('rentals.calculate');
+    Route::post('/cart/calculate', [CartController::class, 'calculate'])
+        ->name('cart.calculate');
+
+    // masuk ke halaman pembayaran
+    Route::post('/checkout-page', [RentalController::class, 'checkoutPage'])
+        ->name('rentals.checkout-page');
+
     // checkout rental
     Route::post('/rentals', [RentalController::class, 'store'])
         ->name('rentals.store');
+
+     // halaman pembayaran
+    Route::get('/payments/{payment}/confirm', [PaymentController::class, 'confirm'])
+        ->name('payments.confirm');
+    // upload bukti pembayaran
+    Route::post('/payments/{payment}/upload-proof', [PaymentController::class, 'uploadProof'])
+        ->name('payments.upload-proof');
+    // status pembayaran
+    Route::get('/payments/{payment}/status', [PaymentController::class, 'status'])
+        ->name('payments.status');
+
     // detail rental
     Route::get('/rentals/{rental}', [RentalController::class, 'show'])
         ->name('rentals.show');

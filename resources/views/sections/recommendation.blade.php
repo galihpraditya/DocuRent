@@ -10,7 +10,10 @@
 
                 <div class="product-card">
 
-                    <img src="https://placehold.co/200x120?text=Product" alt="product">
+                    <img 
+                        src="{{ asset('storage/' . $product->gambar) }}" 
+                        alt="{{ $product->nama_produk }}"
+                    >
 
                     <h4>{{ $product->nama_produk }}</h4>
 

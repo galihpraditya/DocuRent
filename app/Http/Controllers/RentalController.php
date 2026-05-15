@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Rental;
 use App\Models\Cart;
-use App\Models\User;
+use App\Models\CartItem;
+use App\Models\Rental;
+use App\Models\RentalItem;
+use App\Models\Payment;
+use Carbon\Carbon;
 
 class RentalController extends Controller
 {
@@ -19,24 +22,17 @@ class RentalController extends Controller
         return view('admin-pages.manage-rentals', compact('rentals'));
     }
 
-    public function calculate(Request $request)
+    public function checkoutPage(Request $request)
     {
-        $request->validate([
-            'tanggal_mulai' => 'required|date',
-            'tanggal_selesai' => 'required|date|after:tanggal_mulai'
-        ]);
-
         $cart = Cart::with('cartItems.product')
             ->where('user_id', auth()->id())
             ->first();
 
-        // hitung jumlah hari rental
-        $hari = \Carbon\Carbon::parse($request->tanggal_mulai)
-            ->diffInDays($request->tanggal_selesai);
+        $hari = Carbon::parse($request->tanggal_sewa)
+            ->diffInDays($request->tanggal_kembali);
 
         $totalHarga = 0;
 
-        // hitung total semua item
         foreach ($cart->cartItems as $item) {
 
             $subtotal =
@@ -47,18 +43,77 @@ class RentalController extends Controller
             $totalHarga += $subtotal;
         }
 
-        return view('cart.cart-page', [
+        return view('payments.checkout-page', [
             'cart' => $cart,
             'totalHarga' => $totalHarga,
-            'tanggalMulai' => $request->tanggal_mulai,
-            'tanggalSelesai' => $request->tanggal_selesai
+            'tanggalSewa' => $request->tanggal_sewa,
+            'tanggalKembali' => $request->tanggal_kembali
         ]);
     }
 
-    // USER - checkout rental dari cart
-    public function store()
+    // USER - checkout rental
+    public function store(Request $request)
     {
-        //
+        $request->validate([
+            'tanggal_sewa' => 'required|date',
+            'tanggal_kembali' => 'required|date|after:tanggal_sewa',
+            'metode_pembayaran' => 'required'
+        ]);
+
+        $cart = Cart::with('cartItems.product')
+            ->where('user_id', auth()->id())
+            ->first();
+
+        if (!$cart || $cart->cartItems->isEmpty()) {
+            return redirect()->route('cart.index')
+                ->with('error', 'Cart is empty');
+        }
+
+        $hari = Carbon::parse($request->tanggal_sewa)
+            ->diffInDays($request->tanggal_kembali);
+
+        $totalHarga = 0;
+
+        foreach ($cart->cartItems as $item) {
+
+            $subtotal =
+                $item->product->harga_sewa *
+                $item->jumlah *
+                $hari;
+
+            $totalHarga += $subtotal;
+        }
+
+        $rental = Rental::create([
+            'user_id' => auth()->id(),
+            'tanggal_sewa' => $request->tanggal_sewa,
+            'tanggal_kembali' => $request->tanggal_kembali,
+            'status' => 'pending',
+            'total_harga' => $totalHarga
+        ]);
+
+        foreach ($cart->cartItems as $item) {
+
+            RentalItem::create([
+                'rental_id' => $rental->id,
+                'product_id' => $item->product_id,
+                'jumlah' => $item->jumlah,
+                'harga_saat_sewa' => $item->product->harga_sewa
+            ]);
+
+            $item->product->decrement('stok', $item->jumlah);
+        }
+
+        $payment = Payment::create([
+            'rental_id' => $rental->id,
+            'metode_pembayaran' => $request->metode_pembayaran,
+            'jumlah_bayar' => $totalHarga,
+            'status_pembayaran' => 'pending'
+        ]);
+
+        CartItem::where('cart_id', $cart->id)->delete();
+
+        return redirect()->route('payments.confirm', $payment->id);
     }
 
     // USER + ADMIN - detail rental
