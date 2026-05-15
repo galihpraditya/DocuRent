@@ -40,4 +40,14 @@ class PaymentController extends Controller
     {
         return view('payments.payment-status', compact('payment'));
     }
+
+    // Verifikasi dari admin
+    public function verify(Payment $payment)
+    {
+        $payment->update([
+            'status_pembayaran' => 'paid'
+        ]);
+
+        return back()->with('success', 'Payment verified');
+    }
 }

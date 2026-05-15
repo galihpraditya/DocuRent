@@ -31,8 +31,12 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
     Route::resource('products', AdminProductController::class);
     Route::get('/rentals', [RentalController::class, 'index'])
         ->name('rentals.index');
-    Route::put('/rentals/{rental}', [RentalController::class, 'update'])
-        ->name('rentals.update');
+    Route::get('/rentals/{rental}', [RentalController::class, 'show'])
+        ->name('rentals.show');
+    Route::put('/rentals/{rental}/status', [RentalController::class, 'updateStatus'])
+        ->name('rentals.update-status');
+    Route::put('/payments/{payment}/verify', [PaymentController::class, 'verify'])
+        ->name('payments.verify');    
 });
 
 // Guest & User Route
@@ -74,13 +78,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/payments/{payment}/status', [PaymentController::class, 'status'])
         ->name('payments.status');
 
+    // semua transaksi user
+    Route::get('/rentals-list', [RentalController::class, 'rentalsList'])
+        ->name('rentals.list');
+    // filter status
+    Route::get('/my-rentals/status/{status}', [RentalController::class, 'filterByStatus'])
+        ->name('rentals.filter');
     // detail rental
     Route::get('/rentals/{rental}', [RentalController::class, 'show'])
         ->name('rentals.show');
-    // rental aktif
-    Route::get('/active-rentals', [RentalController::class, 'activeRentals'])
-        ->name('rentals.active');
-    // riwayat rental
-    Route::get('/rental-history', [RentalController::class, 'rentalHistory'])
-        ->name('rentals.history');
 });

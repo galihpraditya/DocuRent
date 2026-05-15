@@ -22,6 +22,7 @@ class RentalController extends Controller
         return view('admin-pages.manage-rentals', compact('rentals'));
     }
 
+    // USER - masuk ke checkout
     public function checkoutPage(Request $request)
     {
         $cart = Cart::with('cartItems.product')
@@ -119,24 +120,42 @@ class RentalController extends Controller
     // USER + ADMIN - detail rental
     public function show(Rental $rental)
     {
+        if (auth()->user()->role == 'admin') {
+            return view('admin-pages.rental-detail', compact('rental'));
+        }
         return view('rentals.rental-detail', compact('rental'));
     }
 
     // ADMIN - update status rental
-    public function update(Request $request, Rental $rental)
+    public function updateStatus(Request $request, Rental $rental)
     {
-        //
+        $request->validate([
+            'status' => 'required'
+        ]);
+
+        $rental->update([
+            'status' => $request->status
+        ]);
+
+        return back()->with('success', 'Rental status updated');
     }
 
-    // USER - daftar rental aktif user
-    public function activeRentals()
+    public function rentalsList()
     {
-        //
+        $rentals = Rental::where('user_id', auth()->id())
+            ->latest()
+            ->get();
+
+        return view('rentals.rentals-list', compact('rentals'));
     }
 
-    // USER - riwayat rental user
-    public function rentalHistory()
+    public function filterByStatus($status)
     {
-        //
+        $rentals = Rental::where('user_id', auth()->id())
+            ->where('status', $status)
+            ->latest()
+            ->get();
+
+        return view('rentals.rentals-list', compact('rentals'));
     }
 }
