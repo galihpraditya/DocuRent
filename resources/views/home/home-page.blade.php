@@ -7,13 +7,32 @@
         scroll-behavior: smooth;
     }
 
-    /* Custom CSS menyesuaikan referensi kamu dengan sentuhan modern */
+    /* Custom CSS Hero Section - Dibuat Full Memanjang */
     .hero-section {
-        background-color: #000;
+        /* TODO: Ganti nama file hero.jpg dengan nama gambar background aslimu di folder public/images/ */
+        background-image: url("{{ asset('images/hero.jpg') }}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
         color: #fff;
-        padding: 60px 0;
+        padding: 120px 0; /* Diperbesar agar area gambar lebih luas */
         position: relative;
         overflow: hidden;
+    }
+
+    /* Overlay gelap di atas gambar Hero agar teks tetap terbaca dengan jelas */
+    .hero-section::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background-color: rgba(0, 0, 0, 0.65); /* Opasitas hitam 65% */
+        z-index: 1;
+    }
+
+    /* Memastikan konten teks berada di atas overlay gelap */
+    .hero-content {
+        position: relative;
+        z-index: 2; 
     }
 
     .nav-button-container {
@@ -81,17 +100,12 @@
     }
 </style>
 
-<!-- Hero Section (Tetap menggunakan desain sebelumnya) -->
 <section class="hero-section">
-    <div class="container py-md-5">
-        <div class="row align-items-center">
-            <div class="col-md-6 z-2">
+    <div class="container py-md-5 hero-content">
+        <div class="row">
+            <div class="col-md-8">
                 <h1 class="fw-bold display-5 mb-4" style="line-height: 1.2;">SEWA KAMERA & ALAT DOKUMENTASI DENGAN CEPAT DAN MUDAH HANYA DI DOCURENT</h1>
                 <a href="#recommendation" class="btn btn-light rounded-pill px-5 py-2 fw-semibold">Mulai sewa</a>
-            </div>
-            <div class="col-md-6 position-relative z-1 text-end d-none d-md-block">
-                <!-- TODO: Ganti path dengan foto hero kamu -->
-                <img src="/path/ke/kamera-hero.png" alt="Kamera Hero" class="img-fluid" style="max-height: 350px; object-fit: contain;">
             </div>
         </div>
     </div>
@@ -105,18 +119,17 @@
         <a href="#catalog" class="nav-button">Katalog</a>
         <a href="#gallery" class="nav-button">Galeri</a>
     </div>
-
-    {{-- 
-        Include Sections 
-        Catatan: Aku tetap menggunakan nama file yang sudah kita sepakati di awal 
-        (pakai akhiran -section) agar file yang sudah kamu buat tidak error.
-    --}}
     
-    <div id="recommendation" class="content-section">
+    {{-- 
+      =============================================================================
+      PERBAIKAN INCLUDE SECTION & LOKASI PENAMBAHAN GAMBAR
+      =============================================================================
+    --}}
+
+<div id="recommendation" class="content-section">
         @include('sections.recommendation')
     </div>
 
-    <!-- Garis pemisah antar section -->
     <hr style="border-color: #ddd;">
 
     <div id="catalog" class="content-section">

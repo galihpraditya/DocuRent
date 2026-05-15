@@ -6,7 +6,7 @@
         @for ($i = 0; $i < 4; $i++)
         <!-- Lebar kartu dimodifikasi menjadi 250px khusus galeri -->
         <div class="product-card" style="width: 250px;">
-            <div style="width: 100%; height: 180px; background: #e9ecef; border-radius: 6px; margin-bottom: 5px;"></div>
+            <img src="{{ asset('images/gallery.jpg') }}" alt="Galeri" class="img-fluid">
         </div>
         @endfor
     </div>

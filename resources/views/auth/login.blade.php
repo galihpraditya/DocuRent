@@ -41,8 +41,7 @@
     /* Bagian gambar (Sisi Kiri) */
     .login-image-section {
         background-color: #212529; /* Warna dasar jika gambar gagal dimuat */
-        /* TODO: Masukkan path gambar kamera kamu di sini (misal di folder public/images/) */
-        background-image: url('/path/ke/gambar/kamera-kamu.jpg');
+        background-image: url("{{ asset('images/login-background.jpg') }}");
         background-size: cover;
         background-position: center;
         min-height: 400px;
@@ -100,7 +99,7 @@
 
                         <div class="text-center small" style="color: #666;">
                             Belum punya akun?<br>
-                            <a href="#" class="text-dark fw-bold text-decoration-none">Daftar sekarang</a>
+                            <a href="{{ route('register') }}" class="text-dark fw-bold text-decoration-none">Daftar sekarang</a>
                         </div>
                     </form>
 

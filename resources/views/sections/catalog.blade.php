@@ -42,14 +42,14 @@
                 @for ($i = 0; $i < 8; $i++)
                 <div class="product-card">
                     <!-- Kotak Placeholder Gambar Produk -->
-                    <div style="width: 100%; height: 150px; background: #e9ecef; border-radius: 6px; margin-bottom: 10px;"></div>
+                    <img src="{{ asset('images/product.jpg') }}" alt="Katalog" class="img-fluid">
                     
                     <h6 class="fw-bold small mb-1">Kamera Sony A7III</h6>
                     <p class="small text-muted mb-0">Rp. 250.000 / hari</p>
                     
-                    <button class="btn btn-sm btn-outline-dark w-100 mt-2 fw-semibold" style="font-size: 0.8rem;">
+                    <a href="{{ route('product.detail', ['id' => $i]) }}" class="btn btn-sm btn-outline-dark w-100 mt-2 fw-semibold" style="font-size: 0.8rem;">
                         <i class="bi bi-cart-plus"></i> Sewa
-                    </button>
+                    </a>
                 </div>
                 @endfor
             </div>

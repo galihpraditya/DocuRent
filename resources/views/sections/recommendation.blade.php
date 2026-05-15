@@ -6,9 +6,7 @@
         @for ($i = 0; $i < 4; $i++)
         <div class="product-card">
             <!-- Kotak Placeholder Gambar Promo -->
-            <div style="width: 100%; height: 150px; background: #e9ecef; border-radius: 6px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center;">
-                <i class="bi bi-image text-muted fs-3"></i>
-            </div>
+            <img src="{{ asset('images/recommendation.jpg') }}" alt="Rekomendasi" class="img-fluid">
             
             <h6 class="fw-bold small mb-1">Paket Wedding Basic</h6>
             <p class="small text-decoration-line-through text-muted mb-0">Rp. 800.000</p>

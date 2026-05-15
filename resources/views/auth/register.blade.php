@@ -40,8 +40,7 @@
     /* Bagian Gambar (Kiri) */
     .register-image-section {
         background-color: #212529;
-        /* TODO: Masukkan path gambar kamera kamu */
-        background-image: url('/path/ke/gambar/kamera-kamu.jpg');
+        background-image: url("{{ asset('images/login-background.jpg') }}");
         background-size: cover;
         background-position: center;
         min-height: 100%; 
@@ -94,9 +93,7 @@
                         <p class="text-muted small">Buat Akun Baru</p>
                     </div>
 
-                    <!-- FORM -->
-                    {{-- TODO: Ubah action ke route register laravel: action="{{ route('register') }}" --}}
-                    <form action="#" method="POST">
+                    <form action="{{ route('register') }}" method="POST">
                         @csrf
                         
                         <!-- Baris 1: Nama & Username -->
@@ -141,8 +138,7 @@
                         <!-- Link Login -->
                         <div class="text-center small" style="color: #666;">
                             Sudah punya akun?<br>
-                            {{-- TODO: Ubah href ke route login: href="{{ route('login') }}" --}}
-                            <a href="#" class="text-dark fw-bold text-decoration-none">Login di sini</a>
+                            <a href="{{ route('login') }}" class="text-dark fw-bold text-decoration-none">Login di sini</a>
                         </div>
                     </form>
 

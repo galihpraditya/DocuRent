@@ -29,6 +29,7 @@
         color: #000;
         font-weight: 700;
         border-bottom: 2px solid #000; /* Garis hitam tebal di bawah tab aktif */
+        background-color: transparent !important;
     }
 
     .product-tabs-container {
@@ -68,7 +69,7 @@
             <!-- Gambar Utama -->
             <div class="bg-light rounded-4 d-flex align-items-center justify-content-center shadow-sm mb-4" style="height: 400px; overflow: hidden; border: 1px solid #eaeaea;">
                 <!-- TODO: Ganti src dengan gambar aslimu -->
-                <img src="/path/ke/gambar-utama.jpg" alt="Gambar Utama" class="img-fluid w-100 h-100" style="object-fit: cover; display: none;">
+                <img src="{{ asset('images/product.jpg') }}" alt="Gambar Utama" class="img-fluid w-100 h-100" style="object-fit: cover;">
                 <!-- Ikon placeholder jika gambar belum ada -->
                 <i class="bi bi-camera text-secondary" style="font-size: 5rem;"></i>
             </div>
@@ -78,7 +79,7 @@
                 @for ($i = 0; $i < 3; $i++)
                 <div class="bg-light rounded-3 shadow-sm" style="width: 90px; height: 90px; border: 1px solid #eaeaea; cursor: pointer;">
                     <!-- TODO: Ganti src dengan gambar thumbnail -->
-                    <!-- <img src="/path/ke/thumb.jpg" class="w-100 h-100 rounded-3" style="object-fit: cover;"> -->
+                    <img src="{{ asset('images/product.jpg') }}" class="w-100 h-100 rounded-3" style="object-fit: cover;">
                 </div>
                 @endfor
             </div>
