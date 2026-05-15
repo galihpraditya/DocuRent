@@ -19,6 +19,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // Admin Route
 Route::get('/admin', [AdminPageController::class, 'dashboard'])->name('dashboard');
 Route::prefix('admin')->group(function () {
+    Route::get('/', [AdminPageController::class, 'dashboard'])->name('dashboard');
     Route::resource('products', ProductController::class);
 });
 
