@@ -20,4 +20,14 @@ class Rental extends Model
     {
         return $this->hasOne(Payment::class);
     }
+
+    protected $fillable = [
+        'user_id',
+        'tanggal_sewa',
+        'tanggal_kembali',
+        'tanggal_diambil',
+        'tanggal_dikembalikan',
+        'status',
+        'total_harga',
+    ];
 }

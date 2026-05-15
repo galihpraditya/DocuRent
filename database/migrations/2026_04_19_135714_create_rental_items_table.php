@@ -17,7 +17,6 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->integer('jumlah');
             $table->integer('harga_saat_sewa');
-            $table->integer('subtotal');
             $table->timestamps();
         });
     }

@@ -15,4 +15,11 @@ class RentalItem extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    protected $fillable = [
+        'rental_id',
+        'product_id',
+        'jumlah',
+        'harga_saat_sewa'
+    ];
 }
