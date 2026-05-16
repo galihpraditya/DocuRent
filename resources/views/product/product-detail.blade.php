@@ -70,7 +70,7 @@
             <!-- Gambar Produk -->
             <div 
                 class="bg-light rounded-4 d-flex align-items-center justify-content-center shadow-sm mb-4"
-                style="height: 550; overflow: hidden; border: 1px solid #eaeaea;"
+                style="height: 500; overflow: hidden; border: 1px solid #eaeaea;"
             >
 
                 <img 

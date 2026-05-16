@@ -1,18 +1,24 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top">
     <div class="container">
         <!-- Logo -->
-        <a class="navbar-brand fw-bold d-flex align-items-center" href="{{ url('/') }}">
-            <i class="bi bi-camera-fill fs-4 me-2"></i> <!-- Asumsi pakai Bootstrap Icons -->
-            DocuRent
+        <a class="navbar-brand fw-bold text-decoration-none" href="{{ route('home') }}">
+            <div class="bg-light rounded-pill d-flex align-items-center px-2 py-1">
+                <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 32px; height: 32px;">
+                    <i class="bi bi-camera-fill"></i>
+                </div>
+                <span class="pe-2 text-dark">DocuRent</span>
+            </div>
         </a>
 
         <!-- Search Bar (Tengah) -->
         <form action="{{ route('products.search') }}#catalog" method="GET" class="d-none d-md-flex mx-auto" style="width: 50%;">
-            <div class="input-group">
-                <span class="input-group-text bg-light border-end-0 rounded-start-pill" id="search-icon">
-                    <i class="bi bi-search"></i>
+             <div class="input-group">
+                <span class="input-group-text bg-light border-end-0 rounded-start-pill ps-2" id="search-icon">
+                    <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 26px; height: 26px;">
+                        <i class="bi bi-search" style="font-size: 0.75rem;"></i>
+                    </div>
                 </span>
-                <input type="text" name="search" class="form-control bg-light border-start-0 rounded-end-pill" placeholder="Temukan gear terbaik untukmu" aria-label="Search">
+                <input type="text" class="form-control bg-light border-start-0 rounded-end-pill py-2 shadow-none" placeholder="Temukan gear terbaik untukmu" aria-label="Search">
             </div>
         </form>
 
@@ -21,19 +27,11 @@
 
             @auth
 
-                <a 
-                    href="{{ route('cart.index') }}"
-                    class="rounded-circle bg-dark d-flex align-items-center justify-content-center text-white text-decoration-none"
-                    style="width: 30px; height: 30px;"
-                >
-                </a>
-
-                <a href="#" class="text-dark">
-                    <i class="bi bi-bell fs-5"></i>
+                <a href="{{ route('cart.index') }}" class="d-flex align-items-center justify-content-center bg-light rounded-circle text-dark text-decoration-none hover-bg" style="width: 40px; height: 40px;" title="Keranjang">
+                    <i class="bi bi-cart-fill fs-5"></i>
                 </a>
 
                 <div class="dropdown">
-
                     <a 
                         class="btn text-dark text-decoration-none fw-semibold d-flex align-items-center dropdown-toggle border-0"
                         href="#"
