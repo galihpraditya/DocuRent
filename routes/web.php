@@ -41,6 +41,10 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
 });
 
 // Guest & User Route
+Route::get('/products/filter', [UserPageController::class, 'filterProducts'])
+    ->name('products.filter');
+Route::get('/products/search', [UserPageController::class, 'searchProducts'])
+    ->name('products.search');
 Route::get('/products/{product}', [ProductController::class, 'show'])
     ->name('products.show');
 

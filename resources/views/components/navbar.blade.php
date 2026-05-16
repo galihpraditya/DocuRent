@@ -7,12 +7,12 @@
         </a>
 
         <!-- Search Bar (Tengah) -->
-        <form class="d-none d-md-flex mx-auto" style="width: 50%;">
+        <form action="{{ route('products.search') }}#catalog" method="GET" class="d-none d-md-flex mx-auto" style="width: 50%;">
             <div class="input-group">
                 <span class="input-group-text bg-light border-end-0 rounded-start-pill" id="search-icon">
                     <i class="bi bi-search"></i>
                 </span>
-                <input type="text" class="form-control bg-light border-start-0 rounded-end-pill" placeholder="Temukan gear terbaik untukmu" aria-label="Search">
+                <input type="text" name="search" class="form-control bg-light border-start-0 rounded-end-pill" placeholder="Temukan gear terbaik untukmu" aria-label="Search">
             </div>
         </form>
 
