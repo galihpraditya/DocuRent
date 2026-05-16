@@ -25,22 +25,6 @@
             <a href="{{ route('cart') }}" class="d-flex align-items-center justify-content-center bg-light rounded-circle text-dark text-decoration-none hover-bg" style="width: 40px; height: 40px;" title="Keranjang">
                 <i class="bi bi-cart-fill fs-5"></i>
             </a>
-            
-            <div class="dropdown">
-                <a href="#" class="d-flex align-items-center justify-content-center bg-light rounded-circle text-dark text-decoration-none position-relative hover-bg" role="button" data-bs-toggle="dropdown" style="width: 40px; height: 40px;" title="Notifikasi">
-                    <i class="bi bi-bell-fill fs-5"></i>
-                    <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" style="margin-top: 8px; margin-left: -8px;">
-                        <span class="visually-hidden">Notifikasi Baru</span>
-                    </span>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2" style="width: 250px;">
-                    <li><h6 class="dropdown-header fw-bold">Notifikasi Terbaru</h6></li>
-                    <li><a class="dropdown-item small py-2" href="#"><i class="bi bi-info-circle text-primary me-2"></i>Promo sewa lensa 20% hari ini!</a></li>
-                    <li><a class="dropdown-item small py-2" href="#"><i class="bi bi-check-circle text-success me-2"></i>Penyewaan #123 dikonfirmasi</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item text-center small text-primary fw-semibold" href="#">Lihat Semua</a></li>
-                </ul>
-            </div>
 
             <div class="dropdown ms-1">
                 <a class="bg-light rounded-pill text-dark text-decoration-none fw-semibold d-flex align-items-center dropdown-toggle px-2 py-1 hover-bg" href="#" role="button" data-bs-toggle="dropdown">
