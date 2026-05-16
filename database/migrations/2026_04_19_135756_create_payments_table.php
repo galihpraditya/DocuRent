@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('rental_id')->unique()->constrained()->onDelete('cascade');
             $table->string('metode_pembayaran');
             $table->integer('jumlah_bayar');
-            $table->enum('status_pembayaran', ['pending', 'paid', 'failed'])->default('pending');
+            $table->enum('status_pembayaran', ['pending', 'waiting for verification', 'paid', 'failed'])->default('pending');
             $table->string('bukti_pembayaran')->nullable();
             $table->dateTime('tanggal_bayar')->nullable();
             $table->timestamps();

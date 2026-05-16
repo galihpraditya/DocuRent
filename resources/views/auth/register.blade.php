@@ -93,53 +93,162 @@
                         <p class="text-muted small">Buat Akun Baru</p>
                     </div>
 
-                    <form action="{{ route('register') }}" method="POST">
+                    <form method="POST" action="/register">
                         @csrf
-                        
-                        <!-- Baris 1: Nama & Username -->
+
+                        @if ($errors->any())
+                            <div class="alert alert-danger small">
+                                <ul class="mb-0 ps-3">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+                        <!-- Baris 1 -->
                         <div class="row">
+
                             <div class="col-md-6 mb-3">
-                                <label for="name" class="form-label">Nama Lengkap</label>
-                                <input type="text" class="form-control" id="name" name="name" required>
+                                <label for="nama" class="form-label">
+                                    Nama Lengkap
+                                </label>
+
+                                <input 
+                                    type="text"
+                                    class="form-control"
+                                    id="nama"
+                                    name="nama"
+                                    value="{{ old('nama') }}"
+                                    required
+                                >
                             </div>
+
                             <div class="col-md-6 mb-3">
-                                <label for="username" class="form-label">Username</label>
-                                <input type="text" class="form-control" id="username" name="username" required>
+                                <label for="username" class="form-label">
+                                    Username
+                                </label>
+
+                                <input 
+                                    type="text"
+                                    class="form-control"
+                                    id="username"
+                                    name="username"
+                                    value="{{ old('username') }}"
+                                    required
+                                >
                             </div>
+
                         </div>
 
-                        <!-- Baris 2: Email & No HP -->
+                        <!-- Baris 2 -->
                         <div class="row">
+
                             <div class="col-md-6 mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" required>
+                                <label for="email" class="form-label">
+                                    Email
+                                </label>
+
+                                <input 
+                                    type="email"
+                                    class="form-control"
+                                    id="email"
+                                    name="email"
+                                    value="{{ old('email') }}"
+                                    required
+                                >
                             </div>
+
                             <div class="col-md-6 mb-3">
-                                <label for="phone" class="form-label">Nomor Telp / HP</label>
-                                <input type="tel" class="form-control" id="phone" name="phone" required>
+                                <label for="no_hp" class="form-label">
+                                    Nomor Telp / HP
+                                </label>
+
+                                <input 
+                                    type="text"
+                                    class="form-control"
+                                    id="no_hp"
+                                    name="no_hp"
+                                    value="{{ old('no_hp') }}"
+                                    required
+                                >
                             </div>
+
                         </div>
 
-                        <!-- Baris 3: Alamat (Menggunakan textarea agar lebih leluasa) -->
+                        <!-- Alamat -->
                         <div class="mb-3">
-                            <label for="address" class="form-label">Alamat Lengkap</label>
-                            <textarea class="form-control" id="address" name="address" rows="2" required></textarea>
+
+                            <label for="alamat" class="form-label">
+                                Alamat Lengkap
+                            </label>
+
+                            <textarea 
+                                class="form-control"
+                                id="alamat"
+                                name="alamat"
+                                rows="2"
+                                required
+                            >{{ old('alamat') }}</textarea>
+
                         </div>
 
-                        <!-- Baris 4: Password -->
-                        <div class="mb-4">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" required>
+                        <!-- Password -->
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+
+                                <label for="password" class="form-label">
+                                    Password
+                                </label>
+
+                                <input 
+                                    type="password"
+                                    class="form-control"
+                                    id="password"
+                                    name="password"
+                                    required
+                                >
+
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+
+                                <label for="password_confirmation" class="form-label">
+                                    Konfirmasi Password
+                                </label>
+
+                                <input 
+                                    type="password"
+                                    class="form-control"
+                                    id="password_confirmation"
+                                    name="password_confirmation"
+                                    required
+                                >
+
+                            </div>
+
                         </div>
 
-                        <!-- Tombol Register -->
-                        <button type="submit" class="btn btn-register w-100 mb-3">Register</button>
+                        <!-- Tombol -->
+                        <button type="submit" class="btn btn-register w-100 mb-3">
+                            Register
+                        </button>
 
-                        <!-- Link Login -->
+                        <!-- Login -->
                         <div class="text-center small" style="color: #666;">
+
                             Sudah punya akun?<br>
-                            <a href="{{ route('login') }}" class="text-dark fw-bold text-decoration-none">Login di sini</a>
+
+                            <a 
+                                href="{{ route('login') }}"
+                                class="text-dark fw-bold text-decoration-none"
+                            >
+                                Login di sini
+                            </a>
+
                         </div>
+
                     </form>
 
                 </div>

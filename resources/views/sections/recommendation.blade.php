@@ -3,15 +3,30 @@
     <p class="text-muted small mb-4">Dapatkan harga terbaik untuk paket penyewaan tertentu bulan ini.</p>
     
     <div class="product-container">
-        @for ($i = 0; $i < 4; $i++)
+        @foreach ($recommendations as $product)
+
         <div class="product-card">
-            <!-- Kotak Placeholder Gambar Promo -->
-            <img src="{{ asset('images/recommendation.jpg') }}" alt="Rekomendasi" class="img-fluid">
-            
-            <h6 class="fw-bold small mb-1">Paket Wedding Basic</h6>
-            <p class="small text-decoration-line-through text-muted mb-0">Rp. 800.000</p>
-            <p class="small text-danger fw-bold mb-0">Rp. 650.000 / hari</p>
+
+            <a href="{{ route('products.show', $product->id) }}">
+
+                <img 
+                    src="{{ asset('storage/' . $product->gambar) }}"
+                    alt="{{ $product->nama_produk }}"
+                    class="img-fluid"
+                >
+
+                <h6 class="fw-bold small mb-1">
+                    {{ $product->nama_produk }}
+                </h6>
+
+                <p class="small text-danger fw-bold mb-0">
+                    Rp. {{ number_format($product->harga_sewa, 0, ',', '.') }} / hari
+                </p>
+
+            </a>
+
         </div>
-        @endfor
+
+        @endforeach
     </div>
 </div>

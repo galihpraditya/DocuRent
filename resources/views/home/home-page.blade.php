@@ -2,7 +2,6 @@
 
 @section('content')
 <style>
-    /* Mengaktifkan efek scroll yang mulus saat anchor link diklik */
     html {
         scroll-behavior: smooth;
     }
@@ -15,7 +14,7 @@
         background-position: center;
         background-repeat: no-repeat;
         color: #fff;
-        padding: 120px 0; /* Diperbesar agar area gambar lebih luas */
+        padding: 50px 0; /* Diperbesar agar area gambar lebih luas */
         position: relative;
         overflow: hidden;
     }
@@ -62,8 +61,8 @@
 
     /* Styling Section dari referensimu */
     .content-section {
-        margin-top: 40px;
-        padding-top: 80px; /* Offset agar saat discroll tidak tertutup navbar (asumsi navbar fixed/sticky) */
+        margin-top: 20px;
+        padding-top: 20px; /* Offset agar saat discroll tidak tertutup navbar (asumsi navbar fixed/sticky) */
         margin-bottom: 50px;
     }
 
@@ -126,7 +125,7 @@
       =============================================================================
     --}}
 
-<div id="recommendation" class="content-section">
+    <div id="recommendation" class="content-section">
         @include('sections.recommendation')
     </div>
 

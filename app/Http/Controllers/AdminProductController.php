@@ -8,10 +8,6 @@ use Illuminate\Support\Facades\Storage;
 
 class AdminProductController extends Controller
 {
-    public function __construct() {
-        $this->middleware('isAdmin');
-    }
-
     public function index()
     {
         $products = Product::latest()->get();
@@ -44,7 +40,7 @@ class AdminProductController extends Controller
 
         Product::create($validated);
 
-        return redirect()->route('products.index')->with('success', 'Produk berhasil ditambahkan');
+        return redirect()->route('admin.products.index')->with('success', 'Produk berhasil ditambahkan');
     }
 
     public function edit(Product $product)
@@ -71,7 +67,7 @@ class AdminProductController extends Controller
 
         $product->update($validated);
 
-        return redirect()->route('products.index')->with('success', 'Produk berhasil diupdate');
+        return redirect()->route('admin.products.index')->with('success', 'Produk berhasil diupdate');
     }
 
     public function destroy(Product $product)
@@ -79,6 +75,6 @@ class AdminProductController extends Controller
         Storage::disk('public')->delete($product->gambar);
         $product->delete();
 
-        return redirect()->route('products.index')->with('success', 'Produk berhasil dihapus');
+        return redirect()->route('admin.products.index')->with('success', 'Produk berhasil dihapus');
     }
 }
