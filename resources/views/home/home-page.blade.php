@@ -65,6 +65,12 @@
         </button>
     </a>
 
+    <a href="{{ route('rentals.list') }}">
+        <button>
+            Rental list
+        </button>
+    </a>
+
     <form action="/logout" method="POST">
         @csrf
 

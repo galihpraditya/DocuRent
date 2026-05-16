@@ -26,7 +26,7 @@
             <td>{{ $rental->total_harga }}</td>
             <td>{{ $rental->status }}</td>
             <td>
-                <a href="{{ route('rentals.show', $rental->id) }}">
+                <a href="{{ route('admin.rentals.show', $rental->id) }}">
                     Detail
                 </a>
             </td>

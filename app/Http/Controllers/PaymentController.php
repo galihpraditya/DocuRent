@@ -29,7 +29,8 @@ class PaymentController extends Controller
 
         $payment->update([
             'bukti_pembayaran' => $path,
-            'status_pembayaran' => 'waiting for verification'
+            'status_pembayaran' => 'waiting for verification',
+            'tanggal_bayar' => now()
         ]);
 
         return redirect()->route('payments.status', $payment->id
@@ -39,5 +40,15 @@ class PaymentController extends Controller
     public function status(Payment $payment)
     {
         return view('payments.payment-status', compact('payment'));
+    }
+
+    // Verifikasi dari admin
+    public function verify(Payment $payment)
+    {
+        $payment->update([
+            'status_pembayaran' => 'paid'
+        ]);
+
+        return back()->with('success', 'Payment verified');
     }
 }
