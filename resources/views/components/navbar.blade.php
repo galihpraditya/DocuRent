@@ -51,7 +51,7 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2">
                     <li><a class="dropdown-item py-2" href="#"><i class="bi bi-person me-2"></i>Profil Saya</a></li>
-                    <li><a class="dropdown-item py-2" href="{{ route('rentals.active') }}"><i class="bi bi-bag-check me-2"></i>Pesanan Saya</a></li>
+                    <li><a class="dropdown-item py-2" href="{{ route('rentals.list') }}"><i class="bi bi-bag-check me-2"></i>Pesanan Saya</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li>
                         <form action="{{ route('logout') }}" method="POST">

@@ -18,7 +18,7 @@
         margin: 0; 
     }
     input[type=number] {
-        -moz-appearance: textfield;
+        -appearance: textfield;
     }
 
     /* Kustomisasi bentuk kotak Promo */
@@ -129,7 +129,7 @@
                         <button class="btn fw-semibold small" type="button" style="font-size: 0.85rem;">Pakai</button>
                     </div>
 
-                    <a href="{{ route('rental.checkout') }}" class="btn btn-dark w-100 rounded-pill fw-semibold py-2 d-flex align-items-center justify-content-center" style="background-color: #000; height: 50px;">
+                    <a href="{{ route('payment.checkout') }}" class="btn btn-dark w-100 rounded-pill fw-semibold py-2 d-flex align-items-center justify-content-center" style="background-color: #000; height: 50px;">
                         Lanjut ke Pembayaran
                     </a>
 

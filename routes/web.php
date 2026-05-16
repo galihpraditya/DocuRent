@@ -65,25 +65,33 @@ Route::get('/cart', function () {
     return view('cart.cart-page');
 })->name('cart');
 
-// Halaman Proses Sewa & Pembayaran
-Route::get('/checkout', function () {
-    return view('rentals.rental-checkout');
-})->name('rental.checkout');
+// Alur Pembayaran (Folder: views/payments/)
+Route::prefix('payment')->group(function () {
+    // 1. Overview barang, harga akhir, dan tombol checkout
+    Route::get('/checkout', function () {
+        return view('payments.checkout-page');
+    })->name('payment.checkout');
 
-Route::get('/payment', function () {
-    return view('payments.payment-page');
-})->name('payment');
+    // 2. Memilih opsi pembayaran & tombol bayar
+    Route::get('/confirm', function () {
+        return view('payments.confirm-payment');
+    })->name('payment.confirm');
 
-// Manajemen Sewa Pengguna
+    // 3. Status pembayaran (menunggu verifikasi / paid)
+    // Parameter {id} disiapkan untuk mengecek transaksi spesifik nantinya
+    Route::get('/status/{id}', function ($id) {
+        return view('payments.transaction-status');
+    })->name('payment.status');
+});
+
+// Manajemen Sewa Pengguna (Folder: views/rentals/)
 Route::prefix('my-rentals')->group(function () {
-    Route::get('/active', function () {
-        return view('rentals.active-rentals');
-    })->name('rentals.active');
+    // 1. Daftar rental dengan filter (pending, ongoing, completed)
+    Route::get('/', function () {
+        return view('rentals.rental-list');
+    })->name('rentals.list');
 
-    Route::get('/history', function () {
-        return view('rentals.rental-history');
-    })->name('rentals.history');
-
+    // 2. Halaman detail status penyewaan, alat, dan tanggal
     Route::get('/detail/{id}', function ($id) {
         return view('rentals.rental-detail');
     })->name('rentals.detail');
