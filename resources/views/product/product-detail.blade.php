@@ -66,28 +66,22 @@
         
         <!-- KOLOM KIRI: Gambar Produk -->
         <div class="col-md-5 mb-5 mb-md-0">
-            <!-- Gambar Utama -->
-            <div class="bg-light rounded-4 d-flex align-items-center justify-content-center shadow-sm mb-4" style="height: 400px; overflow: hidden; border: 1px solid #eaeaea;">
-                <!-- TODO: Ganti src dengan gambar aslimu -->
-                <img src="{{ asset('images/product.jpg') }}" alt="Gambar Utama" class="img-fluid w-100 h-100" style="object-fit: cover;">
-                <!-- Ikon placeholder jika gambar belum ada -->
-                <i class="bi bi-camera text-secondary" style="font-size: 5rem;"></i>
+
+            <!-- Gambar Produk -->
+            <div 
+                class="bg-light rounded-4 d-flex align-items-center justify-content-center shadow-sm mb-4"
+                style="height: 550; overflow: hidden; border: 1px solid #eaeaea;"
+            >
+
+                <img 
+                    src="{{ asset('storage/' . $product->gambar) }}"
+                    alt="{{ $product->nama_produk }}"
+                    class="img-fluid w-100 h-100"
+                    style="object-fit: cover;"
+                >
+
             </div>
-            
-            <!-- Thumbnail Gambar -->
-            <div class="d-flex gap-3 justify-content-center">
-                @for ($i = 0; $i < 3; $i++)
-                <div class="bg-light rounded-3 shadow-sm" style="width: 90px; height: 90px; border: 1px solid #eaeaea; cursor: pointer;">
-                    <!-- TODO: Ganti src dengan gambar thumbnail -->
-                    <img 
-                        src="{{ asset('storage/' . $product->gambar) }}"
-                        alt="{{ $product->nama_produk }}"
-                        class="img-fluid w-100 h-100"
-                        style="object-fit: cover;"
-                    >
-                </div>
-                @endfor
-            </div>
+
         </div>
 
         <!-- KOLOM KANAN: Detail & Transaksi -->
@@ -97,10 +91,16 @@
             </h1>
 
             <p class="mb-3 small">
-                Status: 
-                <span class="text-success fw-semibold">
-                    {{ $product->status ?? 'Tersedia' }}
-                </span>
+                Stok: 
+                @if($product->stok > 0)
+                    <span class="text-success fw-semibold">
+                        {{ $product->stok }}
+                    </span>
+                @else
+                    <span class="text-danger fw-semibold">
+                        Habis
+                    </span>
+                @endif
             </p>
 
             <h2 class="fw-bold mb-4">
@@ -111,13 +111,7 @@
             <div class="product-tabs-container">
                 <ul class="nav nav-pills product-tabs" id="productTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="spek-tab" data-bs-toggle="tab" data-bs-target="#spek" type="button" role="tab">Spesifikasi Produk</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="kondisi-tab" data-bs-toggle="tab" data-bs-target="#kondisi" type="button" role="tab">Kondisi Produk</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="ulasan-tab" data-bs-toggle="tab" data-bs-target="#ulasan" type="button" role="tab">Ulasan</button>
+                        <button class="nav-link active" id="spek-tab" data-bs-toggle="tab" data-bs-target="#spek" type="button" role="tab">Deskripsi Produk</button>
                     </li>
                 </ul>
             </div>
@@ -125,13 +119,9 @@
             <!-- Tab Content -->
             <div class="tab-content text-dark mb-5" id="productTabContent" style="min-height: 120px; font-size: 0.95rem; line-height: 1.6;">
                 <div class="tab-pane fade show active" id="spek" role="tabpanel">
-                    <p style="text-align: justify;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                </div>
-                <div class="tab-pane fade" id="kondisi" role="tabpanel">
-                    <p>Kondisi fisik 95% mulus. Sensor bersih tanpa jamur. Karet kencang tidak melar. Sudah termasuk strap, 1 baterai, dan charger.</p>
-                </div>
-                <div class="tab-pane fade" id="ulasan" role="tabpanel">
-                    <p class="text-muted fst-italic">Belum ada ulasan untuk produk ini.</p>
+                    <p style="text-align: justify;">
+                        {{ $product->deskripsi }}
+                    </p>
                 </div>
             </div>
 
@@ -147,7 +137,10 @@
                 >
 
                 <!-- Booking Action Bar -->
-                <div class="border rounded-pill p-3 px-4 d-flex align-items-center justify-content-between flex-wrap gap-3 mt-4" style="border-color: #ddd !important;">
+                <div 
+                    class="border rounded-pill py-2 px-4 d-inline-flex align-items-center gap-3 mt-4"
+                    style="border-color: #ddd !important;"
+                >
                     
                     <!-- Input Jumlah -->
                     <div class="d-flex align-items-center gap-2">
@@ -164,33 +157,6 @@
                             class="custom-underline-input text-center"
                             style="width: 50px;"
                         >
-
-                    </div>
-
-                    <!-- Input Tanggal -->
-                    <div class="d-flex align-items-center gap-2">
-
-                        <label class="fw-bold small mb-0 text-dark">
-                            Tanggal Sewa:
-                        </label>
-
-                        <div class="d-flex align-items-center gap-2">
-
-                            <input 
-                                type="date"
-                                class="custom-underline-input"
-                                style="width: 110px;"
-                            >
-
-                            <span class="text-muted fw-bold">-</span>
-
-                            <input 
-                                type="date"
-                                class="custom-underline-input"
-                                style="width: 110px;"
-                            >
-
-                        </div>
 
                     </div>
 

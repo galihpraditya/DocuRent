@@ -4,7 +4,7 @@
     <div class="row mt-4">
         <!-- Sidebar Filter (Kiri) -->
         <div class="col-md-3 mb-4">
-            <div class="bg-dark text-white p-4 rounded-3 sticky-top" style="top: 100px;">
+            <div class="bg-dark text-white p-4 rounded-3" style="top: 100px;">
                 <h6 class="fw-bold border-bottom border-secondary pb-2 text-center">Filter</h6>
                 
                 <div class="mt-3">
@@ -39,19 +39,37 @@
         <div class="col-md-9">
             <!-- Menggunakan flex-start agar produk berjejer rapi ke kiri saat digabungkan dengan sidebar -->
             <div class="product-container" style="justify-content: flex-start;">
-                @for ($i = 0; $i < 8; $i++)
+
+                @foreach ($catalogs as $product)
+
                 <div class="product-card">
-                    <!-- Kotak Placeholder Gambar Produk -->
-                    <img src="{{ asset('images/product.jpg') }}" alt="Katalog" class="img-fluid">
-                    
-                    <h6 class="fw-bold small mb-1">Kamera Sony A7III</h6>
-                    <p class="small text-muted mb-0">Rp. 250.000 / hari</p>
-                    
-                    <a href="{{ route('product.detail', ['id' => $i]) }}" class="btn btn-sm btn-outline-dark w-100 mt-2 fw-semibold" style="font-size: 0.8rem;">
+
+                    <img 
+                        src="{{ asset('storage/' . $product->gambar) }}"
+                        alt="{{ $product->nama_produk }}"
+                        class="img-fluid"
+                    >
+
+                    <h6 class="fw-bold small mb-1">
+                        {{ $product->nama_produk }}
+                    </h6>
+
+                    <p class="small text-muted mb-0">
+                        Rp. {{ number_format($product->harga_sewa, 0, ',', '.') }} / hari
+                    </p>
+
+                    <a 
+                        href="{{ route('products.show', $product->id) }}"
+                        class="btn btn-sm btn-outline-dark w-100 mt-2 fw-semibold"
+                        style="font-size: 0.8rem;"
+                    >
                         <i class="bi bi-cart-plus"></i> Sewa
                     </a>
+
                 </div>
-                @endfor
+
+                @endforeach
+
             </div>
         </div>
     </div>
