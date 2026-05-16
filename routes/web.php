@@ -11,7 +11,8 @@ use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\RentalController;
 use App\Http\Controllers\PaymentController;
 
-Route::get('/', [UserPageController::class, 'home']);
+Route::get('/', [UserPageController::class, 'home'])
+    ->name('home');
 Route::get('/admin', [AdminPageController::class, 'dashboard']);
 
 // Auth Route
@@ -40,6 +41,10 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
 });
 
 // Guest & User Route
+Route::get('/products/filter', [UserPageController::class, 'filterProducts'])
+    ->name('products.filter');
+Route::get('/products/search', [UserPageController::class, 'searchProducts'])
+    ->name('products.search');
 Route::get('/products/{product}', [ProductController::class, 'show'])
     ->name('products.show');
 
@@ -61,16 +66,16 @@ Route::middleware('auth')->group(function () {
         ->name('cart.calculate');
 
     // masuk ke halaman pembayaran
-    Route::post('/checkout-page', [RentalController::class, 'checkoutPage'])
-        ->name('rentals.checkout-page');
+    Route::post('/checkout-page', [CartController::class, 'checkoutPage'])
+        ->name('cart.checkout-page');
 
     // checkout rental
     Route::post('/rentals', [RentalController::class, 'store'])
         ->name('rentals.store');
 
      // halaman pembayaran
-    Route::get('/payments/{payment}/confirm', [PaymentController::class, 'confirm'])
-        ->name('payments.confirm');
+    Route::get('/payments/{payment}/pay', [PaymentController::class, 'paymentPage'])
+        ->name('payments.paymentPage');
     // upload bukti pembayaran
     Route::post('/payments/{payment}/upload-proof', [PaymentController::class, 'uploadProof'])
         ->name('payments.upload-proof');

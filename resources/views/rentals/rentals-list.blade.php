@@ -1,94 +1,188 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-<h1>My Rentals</h1>
+@extends('layouts.app')
 
-<br>
+@section('content')
+<style>
+    .rental-wrapper {
+        background-color: #f2f4f6;
+        min-height: calc(100vh - 70px);
+        padding: 40px 0;
+    }
 
-<!-- filter buttons -->
-<a href="{{ route('rentals.list') }}">
-    All
-</a>
+    /* Kustomisasi Tab Filter */
+    .nav-pills .nav-link {
+        color: #555;
+        border-radius: 30px;
+        padding: 8px 20px;
+        font-weight: 600;
+        margin-right: 10px;
+        background-color: #e9ecef;
+        transition: all 0.2s ease;
+    }
+    .nav-pills .nav-link:hover {
+        background-color: #dcdcdc;
+    }
+    .nav-pills .nav-link.active {
+        background-color: #1c2024;
+        color: #fff;
+    }
 
-|
+    /* Kustomisasi Kartu Pesanan */
+    .card-order {
+        background-color: #ffffff;
+        border-radius: 12px;
+        border: none;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+        transition: transform 0.2s;
+    }
+    .card-order:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+    }
 
-<a href="{{ route('rentals.filter', 'pending') }}">
-    Pending
-</a>
+    /* Badge Status */
+    .badge-pending { background-color: #ffc107; color: #000; }
+    .badge-ongoing { background-color: #0d6efd; color: #fff; }
+    .badge-completed { background-color: #198754; color: #fff; }
+</style>
 
-|
+<div class="rental-wrapper">
+    <div class="container">
 
-<a href="{{ route('rentals.filter', 'ongoing') }}">
-    Ongoing
-</a>
+        <div class="col-lg-9 mx-auto">
 
-|
+            <h3 class="fw-bold mb-4 text-dark">
+                Pesanan Saya
+            </h3>
 
-<a href="{{ route('rentals.filter', 'completed') }}">
-    Completed
-</a>
+            <!-- FILTER -->
+            <ul class="nav nav-pills mb-4">
 
-<br><br>
+                <li class="nav-item">
+                    <a href="{{ route('rentals.list') }}"
+                       class="nav-link {{ !request()->segment(3) ? 'active' : '' }}">
+                        Semua
+                    </a>
+                </li>
 
-<table border="1" cellpadding="10" cellspacing="0">
+                <li class="nav-item">
+                    <a href="{{ route('rentals.filter', 'pending') }}"
+                       class="nav-link {{ request()->segment(3) == 'pending' ? 'active' : '' }}">
+                        Pending
+                    </a>
+                </li>
 
-    <tr>
-        <th>Booking Code</th>
-        <th>Rental Date</th>
-        <th>Return Date</th>
-        <th>Total Price</th>
-        <th>Status</th>
-        <th>Action</th>
-    </tr>
+                <li class="nav-item">
+                    <a href="{{ route('rentals.filter', 'ongoing') }}"
+                       class="nav-link {{ request()->segment(3) == 'ongoing' ? 'active' : '' }}">
+                        Ongoing
+                    </a>
+                </li>
 
-    @forelse($rentals as $rental)
+                <li class="nav-item">
+                    <a href="{{ route('rentals.filter', 'completed') }}"
+                       class="nav-link {{ request()->segment(3) == 'completed' ? 'active' : '' }}">
+                        Completed
+                    </a>
+                </li>
 
-    <tr>
+            </ul>
 
-        <td>
-            {{ $rental->id }}
-        </td>
+            <!-- LIST -->
+            @forelse($rentals as $rental)
 
-        <td>
-            {{ $rental->tanggal_sewa }}
-        </td>
+                <div class="card card-order p-4 mb-3">
 
-        <td>
-            {{ $rental->tanggal_kembali }}
-        </td>
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
 
-        <td>
-            Rp {{ number_format($rental->total_harga) }}
-        </td>
+                        <div>
+                            <i class="bi bi-bag-check-fill me-2 text-primary"></i>
 
-        <td>
-            {{ $rental->status }}
-        </td>
+                            <span class="fw-bold text-dark">
+                                Booking #{{ $rental->id }}
+                            </span>
 
-        <td>
-            <a href="{{ route('rentals.show', $rental->id) }}">
-                Detail
-            </a>
-        </td>
+                            <span class="text-muted ms-2 small">
+                                {{ $rental->created_at }} WIB
+                            </span>
+                        </div>
 
-    </tr>
+                        @if($rental->status == 'pending')
 
-    @empty
+                            <span class="badge badge-pending px-3 py-2 rounded-pill">
+                                Pending
+                            </span>
 
-    <tr>
-        <td colspan="6">
-            No rentals found
-        </td>
-    </tr>
+                        @elseif($rental->status == 'ongoing')
 
-    @endforelse
+                            <span class="badge badge-ongoing px-3 py-2 rounded-pill">
+                                Ongoing
+                            </span>
 
-</table>
-</body>
-</html>
+                        @else
+
+                            <span class="badge bg-success px-3 py-2 rounded-pill">
+                                Completed
+                            </span>
+
+                        @endif
+
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+
+                            <h6 class="fw-bold mb-1 text-dark">
+                                Periode Sewa
+                            </h6>
+
+                            <p class="mb-0 text-muted small">
+                                {{ $rental->tanggal_sewa }}
+                                →
+                                {{ $rental->tanggal_kembali }}
+                            </p>
+
+                        </div>
+
+                        <div class="text-end">
+
+                            <p class="text-muted small mb-1">
+                                Total Belanja
+                            </p>
+
+                            <h6 class="fw-bold text-dark mb-0">
+                                Rp {{ number_format($rental->total_harga) }}
+                            </h6>
+
+                        </div>
+
+                    </div>
+
+                    <div class="mt-4 text-end">
+
+                        <a href="{{ route('rentals.show', $rental->id) }}"
+                           class="btn btn-outline-dark fw-semibold rounded-pill px-4">
+                            Lihat Detail
+                        </a>
+
+                    </div>
+
+                </div>
+
+            @empty
+
+                <div class="text-center py-5">
+
+                    <h5 class="text-muted">
+                        No rentals found
+                    </h5>
+
+                </div>
+
+            @endforelse
+
+        </div>
+
+    </div>
+</div>
+@endsection

@@ -1,28 +1,32 @@
-<div class="section" id="recommendation">
-
-    <h2>Recommendation</h2>
-
+<div>
+    <h3 class="fw-bold mb-4 border-bottom border-dark pb-2">Rekomendasi</h3>
+    <p class="text-muted small mb-4">Dapatkan harga terbaik untuk paket penyewaan tertentu bulan ini.</p>
+    
     <div class="product-container">
-
         @foreach ($recommendations as $product)
+
+        <div class="product-card">
 
             <a href="{{ route('products.show', $product->id) }}">
 
-                <div class="product-card">
+                <img 
+                    src="{{ asset('storage/' . $product->gambar) }}"
+                    alt="{{ $product->nama_produk }}"
+                    class="img-fluid"
+                >
 
-                    <img 
-                        src="{{ asset('storage/' . $product->gambar) }}" 
-                        alt="{{ $product->nama_produk }}"
-                    >
+                <h6 class="fw-bold small mb-1">
+                    {{ $product->nama_produk }}
+                </h6>
 
-                    <h4>{{ $product->nama_produk }}</h4>
-
-                </div>
+                <p class="small text-danger fw-bold mb-0">
+                    Rp. {{ number_format($product->harga_sewa, 0, ',', '.') }} / hari
+                </p>
 
             </a>
 
+        </div>
+
         @endforeach
-
     </div>
-
 </div>
