@@ -79,7 +79,12 @@
                 @for ($i = 0; $i < 3; $i++)
                 <div class="bg-light rounded-3 shadow-sm" style="width: 90px; height: 90px; border: 1px solid #eaeaea; cursor: pointer;">
                     <!-- TODO: Ganti src dengan gambar thumbnail -->
-                    <img src="{{ asset('images/product.jpg') }}" class="w-100 h-100 rounded-3" style="object-fit: cover;">
+                    <img 
+                        src="{{ asset('storage/' . $product->gambar) }}"
+                        alt="{{ $product->nama_produk }}"
+                        class="img-fluid w-100 h-100"
+                        style="object-fit: cover;"
+                    >
                 </div>
                 @endfor
             </div>
@@ -87,9 +92,20 @@
 
         <!-- KOLOM KANAN: Detail & Transaksi -->
         <div class="col-md-7 detail-divider">
-            <h1 class="fw-bold mb-2">Kamera xxx</h1>
-            <p class="mb-3 small">Status: <span class="text-success fw-semibold">Tersedia</span></p>
-            <h2 class="fw-bold mb-4">Rp120.000 / Hari</h2>
+            <h1 class="fw-bold mb-2">
+                {{ $product->nama_produk }}
+            </h1>
+
+            <p class="mb-3 small">
+                Status: 
+                <span class="text-success fw-semibold">
+                    {{ $product->status ?? 'Tersedia' }}
+                </span>
+            </p>
+
+            <h2 class="fw-bold mb-4">
+                Rp{{ number_format($product->harga_sewa, 0, ',', '.') }} / Hari
+            </h2>
 
             <!-- Nav Tabs -->
             <div class="product-tabs-container">
@@ -119,31 +135,82 @@
                 </div>
             </div>
 
-            <!-- Booking Action Bar (Mirip Pop-up Melayang di Bawah) -->
-            <div class="border rounded-pill p-3 px-4 d-flex align-items-center justify-content-between flex-wrap gap-3 mt-4" style="border-color: #ddd !important;">
-                
-                <!-- Input Jumlah -->
-                <div class="d-flex align-items-center gap-2">
-                    <label class="fw-bold small mb-0 text-dark">Jumlah Alat:</label>
-                    <input type="number" value="1" min="1" class="custom-underline-input text-center" style="width: 50px;">
-                </div>
+            {{-- Booking Action Bar --}}
+            <form action="{{ route('cart-items.store') }}" method="POST">
 
-                <!-- Input Tanggal Sewa -->
-                <div class="d-flex align-items-center gap-2">
-                    <label class="fw-bold small mb-0 text-dark">Tanggal Sewa:</label>
+                @csrf
+
+                <input 
+                    type="hidden" 
+                    name="product_id" 
+                    value="{{ $product->id }}"
+                >
+
+                <!-- Booking Action Bar -->
+                <div class="border rounded-pill p-3 px-4 d-flex align-items-center justify-content-between flex-wrap gap-3 mt-4" style="border-color: #ddd !important;">
+                    
+                    <!-- Input Jumlah -->
                     <div class="d-flex align-items-center gap-2">
-                        <!-- Tanggal Mulai -->
-                        <input type="date" class="custom-underline-input" style="width: 110px;">
-                        <span class="text-muted fw-bold">-</span>
-                        <!-- Tanggal Selesai -->
-                        <input type="date" class="custom-underline-input" style="width: 110px;">
+
+                        <label class="fw-bold small mb-0 text-dark">
+                            Jumlah Alat:
+                        </label>
+
+                        <input 
+                            type="number"
+                            name="jumlah"
+                            value="1"
+                            min="1"
+                            class="custom-underline-input text-center"
+                            style="width: 50px;"
+                        >
+
                     </div>
+
+                    <!-- Input Tanggal -->
+                    <div class="d-flex align-items-center gap-2">
+
+                        <label class="fw-bold small mb-0 text-dark">
+                            Tanggal Sewa:
+                        </label>
+
+                        <div class="d-flex align-items-center gap-2">
+
+                            <input 
+                                type="date"
+                                class="custom-underline-input"
+                                style="width: 110px;"
+                            >
+
+                            <span class="text-muted fw-bold">-</span>
+
+                            <input 
+                                type="date"
+                                class="custom-underline-input"
+                                style="width: 110px;"
+                            >
+
+                        </div>
+
+                    </div>
+
+                    <!-- Tombol Add To Cart -->
+                    <button 
+                        type="submit"
+                        class="btn btn-dark rounded-circle d-flex align-items-center justify-content-center border-0"
+                        style="width: 45px; height: 45px; background-color: #222;"
+                    >
+                        <i class="bi bi-cart-plus-fill fs-5 text-white"></i>
+                    </button>
+
                 </div>
 
-                <!-- Tombol Add to Cart -->
-                <button class="btn btn-dark rounded-circle d-flex align-items-center justify-content-center border-0" style="width: 45px; height: 45px; background-color: #222;">
-                    <i class="bi bi-cart-plus-fill fs-5 text-white"></i>
-                </button>
+            </form>
+
+            <div class="mt-3">
+                <a href="/" class="text-decoration-none">
+                    ← Kembali
+                </a>
             </div>
 
         </div>

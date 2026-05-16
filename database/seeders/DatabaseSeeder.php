@@ -103,7 +103,6 @@ class DatabaseSeeder extends Seeder
                 'product_id' => 1,
                 'jumlah' => 1,
                 'harga_saat_sewa' => 150000,
-                'subtotal' => 150000,
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -112,7 +111,6 @@ class DatabaseSeeder extends Seeder
                 'product_id' => 2,
                 'jumlah' => 2,
                 'harga_saat_sewa' => 50000,
-                'subtotal' => 100000,
                 'created_at' => now(),
                 'updated_at' => now()
             ]

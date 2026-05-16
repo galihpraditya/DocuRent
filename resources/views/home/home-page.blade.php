@@ -2,7 +2,6 @@
 
 @section('content')
 <style>
-    /* Mengaktifkan efek scroll yang mulus saat anchor link diklik */
     html {
         scroll-behavior: smooth;
     }
