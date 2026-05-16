@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top">
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top py-3">
     <div class="container">
         <!-- Logo -->
         <a class="navbar-brand fw-bold text-decoration-none" href="{{ route('home') }}">
@@ -100,3 +100,12 @@
         </div>
     </div>
 </nav>
+
+<style>
+    .hover-bg {
+        transition: background-color 0.2s ease-in-out;
+    }
+    .hover-bg:hover {
+        background-color: #e2e6ea !important;
+    }
+</style>

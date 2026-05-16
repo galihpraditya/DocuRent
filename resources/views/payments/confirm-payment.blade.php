@@ -1,43 +1,117 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Confirm Payment</h1>
+@extends('layouts.app')
 
-    <h3>Total Payment</h3>
-    <p>Rp {{ number_format($payment->jumlah_bayar) }}</p>
+@section('content')
+<style>
+    .confirm-wrapper {
+        background-color: #f2f4f6;
+        min-height: calc(100vh - 70px);
+        padding: 40px 0;
+    }
 
-    <h3>Payment Destination</h3>
+    .card-confirm {
+        background-color: #ffffff;
+        border-radius: 12px;
+        border: none;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    }
 
-    <p>BCA : 123456789</p>
-    <p>OVO : 08123456789</p>
+    /* Styling Opsi Pembayaran */
+    .payment-option {
+        border: 1px solid #eaeaea;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 15px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
 
-    <br>
+    .payment-option:hover { border-color: #000; background-color: #fcfcfc; }
 
-    <form action="{{ route('payments.upload-proof', $payment->id) }}"
-        method="POST"
-        enctype="multipart/form-data">
+    /* Saat radio button dipilih (logic simple CSS) */
+    .form-check-input:checked + .payment-content {
+        font-weight: bold;
+    }
 
-        @csrf
+    .btn-bayar {
+        background-color: #727a82; /* Abu-abu slate sesuai desain */
+        color: #ffffff;
+        border-radius: 8px;
+        font-weight: 600;
+        padding: 15px 0;
+        border: none;
+        transition: background-color 0.2s;
+    }
+    .btn-bayar:hover { background-color: #5c636a; color: #fff; }
 
-        <label>Upload Payment Proof</label>
-        <br><br>
+    @media (min-width: 992px) {
+        .divider-left { border-left: 2px solid #ddd; padding-left: 40px; }
+    }
+</style>
 
-        <input type="file"
-            name="bukti_pembayaran"
-            required>
+<div class="confirm-wrapper">
+    <div class="container">
+        <form action="{{ route('payment.status', ['id' => 1]) }}" method="GET">
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="card card-confirm p-4 p-lg-5">
+                        <h4 class="fw-bold mb-4">Metode Pembayaran</h4>
+                        
+                        <label class="payment-option w-100">
+                            <input class="form-check-input" type="radio" name="method" value="bca" required>
+                            <img src="{{ asset('images/logo-bca.png') }}" alt="BCA" style="height: 25px; width: 70px; object-fit: contain;">
+                            <span class="fs-5 text-dark">BCA Virtual Account</span>
+                        </label>
 
-        <br><br>
+                        <label class="payment-option w-100">
+                            <input class="form-check-input" type="radio" name="method" value="qris">
+                            <img src="{{ asset('images/logo-qris.png') }}" alt="QRIS" style="height: 25px; width: 70px; object-fit: contain;">
+                            <span class="fs-5 text-dark">QRIS</span>
+                        </label>
 
-        <button type="submit">
-            Submit Payment Proof
-        </button>
+                        <label class="payment-option w-100">
+                            <input class="form-check-input" type="radio" name="method" value="bni">
+                            <img src="{{ asset('images/logo-bni.png') }}" alt="BNI" style="height: 25px; width: 70px; object-fit: contain;">
+                            <span class="fs-5 text-dark">BNI Virtual Account</span>
+                        </label>
 
-    </form>
-</body>
-</html>
+                        <label class="payment-option w-100">
+                            <input class="form-check-input" type="radio" name="method" value="mandiri">
+                            <img src="{{ asset('images/logo-mandiri.png') }}" alt="Mandiri" style="height: 25px; width: 70px; object-fit: contain;">
+                            <span class="fs-5 text-dark">Mandiri Virtual Account</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-lg-5 divider-left">
+                    <div class="card card-confirm p-4 p-lg-5">
+                        <h5 class="fw-bold mb-4">Ringkasan transaksi</h5>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Total Sewa (2 Barang)</span>
+                            <span class="text-muted">Rp480.000</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Biaya Layanan</span>
+                            <span class="text-muted">Rp5.000</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-4">
+                            <span class="text-muted">Kode Promo</span>
+                            <span class="text-dark fw-medium">-Rp20.000</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between align-items-center my-4">
+                            <h5 class="fw-bold mb-0">Total Tagihan</h5>
+                            <h4 class="fw-bold mb-0">Rp465.000</h4>
+                        </div>
+                        <button type="submit" class="btn btn-bayar w-100">
+                            Bayar Sekarang
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@endsection
