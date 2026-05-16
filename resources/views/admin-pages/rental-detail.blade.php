@@ -90,6 +90,14 @@
 
 @if($rental->payment->status_pembayaran != 'verified')
 
+<h3>Payment Proof</h3>
+
+<img 
+    src="{{ asset('storage/' . $rental->payment->bukti_pembayaran) }}"
+    alt="Payment Proof"
+    width="300"
+>
+
 <form action="{{ route('admin.payments.verify', $rental->payment->id) }}"
       method="POST">
 
@@ -130,9 +138,9 @@
             Ongoing
         </option>
 
-        <option value="complete"
-            {{ $rental->status == 'complete' ? 'selected' : '' }}>
-            Complete
+        <option value="completed"
+            {{ $rental->status == 'completed' ? 'selected' : '' }}>
+            Completed
         </option>
 
     </select>

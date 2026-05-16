@@ -117,12 +117,17 @@ class RentalController extends Controller
         return redirect()->route('payments.confirm', $payment->id);
     }
 
-    // USER + ADMIN - detail rental
+    // USER - detail rental
     public function show(Rental $rental)
     {
         if (auth()->user()->role == 'admin') {
             return view('admin-pages.rental-detail', compact('rental'));
         }
+
+        if ($rental->user_id != auth()->id()) {
+            abort(403);
+        }
+        
         return view('rentals.rental-detail', compact('rental'));
     }
 

@@ -16,8 +16,6 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->date('tanggal_sewa');
             $table->date('tanggal_kembali');
-            $table->date('tanggal_diambil')->nullable();
-            $table->date('tanggal_dikembalikan')->nullable();
             $table->enum('status', ['pending', 'ongoing', 'completed'])->default('pending');
             $table->integer('total_harga')->default(0);
             $table->timestamps();

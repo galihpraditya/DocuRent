@@ -29,7 +29,8 @@ class PaymentController extends Controller
 
         $payment->update([
             'bukti_pembayaran' => $path,
-            'status_pembayaran' => 'waiting for verification'
+            'status_pembayaran' => 'waiting for verification',
+            'tanggal_bayar' => now()
         ]);
 
         return redirect()->route('payments.status', $payment->id

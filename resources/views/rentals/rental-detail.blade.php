@@ -37,16 +37,6 @@
         {{ $rental->tanggal_kembali }}
     </li>
 
-    <li>
-        Pickup Date :
-        {{ $rental->tanggal_diambil ?? '-' }}
-    </li>
-
-    <li>
-        Returned Date :
-        {{ $rental->tanggal_dikembalikan ?? '-' }}
-    </li>
-
 </ul>
 
 <br>
