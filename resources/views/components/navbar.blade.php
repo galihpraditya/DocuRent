@@ -57,7 +57,7 @@
                                 class="dropdown-item"
                                 href="{{ route('rentals.list') }}"
                             >
-                                Daftar sewaan
+                                Daftar pesanan
                             </a>
                         </li>
 

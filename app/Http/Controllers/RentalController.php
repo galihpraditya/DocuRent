@@ -22,36 +22,6 @@ class RentalController extends Controller
         return view('admin-pages.manage-rentals', compact('rentals'));
     }
 
-    // USER - masuk ke checkout
-    public function checkoutPage(Request $request)
-    {
-        $cart = Cart::with('cartItems.product')
-            ->where('user_id', auth()->id())
-            ->first();
-
-        $hari = Carbon::parse($request->tanggal_sewa)
-            ->diffInDays($request->tanggal_kembali);
-
-        $totalHarga = 0;
-
-        foreach ($cart->cartItems as $item) {
-
-            $subtotal =
-                $item->product->harga_sewa *
-                $item->jumlah *
-                $hari;
-
-            $totalHarga += $subtotal;
-        }
-
-        return view('payments.checkout-page', [
-            'cart' => $cart,
-            'totalHarga' => $totalHarga,
-            'tanggalSewa' => $request->tanggal_sewa,
-            'tanggalKembali' => $request->tanggal_kembali
-        ]);
-    }
-
     // USER - checkout rental
     public function store(Request $request)
     {
@@ -114,7 +84,7 @@ class RentalController extends Controller
 
         CartItem::where('cart_id', $cart->id)->delete();
 
-        return redirect()->route('payments.confirm', $payment->id);
+        return redirect()->route('payments.paymentPage', $payment->id);
     }
 
     // USER - detail rental
@@ -127,8 +97,13 @@ class RentalController extends Controller
         if ($rental->user_id != auth()->id()) {
             abort(403);
         }
-        
-        return view('rentals.rental-detail', compact('rental'));
+
+        $hari = $this->hitungHari(
+            $rental->tanggal_sewa,
+            $rental->tanggal_kembali
+        );
+
+        return view('rentals.rental-detail', compact('rental', 'hari'));
     }
 
     // ADMIN - update status rental
@@ -163,4 +138,10 @@ class RentalController extends Controller
 
         return view('rentals.rentals-list', compact('rentals'));
     }
+
+    public function hitungHari($tanggalSewa, $tanggalKembali)
+{
+    return Carbon::parse($tanggalSewa)
+        ->diffInDays(Carbon::parse($tanggalKembali));
+}
 }

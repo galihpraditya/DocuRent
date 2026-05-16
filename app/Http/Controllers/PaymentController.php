@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\Storage;
 
 class PaymentController extends Controller
 {
-    public function confirm(Payment $payment)
+    public function paymentPage(Payment $payment)
     {
-        return view('payments.confirm-payment', compact('payment'));
+        return view('payments.payment-page', compact('payment'));
     }
 
     public function uploadProof(Request $request, Payment $payment)

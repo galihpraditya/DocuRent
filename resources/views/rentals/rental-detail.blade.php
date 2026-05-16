@@ -40,93 +40,227 @@
 
 <div class="detail-wrapper">
     <div class="container">
+
         <div class="col-lg-8 mx-auto">
-            
-            <a href="{{ route('rentals.list') }}" class="text-decoration-none text-dark fw-semibold mb-4 d-inline-block">
-                <i class="bi bi-arrow-left me-2"></i> Kembali ke Daftar Pesanan
+
+            <a href="{{ route('rentals.list') }}"
+               class="text-decoration-none text-dark fw-semibold mb-4 d-inline-block">
+
+                <i class="bi bi-arrow-left me-2"></i>
+                Kembali ke Daftar Pesanan
+
             </a>
 
             <div class="card card-detail p-4 p-md-5">
-                
+
+                <!-- HEADER -->
                 <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
+
                     <div>
-                        <h4 class="fw-bold text-dark mb-1">Detail Pesanan</h4>
-                        <p class="text-muted mb-0">No. Invoice: <span class="fw-bold text-dark">INV-RNT-20260515</span></p>
+
+                        <h4 class="fw-bold text-dark mb-1">
+                            Detail Pesanan
+                        </h4>
+
+                        <p class="text-muted mb-0">
+                            No. Invoice:
+                            <span class="fw-bold text-dark">
+                                INV-RNT-{{ $rental->id }}
+                            </span>
+                        </p>
+
                     </div>
-                    <button class="btn btn-light border fw-semibold rounded-pill">
-                        <i class="bi bi-download me-2"></i>Invoice
-                    </button>
+
                 </div>
 
+                <!-- STATUS -->
                 <div class="row mb-4">
+
                     <div class="col-md-6 mb-3 mb-md-0">
-                        <p class="info-label">Status Pembayaran</p>
-                        <span class="status-badge status-paid"><i class="bi bi-check-circle me-1"></i> Lunas</span>
+
+                        <p class="info-label">
+                            Status Pembayaran
+                        </p>
+
+                        @if($rental->payment->status_pembayaran == 'paid')
+
+                            <span class="status-badge status-paid">
+                                <i class="bi bi-check-circle me-1"></i>
+                                Lunas
+                            </span>
+
+                        @else
+
+                            <span class="status-badge status-pending">
+                                <i class="bi bi-clock me-1"></i>
+                                Menunggu Verifikasi
+                            </span>
+
+                        @endif
+
                     </div>
+
                     <div class="col-md-6">
-                        <p class="info-label">Status Penyewaan</p>
-                        <span class="status-badge status-active"><i class="bi bi-camera-video me-1"></i> Sedang Disewa</span>
+
+                        <p class="info-label">
+                            Status Penyewaan
+                        </p>
+
+                        <span class="status-badge status-active">
+                            <i class="bi bi-camera-video me-1"></i>
+                            {{ ucfirst($rental->status) }}
+                        </span>
+
                     </div>
+
                 </div>
 
+                <!-- DATES -->
                 <div class="bg-light rounded-3 p-3 mb-4 border">
+
                     <div class="row text-center">
+
                         <div class="col-5">
-                            <p class="info-label">Tanggal Ambil</p>
-                            <p class="info-value">18 Mei 2026</p>
+
+                            <p class="info-label">
+                                Tanggal Ambil
+                            </p>
+
+                            <p class="info-value">
+                                {{ $rental->tanggal_sewa }}
+                            </p>
+
                         </div>
+
                         <div class="col-2 d-flex align-items-center justify-content-center">
                             <i class="bi bi-arrow-right text-muted fs-4"></i>
                         </div>
+
                         <div class="col-5">
-                            <p class="info-label">Tanggal Kembali</p>
-                            <p class="info-value">20 Mei 2026</p>
+
+                            <p class="info-label">
+                                Tanggal Pengembalian
+                            </p>
+
+                            <p class="info-value">
+                                {{ $rental->tanggal_kembali }}
+                            </p>
+
                         </div>
+
                     </div>
+
                 </div>
 
-                <h6 class="fw-bold text-dark mb-3">Daftar Alat (2 Hari)</h6>
-                
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <div class="d-flex align-items-center gap-3">
-                        <img src="{{ asset('images/product.jpg') }}" alt="Produk" class="rounded-3 object-fit-cover border" style="width: 60px; height: 60px;">
-                        <div>
-                            <p class="fw-bold text-dark mb-0" style="font-size: 0.95rem;">Kamera Sony A7III</p>
-                            <p class="text-muted small mb-0">2 x Rp120.000 / hari</p>
+                <!-- ITEMS -->
+                <h6 class="fw-bold text-dark mb-3">
+                    Item Disewa
+                </h6>
+
+                @foreach($rental->rentalItems as $item)
+
+                    @php
+                        $subtotal =
+                            $item->harga_saat_sewa *
+                            $item->jumlah;
+                    @endphp
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+
+                        <div class="d-flex align-items-center gap-3">
+
+                            <img src="{{ asset('storage/' . $item->product->gambar) }}"
+                                 alt="{{ $item->product->nama_produk }}"
+                                 class="rounded-3 object-fit-cover border"
+                                 style="width: 60px; height: 60px;">
+
+                            <div>
+
+                                <p class="fw-bold text-dark mb-0"
+                                   style="font-size: 0.95rem;">
+
+                                    {{ $item->product->nama_produk }}
+
+                                </p>
+
+                                <p class="text-muted small mb-0">
+
+                                    {{ $item->jumlah }}
+                                    x
+                                    Rp {{ number_format($item->harga_saat_sewa) }} / hari
+
+                                </p>
+
+                            </div>
+
                         </div>
+
+                        <p class="fw-bold text-dark mb-0">
+                            Rp {{ number_format($subtotal) }}
+                        </p>
+
                     </div>
-                    <p class="fw-bold text-dark mb-0">Rp480.000</p>
-                </div>
 
-                <hr style="border-style: dashed; border-color: #ccc;" class="my-4">
+                @endforeach
 
-                <h6 class="fw-bold text-dark mb-3">Rincian Pembayaran</h6>
+                <hr style="border-style: dashed; border-color: #ccc;"
+                    class="my-4">
+
+                <!-- PAYMENT DETAIL -->
+                <h6 class="fw-bold text-dark mb-3">
+                    Rincian Biaya
+                </h6>
+
                 <div class="d-flex justify-content-between mb-2">
-                    <span class="text-muted small">Total Harga Sewa</span>
-                    <span class="text-dark fw-medium small">Rp480.000</span>
-                </div>
-                <div class="d-flex justify-content-between mb-2">
-                    <span class="text-muted small">Biaya Layanan</span>
-                    <span class="text-dark fw-medium small">Rp5.000</span>
-                </div>
-                <div class="d-flex justify-content-between mb-3">
-                    <span class="text-muted small">Diskon Promo</span>
-                    <span class="text-success fw-medium small">-Rp20.000</span>
+
+                    <span class="text-muted small">
+                        Total Harga Sewa × {{ $hari }} Hari
+                    </span>
+
+                    <span class="text-dark fw-medium small">
+                        Rp {{ number_format($rental->total_harga) }}
+                    </span>
+
                 </div>
 
                 <div class="d-flex justify-content-between align-items-center pt-3 border-top">
-                    <span class="fw-bold text-dark">Total Tagihan</span>
-                    <h5 class="fw-bold text-dark mb-0">Rp465.000</h5>
+
+                    <span class="fw-bold text-dark">
+                        Total Tagihan
+                    </span>
+
+                    <h5 class="fw-bold text-dark mb-0">
+                        Rp {{ number_format($rental->total_harga) }}
+                    </h5>
+
                 </div>
 
                 <div class="d-flex justify-content-between align-items-center mt-1">
-                    <span class="text-muted small">Metode Pembayaran</span>
-                    <span class="text-dark fw-semibold small">BCA Virtual Account</span>
+                    <span class="text-muted small">
+                        Metode Pembayaran
+                    </span>
+                    <span class="text-dark fw-semibold small">
+                        {{ $rental->payment->metode_pembayaran }}
+                    </span>
                 </div>
+
+                @if($rental->payment->bukti_pembayaran)
+                    <div class="mt-3 text-end">
+                        <a 
+                            href="{{ asset('storage/' . $rental->payment->bukti_pembayaran) }}"
+                            target="_blank"
+                            class="btn btn-outline-dark btn-sm rounded-pill"
+                        >
+                            <i class="bi bi-image me-1"></i>
+                            Lihat Bukti Pembayaran
+                        </a>
+                    </div>
+                @endif
 
             </div>
 
         </div>
+
     </div>
 </div>
 @endsection

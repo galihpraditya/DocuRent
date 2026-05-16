@@ -85,14 +85,19 @@
                     </div>
 
                     <form action="#" method="POST">
-                        @csrf <div class="mb-3">
-                            <label for="email" class="form-label small fw-semibold" style="color: #333;">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
+                        @csrf 
+                        <div class="mb-3">
+                            <label for="email" class="form-label small fw-semibold" style="color: #333;">
+                                Email
+                            </label>
+                            <input type="email" class="form-control" id="email" name="email" required
+                                onkeydown="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('password').focus(); }"
+                            >
                         </div>
                         
                         <div class="mb-4">
                             <label for="password" class="form-label small fw-semibold" style="color: #333;">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" required>
+                            <input id="password" type="password" class="form-control" id="password" name="password" required>
                         </div>
 
                         <button type="submit" class="btn btn-login w-100 mb-4">Login</button>

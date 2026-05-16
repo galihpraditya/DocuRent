@@ -66,16 +66,16 @@ Route::middleware('auth')->group(function () {
         ->name('cart.calculate');
 
     // masuk ke halaman pembayaran
-    Route::post('/checkout-page', [RentalController::class, 'checkoutPage'])
-        ->name('rentals.checkout-page');
+    Route::post('/checkout-page', [CartController::class, 'checkoutPage'])
+        ->name('cart.checkout-page');
 
     // checkout rental
     Route::post('/rentals', [RentalController::class, 'store'])
         ->name('rentals.store');
 
      // halaman pembayaran
-    Route::get('/payments/{payment}/confirm', [PaymentController::class, 'confirm'])
-        ->name('payments.confirm');
+    Route::get('/payments/{payment}/pay', [PaymentController::class, 'paymentPage'])
+        ->name('payments.paymentPage');
     // upload bukti pembayaran
     Route::post('/payments/{payment}/upload-proof', [PaymentController::class, 'uploadProof'])
         ->name('payments.upload-proof');

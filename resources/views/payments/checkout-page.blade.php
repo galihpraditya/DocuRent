@@ -48,64 +48,148 @@
 <div class="checkout-wrapper">
     <div class="container">
         <h3 class="fw-bold mb-4">Ringkasan Pesanan</h3>
-        
+
         <div class="row">
+
+            <!-- LEFT -->
             <div class="col-lg-7">
+
                 <div class="card card-checkout p-4 mb-4">
-                    <h6 class="fw-bold text-muted mb-3" style="font-size: 0.8rem; letter-spacing: 1px;">ALAMAT PENGAMBILAN</h6>
+                    <h6 class="fw-bold text-muted mb-3" style="font-size: 0.8rem; letter-spacing: 1px;">
+                        ALAMAT PENGAMBILAN
+                    </h6>
+
                     <div class="d-flex align-items-start gap-3">
-                        <div class="bg-light rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; flex-shrink: 0;">
+                        <div class="bg-light rounded-circle d-flex align-items-center justify-content-center"
+                             style="width: 40px; height: 40px;">
                             <i class="bi bi-geo-alt-fill text-dark fs-5"></i>
                         </div>
+
                         <div>
                             <p class="mb-0 fw-bold text-dark">DocuRent Malang Pusat</p>
-                            <p class="mb-0 text-muted small">Lowokwaru, kota Malang, Jawa Timur (Tepat di depan Kampus)</p>
+                            <p class="mb-0 text-muted small">
+                                Lowokwaru, kota Malang, Jawa Timur
+                            </p>
                         </div>
                     </div>
                 </div>
 
                 <div class="card card-checkout p-4 mb-3">
-                    <h4 class="fw-bold mb-4 text-dark">KAMERA XXX</h4>
-                    <div class="d-flex align-items-center gap-4 mb-4">
-                        <img src="{{ asset('images/product.jpg') }}" alt="Kamera" class="rounded-3 shadow-sm" style="width: 120px; height: 120px; object-fit: cover; background-color: #ddd;">
-                        <div>
-                            <p class="mb-1 text-dark">Masa Sewa : <strong>2 Hari</strong></p>
-                            <h4 class="fw-bold mb-1 text-dark">Rp240.000</h4>
-                            <p class="mb-0 text-muted">Jumlah : 2 buah</p>
+
+                    <h4 class="fw-bold mb-4 text-dark">
+                        RENTAL ITEMS
+                    </h4>
+
+                    @foreach($cart->cartItems as $item)
+
+                        <div class="d-flex align-items-center gap-4 mb-4">
+
+                            <img src="{{ asset('storage/' . $item->product->gambar) }}"
+                                 class="rounded-3 shadow-sm"
+                                 style="width: 100px; height: 100px; object-fit: cover;">
+
+                            <div>
+
+                                <p class="mb-1 text-dark fw-semibold">
+                                    {{ $item->product->nama_produk }}
+                                </p>
+
+                                <p class="mb-1 text-muted">
+                                    Rp {{ number_format($item->product->harga_sewa) }} / hari
+                                </p>
+
+                                <p class="mb-0 text-muted">
+                                    Jumlah: {{ $item->jumlah }}
+                                </p>
+
+                            </div>
+
                         </div>
-                    </div>
-                    <div class="mt-3">
-                        <input type="text" class="input-catatan w-100" placeholder="Beri Catatan (Opsional)" maxlength="200">
-                    </div>
+
+                    @endforeach
+
+                    <hr>
+
+                    <h6 class="fw-bold mt-3">Rental Date</h6>
+
+                    <p class="text-muted mb-3">
+                        {{ $tanggalSewa }} → {{ $tanggalKembali }}
+                    </p>
+
+                    <h6 class="fw-bold">Total Price</h6>
+
+                    <p class="fw-bold text-dark">
+                        Rp {{ number_format($totalHarga) }}
+                    </p>
+
                 </div>
+
             </div>
 
+            <!-- RIGHT -->
             <div class="col-lg-5">
-                <div class="card card-checkout p-4 p-lg-5 sticky-summary">
-                    <h5 class="fw-bold mb-4 text-dark">Detail Biaya</h5>
+
+                <div class="card card-checkout p-4 p-lg-5">
+
+                    <h5 class="fw-bold mb-4 text-dark">
+                        Detail Biaya
+                    </h5>
+
                     <div class="d-flex justify-content-between mb-3">
                         <span class="text-muted">Total Sewa</span>
-                        <span class="text-dark fw-semibold">Rp480.000</span>
+                        <span class="fw-semibold">
+                            Rp {{ number_format($totalHarga) }}
+                        </span>
                     </div>
-                    <div class="d-flex justify-content-between mb-3">
-                        <span class="text-muted">Biaya Layanan</span>
-                        <span class="text-dark fw-semibold">Rp5.000</span>
-                    </div>
+
                     <div class="d-flex justify-content-between mb-4">
                         <span class="text-muted">Potongan Promo</span>
-                        <span class="text-success fw-semibold">-Rp20.000</span>
+                        <span class="text-success fw-semibold">- Rp 0</span>
                     </div>
+
                     <hr>
+
                     <div class="d-flex justify-content-between align-items-center my-4">
                         <h5 class="fw-bold mb-0">Total Tagihan</h5>
-                        <h4 class="fw-bold mb-0 text-dark">Rp465.000</h4>
+                        <h4 class="fw-bold mb-0">
+                            Rp {{ number_format($totalHarga) }}
+                        </h4>
                     </div>
-                    <a href="{{ route('payment.confirm') }}" class="btn btn-checkout w-100 text-decoration-none text-center">
-                        Lanjut ke Pembayaran <i class="bi bi-chevron-right ms-2"></i>
-                    </a>
+
+                    <!-- PAYMENT FORM (POST) -->
+                    <form action="{{ route('rentals.store') }}" method="POST">
+                        @csrf
+
+                        <input type="hidden" name="tanggal_sewa" value="{{ $tanggalSewa }}">
+                        <input type="hidden" name="tanggal_kembali" value="{{ $tanggalKembali }}">
+                        <input type="hidden" name="total_harga" value="{{ $totalHarga }}">
+
+                        <label class="small fw-semibold">Method</label>
+
+                        <select name="metode_pembayaran"
+                                class="form-select mb-3"
+                                required>
+
+                            <option value="Transfer">Transfer Bank</option>
+                            <option value="E-Wallet">E-Wallet</option>
+                            <option value="QRIS">QRIS</option>
+
+                        </select>
+
+                        <button type="submit"
+                                class="btn btn-dark w-100">
+                            Lanjut ke Pembayaran
+                            <i class="bi bi-chevron-right ms-2"></i>
+                        </button>
+
+                    </form>
+
                 </div>
+
             </div>
+
         </div>
+
     </div>
 </div>
 @endsection
