@@ -1,6 +1,6 @@
 <div>
     <h3 class="fw-bold mb-4 border-bottom border-dark pb-2">Rekomendasi</h3>
-    <p class="text-muted small mb-4">Dapatkan harga terbaik untuk paket penyewaan tertentu bulan ini.</p>
+    <p class="text-muted small mb-4">Temukan produk terbaik dari kami.</p>
     
     <div class="product-container">
         @foreach ($recommendations as $product)
