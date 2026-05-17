@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Rental;
+use App\Models\RentalItem;
 
 class AdminPageController extends Controller
 {   
