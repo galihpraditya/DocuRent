@@ -108,6 +108,9 @@
       <a href="{{ route('dashboard') }}" class="nav-item">
         <i class="ti ti-layout-dashboard"></i> Dashboard
       </a>
+      <a href="{{ route('admin.rentals.index') }}" class="nav-item">
+        <i class="ti ti-file-text"></i> Daftar Transaksi
+      </a>
       <a href="{{ route('admin.products.index') }}" class="nav-item active">
         <i class="ti ti-package"></i> Manajemen Produk
       </a>
