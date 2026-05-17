@@ -92,4 +92,9 @@ Route::middleware('auth')->group(function () {
     // detail rental
     Route::get('/rentals/{rental}', [RentalController::class, 'show'])
         ->name('rentals.show');
+
+    // halaman profile
+    Route::get('/profile', function () {
+        return view('user-pages.profile-page');
+    })->name('profile');
 });
