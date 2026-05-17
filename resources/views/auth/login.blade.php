@@ -12,7 +12,7 @@
         justify-content: center;
         /* Ganti path url() di bawah jika ingin menggunakan gambar asli website di background */
         background-color: #f8f9fa; 
-        background-image: url('/path/ke/gambar/background-beranda.jpg'); 
+        background-image: url('/images/background.jpg'); 
         background-size: cover;
         background-position: center;
     }

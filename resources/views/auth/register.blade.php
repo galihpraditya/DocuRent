@@ -11,7 +11,7 @@
         justify-content: center;
         background-color: #f8f9fa; 
         /* TODO: Samakan gambar background dengan login */
-        background-image: url('/path/ke/gambar/background-beranda.jpg'); 
+        background-image: url('/images/background.jpg'); 
         background-size: cover;
         background-position: center;
         padding: 2rem 1rem; /* Tambahan padding agar form tidak menempel di ujung layar mobile */
