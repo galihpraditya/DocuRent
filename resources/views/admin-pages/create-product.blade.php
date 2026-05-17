@@ -8,7 +8,7 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #f2f2f0; --sidebar-bg: #fff; --sub-bg: #c8c8c8;
+      --bg: #f2f2f0; --sidebar-bg: #fff; --card-bg: #fff;
       --text-primary: #1a1a1a; --text-secondary: #6b6b6b; --text-muted: #a0a0a0;
       --border: rgba(0,0,0,0.08); --active-bg: #f0f0ee; --input-bg: #e8e8e6;
       --btn-dark: #1a1a1a; --btn-dark-text: #fff;
@@ -17,7 +17,7 @@
     }
     body { font-family: var(--font); background: var(--bg); color: var(--text-primary); display: flex; height: 100vh; overflow: hidden; }
 
-    /* SIDEBAR */
+    /* ── SIDEBAR ── */
     .sidebar { width: 220px; min-width: 220px; background: var(--sidebar-bg); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 20px 0; }
     .logo { display: flex; align-items: center; gap: 10px; padding: 0 20px 28px; }
     .logo-icon { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border); background: #f5f5f3; display: flex; align-items: center; justify-content: center; }
@@ -35,38 +35,42 @@
     .btn-logout { width: 100%; padding: 10px; background: var(--btn-dark); color: var(--btn-dark-text); border: none; border-radius: var(--radius-pill); font-size: 13px; font-weight: 600; cursor: pointer; }
     .btn-logout:hover { opacity: 0.85; }
 
-    /* SUB SIDEBAR */
-    .sub-sidebar { width: 170px; min-width: 170px; background: var(--sub-bg); display: flex; flex-direction: column; padding: 20px 0; }
-    .sub-item { display: flex; align-items: center; gap: 10px; padding: 12px 20px; color: #444; font-size: 14px; text-decoration: none; transition: background 0.12s; }
-    .sub-item i { font-size: 18px; }
-    .sub-item:hover { background: rgba(255,255,255,0.35); color: #1a1a1a; }
-    .sub-item.active { background: rgba(255,255,255,0.45); color: #1a1a1a; font-weight: 600; }
+    /* ── CONTENT ── */
+    .content { flex: 1; overflow-y: auto; padding: 36px 48px; }
 
-    /* CONTENT */
-    .content { flex: 1; overflow-y: auto; padding: 32px 48px; }
-    .form-title { font-size: 20px; font-weight: 600; text-align: center; margin-bottom: 32px; }
+    /* Card pembungkus form */
+    .form-card {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      padding: 36px 48px 32px;
+      max-width: 820px;
+      margin: 0 auto;
+    }
 
-    .field { display: grid; grid-template-columns: 150px 1fr; align-items: center; gap: 16px; margin-bottom: 18px; }
+    .form-title { font-size: 20px; font-weight: 600; text-align: center; margin-bottom: 36px; }
+
+    .field { display: grid; grid-template-columns: 160px 1fr; align-items: center; gap: 16px; margin-bottom: 20px; }
     .field.top { align-items: flex-start; }
-    .field-label { font-size: 14px; font-weight: 500; }
-    .field input, .field select { background: var(--input-bg); border: none; outline: none; border-radius: var(--radius-pill); padding: 12px 18px; font-size: 14px; color: var(--text-primary); width: 100%; font-family: var(--font); }
+    .field-label { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+    .field input { background: var(--input-bg); border: none; outline: none; border-radius: var(--radius-pill); padding: 12px 18px; font-size: 14px; color: var(--text-primary); width: 100%; font-family: var(--font); transition: background 0.15s; }
     .field input:focus { background: #ddddd8; }
-    .field textarea { background: var(--input-bg); border: none; outline: none; border-radius: var(--radius-lg); padding: 14px 18px; font-size: 14px; color: var(--text-primary); width: 100%; height: 160px; resize: none; font-family: var(--font); }
+    .field textarea { background: var(--input-bg); border: none; outline: none; border-radius: var(--radius-lg); padding: 14px 18px; font-size: 14px; color: var(--text-primary); width: 100%; height: 180px; resize: none; font-family: var(--font); transition: background 0.15s; }
     .field textarea:focus { background: #ddddd8; }
+
     .harga-wrap { position: relative; }
     .harga-wrap input { padding-right: 56px; }
     .harga-suffix { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); font-size: 13px; color: var(--text-muted); pointer-events: none; }
-    .char-hint { font-size: 12px; color: var(--text-muted); text-align: right; margin-top: 4px; }
 
-    /* error */
-    .error-msg { font-size: 12px; color: #d63031; margin-top: 4px; }
+    .char-hint { font-size: 12px; color: var(--text-muted); text-align: right; margin-top: 5px; }
+    .error-msg { font-size: 12px; color: #d63031; margin-top: 5px; }
 
     .form-footer { display: flex; justify-content: flex-end; margin-top: 28px; }
-    .btn-save { display: flex; align-items: center; gap: 8px; background: #e8e8e6; border: 1px solid rgba(0,0,0,0.1); border-radius: var(--radius-pill); padding: 10px 22px; font-size: 14px; font-weight: 500; cursor: pointer; color: var(--text-primary); }
+    .btn-save { display: flex; align-items: center; gap: 8px; background: #e8e8e6; border: 1px solid rgba(0,0,0,0.1); border-radius: var(--radius-pill); padding: 10px 24px; font-size: 14px; font-weight: 500; cursor: pointer; color: var(--text-primary); transition: background 0.15s; }
     .btn-save:hover { background: #d8d8d4; }
     .btn-save i { font-size: 17px; }
 
-    /* LOGOUT MODAL */
+    /* ── LOGOUT MODAL ── */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 999; align-items: center; justify-content: center; }
     .modal-overlay.show { display: flex; }
     .modal-box { background: #5a5a5a; border-radius: 18px; padding: 32px 28px 24px; width: 340px; text-align: center; animation: popIn 0.18s ease; }
@@ -104,98 +108,67 @@
     </div>
   </aside>
 
-  <!-- SUB SIDEBAR -->
-  <div class="sub-sidebar">
-    <a href="{{ route('products.create') }}" class="sub-item active">
-      <i class="ti ti-plus"></i> Tambah
-    </a>
-    <a href="{{ route('products.index') }}" class="sub-item">
-      <i class="ti ti-edit"></i> Edit
-    </a>
-    <a href="#" class="sub-item">
-      <i class="ti ti-eye"></i> Lihat
-    </a>
-    <a href="#" class="sub-item">
-      <i class="ti ti-trash"></i> Hapus
-    </a>
-    <a href="#" class="sub-item">
-      <i class="ti ti-arrow-back"></i> Pengembalian
-    </a>
-  </div>
-
   <!-- CONTENT -->
   <div class="content">
-    <div class="form-title">Tambah Unit Alat</div>
+    <div class="form-card">
+      <div class="form-title">Tambah Unit Alat</div>
 
-    {{-- Form action, method, dan field name persis sama seperti file aslimu --}}
-    <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
-      @csrf
+      <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
 
-      <div class="field">
-        <label class="field-label" for="nama_produk">Nama Produk</label>
-        <div>
-          <input type="text" id="nama_produk" name="nama_produk"
-            value="{{ old('nama_produk') }}">
-          @error('nama_produk')
-            <div class="error-msg">{{ $message }}</div>
-          @enderror
-        </div>
-      </div>
-
-      <div class="field">
-        <label class="field-label" for="harga_sewa">Harga Sewa</label>
-        <div>
-          <div class="harga-wrap">
-            <input type="number" id="harga_sewa" name="harga_sewa"
-              value="{{ old('harga_sewa') }}" min="0">
-            <span class="harga-suffix">/ hari</span>
+        <div class="field">
+          <label class="field-label" for="nama_produk">Nama Produk</label>
+          <div>
+            <input type="text" id="nama_produk" name="nama_produk" value="{{ old('nama_produk') }}">
+            @error('nama_produk')<div class="error-msg">{{ $message }}</div>@enderror
           </div>
-          @error('harga_sewa')
-            <div class="error-msg">{{ $message }}</div>
-          @enderror
         </div>
-      </div>
 
-      <div class="field">
-        <label class="field-label" for="stok">Stok</label>
-        <div>
-          <input type="number" id="stok" name="stok"
-            value="{{ old('stok') }}" min="0">
-          @error('stok')
-            <div class="error-msg">{{ $message }}</div>
-          @enderror
+        <div class="field">
+          <label class="field-label" for="stok">Stok</label>
+          <div>
+            <input type="number" id="stok" name="stok" value="{{ old('stok') }}" min="0">
+            @error('stok')<div class="error-msg">{{ $message }}</div>@enderror
+          </div>
         </div>
-      </div>
 
-      <div class="field top">
-        <label class="field-label" for="deskripsi" style="padding-top:14px;">Deskripsi</label>
-        <div style="width:100%;">
-          <textarea id="deskripsi" name="deskripsi" maxlength="1500"
-            oninput="document.getElementById('charCount').textContent = this.value.length + '/1500'">{{ old('deskripsi') }}</textarea>
-          <div class="char-hint" id="charCount">0/1500</div>
-          @error('deskripsi')
-            <div class="error-msg">{{ $message }}</div>
-          @enderror
+        <div class="field">
+          <label class="field-label" for="harga_sewa">Harga Sewa</label>
+          <div>
+            <div class="harga-wrap">
+              <input type="number" id="harga_sewa" name="harga_sewa" value="{{ old('harga_sewa') }}" min="0">
+              <span class="harga-suffix">/ hari</span>
+            </div>
+            @error('harga_sewa')<div class="error-msg">{{ $message }}</div>@enderror
+          </div>
         </div>
-      </div>
 
-      <div class="field">
-        <label class="field-label" for="gambar">Gambar</label>
-        <div>
-          <input type="file" id="gambar" name="gambar" accept="image/*"
-            style="background:transparent; border-radius:0; padding:0;">
-          @error('gambar')
-            <div class="error-msg">{{ $message }}</div>
-          @enderror
+        <div class="field top">
+          <label class="field-label" for="deskripsi" style="padding-top:14px;">Deskripsi</label>
+          <div style="width:100%;">
+            <textarea id="deskripsi" name="deskripsi" maxlength="1500"
+              oninput="document.getElementById('charCount').textContent = this.value.length + '/1500'">{{ old('deskripsi') }}</textarea>
+            <div class="char-hint" id="charCount">0/1500</div>
+            @error('deskripsi')<div class="error-msg">{{ $message }}</div>@enderror
+          </div>
         </div>
-      </div>
 
-      <div class="form-footer">
-        <button type="submit" class="btn-save">
-          <i class="ti ti-device-floppy"></i> Simpan
-        </button>
-      </div>
-    </form>
+        <div class="field">
+          <label class="field-label" for="gambar">Gambar</label>
+          <div>
+            <input type="file" id="gambar" name="gambar" accept="image/*"
+              style="background:transparent; border-radius:0; padding:0;">
+            @error('gambar')<div class="error-msg">{{ $message }}</div>@enderror
+          </div>
+        </div>
+
+        <div class="form-footer">
+          <button type="submit" class="btn-save">
+            <i class="ti ti-device-floppy"></i> Simpan
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <!-- LOGOUT MODAL -->
