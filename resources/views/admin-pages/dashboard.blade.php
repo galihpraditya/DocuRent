@@ -8,7 +8,7 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #f2f2f0; --sidebar-bg: #fff; --stat-bg: #5a6375;
+      --bg: #f2f2f0; --sidebar-bg: #fff; --stat-bg: #2b2b2b;
       --text-primary: #1a1a1a; --text-secondary: #6b6b6b; --text-muted: #a0a0a0;
       --border: rgba(0,0,0,0.08); --active-bg: #f0f0ee;
       --btn-dark: #1a1a1a; --btn-dark-text: #fff;
@@ -40,18 +40,90 @@
     .page-title { font-size: 28px; font-weight: 700; margin-bottom: 28px; }
 
     /* STAT CARDS */
-    .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
-    .stat-card { background: var(--stat-bg); border-radius: var(--radius-lg); padding: 28px 24px; color: #fff; }
+    .stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 32px; }
+    .stat-card { background: var(--stat-bg); border-radius: var(--radius-lg); padding: 28px 28px; color: #fff; }
     .stat-card .label { font-size: 13px; opacity: 0.8; margin-bottom: 14px; }
     .stat-card .value { font-size: 36px; font-weight: 700; }
 
     /* TRANSAKSI */
-    .section-label { font-size: 15px; font-weight: 600; margin-bottom: 14px; }
-    .tx-box { background: #fff; border-radius: var(--radius-lg); border: 1px solid var(--border); padding: 20px; }
-    .tx-row { background: #f2f2f0; border-radius: var(--radius-md); height: 46px; margin-bottom: 10px; }
-    .tx-footer { display: flex; justify-content: flex-end; margin-top: 18px; }
-    .btn-dark { background: var(--btn-dark); color: var(--btn-dark-text); border: none; border-radius: var(--radius-pill); padding: 10px 22px; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; }
-    .btn-dark:hover { opacity: 0.82; }
+    .section-label {
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 16px;
+        color: #111;
+    }
+
+    .tx-box {
+        background: #ffffff;
+        border-radius: 18px;
+        border: 1px solid #e5e5e5;
+        overflow: hidden;
+    }
+
+    .tx-header,
+    .tx-row {
+        display: grid;
+        grid-template-columns: 80px 1.5fr 1fr 1.2fr 120px;
+        align-items: center;
+        gap: 16px;
+        padding: 18px 24px;
+        text-align: center;
+    }
+
+    .tx-header {
+        background-color: #2b2b2b;
+        color: white;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    .tx-row {
+        border-bottom: 1px solid #ededed;
+        font-size: 0.9rem;
+    }
+
+    .tx-row:last-child {
+        border-bottom: none;
+    }
+
+    .tx-user {
+        font-weight: 600;
+        color: #111;
+    }
+
+    .tx-total {
+        font-weight: 700;
+        color: #111;
+    }
+
+    .tx-status {
+        display: inline-block;
+        background: #fff3cd;
+        color: #856404;
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: capitalize;
+    }
+
+    .btn-detail {
+        background: #111;
+        color: white;
+        border: none;
+        border-radius: 999px;
+        padding: 8px 18px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+    .btn-detail:hover {
+        opacity: 0.85;
+        color: white;
+    }
 
     /* LOGOUT MODAL */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 999; align-items: center; justify-content: center; }
@@ -101,21 +173,73 @@
         <div class="value">{{ $totalProduk ?? 0 }}</div>
       </div>
       <div class="stat-card">
-        <div class="label">Total Produk Disewa</div>
-        <div class="value">{{ $totalDisewa ?? 0 }}</div>
-      </div>
-      <div class="stat-card">
         <div class="label">Jumlah Pelanggan Aktif</div>
         <div class="value">{{ $totalPelanggan ?? 0 }}</div>
       </div>
     </div>
 
-    <div class="section-label">Transaksi yang Perlu Dikonfirmasi</div>
+    <div class="section-label">
+        Transaksi yang Perlu Dikonfirmasi
+    </div>
+
     <div class="tx-box">
-      <div class="tx-row"></div>
-      <div class="tx-row"></div>
-      <div class="tx-row"></div>
-      </div>
+
+        <!-- Header -->
+        <div class="tx-header">
+
+            <div>ID</div>
+
+            <div>Penyewa</div>
+
+            <div>Total</div>
+
+            <div>Status Pembayaran</div>
+
+            <div class="text-center">Aksi</div>
+
+        </div>
+
+        <!-- Data -->
+        @foreach($rentalsPaymentPending as $rental)
+
+            <div class="tx-row">
+
+                <div>
+                    #{{ $rental->id }}
+                </div>
+
+                <div class="tx-user">
+                    {{ $rental->user->nama }}
+                </div>
+
+                <div class="tx-total">
+                    Rp {{ number_format($rental->total_harga) }}
+                </div>
+
+                <div>
+
+                    <span class="tx-status">
+                        {{ $rental->payment->status_pembayaran ?? '-' }}
+                    </span>
+
+                </div>
+
+                <div class="text-center">
+
+                    <a 
+                        href="{{ route('admin.rentals.show', $rental->id) }}"
+                        class="btn-detail"
+                    >
+                        Detail
+                    </a>
+
+                </div>
+
+            </div>
+
+        @endforeach
+
+    </div>
   </main>
 
   <!-- LOGOUT MODAL -->

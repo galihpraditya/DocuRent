@@ -137,7 +137,7 @@
                         </div>
 
                         <button type="submit" class="btn btn-bayar w-100">
-                            Bayar Sekarang
+                            Konfirmasi Pembayaran
                         </button>
 
                     </div>
