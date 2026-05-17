@@ -85,6 +85,13 @@
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a href="{{ route('rentals.filter', 'canceled') }}"
+                       class="nav-link {{ request()->segment(3) == 'canceled' ? 'active' : '' }}">
+                        Dibatalkan
+                    </a>
+                </li>
+
             </ul>
 
             <!-- LIST -->
