@@ -45,7 +45,7 @@ class DatabaseSeeder extends Seeder
                 'deskripsi' => 'Kamera DSLR profesional dengan sensor APS-C 24.2MP yang cocok untuk kebutuhan fotografi dan videografi.',
                 'harga_sewa' => 150000,
                 'stok' => 5,
-                'gambar' =>'products/kameracanon.jpg',
+                'gambar' =>'images/seeder-images/kameracanon.jpg',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -54,7 +54,7 @@ class DatabaseSeeder extends Seeder
                 'deskripsi' => 'Kamera mirrorless compact dengan autofocus cepat dan kualitas video 4K yang cocok untuk content creator.',
                 'harga_sewa' => 180000,
                 'stok' => 4,
-                'gambar' => 'products/sonya6400.jpg',
+                'gambar' => 'images/seeder-images/sonya6400.jpg',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -64,7 +64,7 @@ class DatabaseSeeder extends Seeder
                 'deskripsi' => 'Kamera mirrorless dengan desain retro dan reproduksi warna khas Fujifilm untuk fotografi dan videografi.',
                 'harga_sewa' => 170000,
                 'stok' => 3,
-                'gambar' => 'products/fujifilmxt30.jpg',
+                'gambar' => 'images/seeder-images/fujifilmxt30.jpg',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -73,7 +73,7 @@ class DatabaseSeeder extends Seeder
                 'deskripsi' => 'Lensa fix dengan bukaan lebar yang menghasilkan efek bokeh halus dan cocok untuk portrait.',
                 'harga_sewa' => 50000,
                 'stok' => 10,
-                'gambar' => 'products/lensa50.jpg',
+                'gambar' => 'images/seeder-images/lensa50.jpg',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -82,7 +82,7 @@ class DatabaseSeeder extends Seeder
                 'deskripsi' => 'Lampu LED studio dengan pencahayaan stabil untuk kebutuhan foto produk dan video indoor.',
                 'harga_sewa' => 120000,
                 'stok' => 4,
-                'gambar' => 'products/godoxsl60.jpg',
+                'gambar' => 'images/seeder-images/godoxsl60.jpg',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -91,7 +91,7 @@ class DatabaseSeeder extends Seeder
                 'deskripsi' => 'Ring light ukuran besar dengan tingkat kecerahan yang dapat diatur untuk live streaming dan makeup.',
                 'harga_sewa' => 70000,
                 'stok' => 8,
-                'gambar' => 'products/ringlight.jpg',
+                'gambar' => 'images/seeder-images/ringlight.jpg',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -100,7 +100,7 @@ class DatabaseSeeder extends Seeder
                 'deskripsi' => 'Microphone wireless compact dengan kualitas audio jernih untuk vlog, interview, dan podcast.',
                 'harga_sewa' => 90000,
                 'stok' => 6,
-                'gambar' => 'products/rodego.jpg',
+                'gambar' => 'images/seeder-images/rodego.jpg',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -109,7 +109,7 @@ class DatabaseSeeder extends Seeder
                 'deskripsi' => 'Mic clip on berkabel dengan kualitas suara yang baik untuk recording dan presentasi.',
                 'harga_sewa' => 30000,
                 'stok' => 12,
-                'gambar' => 'products/boya.jpg',
+                'gambar' => 'images/seeder-images/boya.jpg',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -118,7 +118,7 @@ class DatabaseSeeder extends Seeder
                 'deskripsi' => 'Drone ringan dengan kamera berkualitas tinggi yang cocok untuk aerial photography dan video cinematic.',
                 'harga_sewa' => 250000,
                 'stok' => 3,
-                'gambar' => 'products/djimini3.jpg',
+                'gambar' => 'images/seeder-images/djimini3.jpg',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -127,7 +127,7 @@ class DatabaseSeeder extends Seeder
                 'deskripsi' => 'Drone profesional dengan sensor besar dan fitur intelligent flight untuk pengambilan gambar udara.',
                 'harga_sewa' => 350000,
                 'stok' => 2,
-                'gambar' => 'products/djiair2s.jpg',
+                'gambar' => 'images/seeder-images/djiair2s.jpg',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -136,7 +136,7 @@ class DatabaseSeeder extends Seeder
                 'deskripsi' => 'Tripod aluminium ringan dan kokoh yang mendukung stabilitas kamera saat pengambilan gambar.',
                 'harga_sewa' => 40000,
                 'stok' => 9,
-                'gambar' => 'products/tripod.jpg',
+                'gambar' => 'images/seeder-images/tripod.jpg',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -145,7 +145,7 @@ class DatabaseSeeder extends Seeder
                 'deskripsi' => 'Gimbal stabilizer portable untuk menghasilkan video yang lebih stabil dan minim getaran saat recording.',
                 'harga_sewa' => 85000,
                 'stok' => 5,
-                'gambar' => 'products/gimbal.jpg',
+                'gambar' => 'images/seeder-images/gimbal.jpg',
                 'created_at' => now(),
                 'updated_at' => now()
             ]
