@@ -36,8 +36,7 @@ class RentalController extends Controller
             ->first();
 
         if (!$cart || $cart->cartItems->isEmpty()) {
-            return redirect()->route('cart.index')
-                ->with('error', 'Cart is empty');
+            return redirect()->route('cart.index');
         }
 
         $hari = Carbon::parse($request->tanggal_sewa)
@@ -117,9 +116,10 @@ class RentalController extends Controller
             'status' => $request->status
         ]);
 
-        return back()->with('success', 'Rental status updated');
+        return back();
     }
 
+    // USER - halaman rental
     public function rentalsList()
     {
         $rentals = Rental::where('user_id', auth()->id())
@@ -129,6 +129,7 @@ class RentalController extends Controller
         return view('rentals.rentals-list', compact('rentals'));
     }
 
+    // USER - filter halaman
     public function filterByStatus($status)
     {
         $rentals = Rental::where('user_id', auth()->id())
@@ -140,8 +141,8 @@ class RentalController extends Controller
     }
 
     public function hitungHari($tanggalSewa, $tanggalKembali)
-{
-    return Carbon::parse($tanggalSewa)
-        ->diffInDays(Carbon::parse($tanggalKembali));
-}
+    {
+        return Carbon::parse($tanggalSewa)
+            ->diffInDays(Carbon::parse($tanggalKembali));
+    }
 }

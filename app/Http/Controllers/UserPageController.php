@@ -39,7 +39,6 @@ class UserPageController extends Controller
     {
         $query = Product::query();
 
-        // filter kategori
         if ($request->filled('kategori')) {
 
             $query->where(
@@ -49,7 +48,6 @@ class UserPageController extends Controller
             );
         }
 
-        // sorting
         if ($request->filled('urutan')) {
 
             if ($request->urutan == 'nama') {

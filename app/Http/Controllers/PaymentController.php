@@ -33,8 +33,7 @@ class PaymentController extends Controller
             'tanggal_bayar' => now()
         ]);
 
-        return redirect()->route('payments.status', $payment->id
-            )->with('success', 'Payment proof uploaded');
+        return redirect()->route('payments.status', $payment->id);
     }
 
     public function status(Payment $payment)
@@ -49,6 +48,6 @@ class PaymentController extends Controller
             'status_pembayaran' => 'paid'
         ]);
 
-        return back()->with('success', 'Payment verified');
+        return back();
     }
 }

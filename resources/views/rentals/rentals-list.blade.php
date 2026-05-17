@@ -8,7 +8,6 @@
         padding: 40px 0;
     }
 
-    /* Kustomisasi Tab Filter */
     .nav-pills .nav-link {
         color: #555;
         border-radius: 30px;
@@ -26,7 +25,6 @@
         color: #fff;
     }
 
-    /* Kustomisasi Kartu Pesanan */
     .card-order {
         background-color: #ffffff;
         border-radius: 12px;

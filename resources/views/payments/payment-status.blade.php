@@ -15,21 +15,6 @@
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
     }
 
-    /* Kotak Timer Countdown */
-    .timer-box {
-        background-color: #727a82;
-        color: #ffffff;
-        border-radius: 8px;
-        font-weight: 700;
-        font-size: 1.2rem;
-        width: 45px;
-        height: 45px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    /* Alert / Warning Box Custom */
     .alert-custom {
         background-color: #e9ecef;
         border-radius: 8px;
@@ -37,7 +22,6 @@
         color: #333;
     }
 
-    /* Kustomisasi Accordion Bootstrap untuk Cara Pembayaran */
     .accordion-button:not(.collapsed) {
         color: #000;
         background-color: transparent;
@@ -66,7 +50,6 @@
         font-size: 0.9rem;
     }
 
-    /* Efek hover untuk ikon copy */
     .copy-icon {
         cursor: pointer;
         transition: color 0.2s;
@@ -83,7 +66,7 @@
 
             <div class="card card-status p-4 p-md-5 mb-4">
 
-                <!-- HEADER TIMER (tetap UI) -->
+                <!-- HEADER -->
                 <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
                     <div class="d-flex align-items-center gap-3">
                         <div>

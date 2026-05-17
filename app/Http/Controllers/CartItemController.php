@@ -23,11 +23,11 @@ class CartItemController extends Controller
             ->where('product_id', $request->product_id)
             ->first();
         
-        if ($cartItem) { // jika product sudah ada di cart
+        if ($cartItem) {
             $cartItem->jumlah += $request->jumlah;
             $cartItem->save();
         } 
-        else { // jika belum ada
+        else {
             CartItem::create([
                 'cart_id' => $cart->id,
                 'product_id' => $request->product_id,
@@ -35,8 +35,7 @@ class CartItemController extends Controller
             ]);
         }
 
-        return redirect()->route('cart.index')
-            ->with('success', 'Product added to cart');
+        return redirect()->route('cart.index');
     }
 
     public function update(Request $request, CartItem $cartItem)
@@ -49,15 +48,13 @@ class CartItemController extends Controller
             'jumlah' => $request->jumlah
         ]);
 
-        return redirect()->route('cart.index')
-            ->with('success', 'Cart updated');
+        return redirect()->route('cart.index');
     }
 
     public function destroy(CartItem $cartItem)
     {
         $cartItem->delete();
 
-        return redirect()->route('cart.index')
-            ->with('success', 'Item removed from cart');
+        return redirect()->route('cart.index');
     }
 }

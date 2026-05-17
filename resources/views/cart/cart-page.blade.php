@@ -2,7 +2,6 @@
 
 @section('content')
 <style>
-    /* Styling untuk menghilangkan border bawaan input date & number */
     .custom-input-clean {
         border: none;
         background: transparent;
@@ -11,7 +10,6 @@
         font-size: 0.85rem;
     }
     
-    /* Menghilangkan panah atas-bawah bawaan browser pada input tipe number */
     input[type=number]::-webkit-inner-spin-button, 
     input[type=number]::-webkit-outer-spin-button { 
         -webkit-appearance: none; 
@@ -21,7 +19,6 @@
         -appearance: textfield;
     }
 
-    /* Kustomisasi bentuk kotak Promo */
     .promo-input-group {
         border: 1px solid #ddd;
         border-radius: 8px;
@@ -37,7 +34,6 @@
         color: #333;
     }
     
-    /* Responsivitas text agar tidak terlalu besar di layar kecil */
     @media (max-width: 991px) {
         .cart-header-row { display: none !important; }
         .cart-item-row { flex-direction: column; align-items: flex-start !important; gap: 15px; }

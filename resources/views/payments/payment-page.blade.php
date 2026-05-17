@@ -15,7 +15,6 @@
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
     }
 
-    /* Styling Opsi Pembayaran */
     .payment-option {
         border: 1px solid #eaeaea;
         border-radius: 10px;
@@ -30,13 +29,12 @@
 
     .payment-option:hover { border-color: #000; background-color: #fcfcfc; }
 
-    /* Saat radio button dipilih (logic simple CSS) */
     .form-check-input:checked + .payment-content {
         font-weight: bold;
     }
 
     .btn-bayar {
-        background-color: #727a82; /* Abu-abu slate sesuai desain */
+        background-color: #727a82;
         color: #ffffff;
         border-radius: 8px;
         font-weight: 600;

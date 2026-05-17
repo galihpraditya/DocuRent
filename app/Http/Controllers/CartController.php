@@ -52,7 +52,6 @@ class CartController extends Controller
         ]);
     }
 
-    // USER - masuk ke checkout
     public function checkoutPage(Request $request)
     {
         $cart = Cart::with('cartItems.product')

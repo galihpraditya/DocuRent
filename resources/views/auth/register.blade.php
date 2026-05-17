@@ -2,7 +2,6 @@
 
 @section('content')
 <style>
-    /* Wrapper dibuat mirip dengan login */
     .register-wrapper {
         position: relative;
         min-height: 100vh;
@@ -10,11 +9,10 @@
         align-items: center;
         justify-content: center;
         background-color: #f8f9fa; 
-        /* TODO: Samakan gambar background dengan login */
         background-image: url('/images/background.jpg'); 
         background-size: cover;
         background-position: center;
-        padding: 2rem 1rem; /* Tambahan padding agar form tidak menempel di ujung layar mobile */
+        padding: 2rem 1rem; 
     }
 
     .register-wrapper::before {
@@ -30,14 +28,12 @@
     .register-card {
         z-index: 2;
         width: 100%;
-        /* Diperlebar menjadi 900px untuk mengakomodasi 6 input field dengan 2 kolom */
         max-width: 900px; 
         border-radius: 12px;
         overflow: hidden;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     }
 
-    /* Bagian Gambar (Kiri) */
     .register-image-section {
         background-color: #212529;
         background-image: url("{{ asset('images/login-background.jpg') }}");
@@ -65,7 +61,6 @@
         box-shadow: none;
     }
 
-    /* Mengecilkan sedikit ukuran font label agar terlihat rapi */
     .form-label {
         font-size: 0.85rem;
         font-weight: 600;
@@ -79,7 +74,6 @@
         <div class="row g-0 h-100">
             
             <!-- Kiri: Gambar Kamera (Disembunyikan di layar mobile) -->
-            <!-- Menggunakan col-md-5 agar area gambar sedikit lebih kecil, memberi ruang lebih untuk form -->
             <div class="col-md-5 d-none d-md-block register-image-section">
             </div>
 

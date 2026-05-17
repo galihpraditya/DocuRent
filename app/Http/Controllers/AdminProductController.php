@@ -14,7 +14,7 @@ class AdminProductController extends Controller
         return view('admin-pages.manage-products', compact('products'));
     }
 
-    public function show(Product $product) // untuk admin dan user mungkin bagus diarahkan ke yang sama
+    public function show(Product $product)
     {
         return view('product.product-detail', compact('product'));
     }
@@ -40,7 +40,7 @@ class AdminProductController extends Controller
 
         Product::create($validated);
 
-        return redirect()->route('admin.products.index')->with('success', 'Produk berhasil ditambahkan');
+        return redirect()->route('admin.products.index');
     }
 
     public function edit(Product $product)
@@ -67,7 +67,7 @@ class AdminProductController extends Controller
 
         $product->update($validated);
 
-        return redirect()->route('admin.products.index')->with('success', 'Produk berhasil diupdate');
+        return redirect()->route('admin.products.index');
     }
 
     public function destroy(Product $product)
@@ -75,6 +75,6 @@ class AdminProductController extends Controller
         Storage::disk('public')->delete($product->gambar);
         $product->delete();
 
-        return redirect()->route('admin.products.index')->with('success', 'Produk berhasil dihapus');
+        return redirect()->route('admin.products.index');
     }
 }

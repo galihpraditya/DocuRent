@@ -15,11 +15,10 @@
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
     }
 
-    /* Solusi agar tidak menutupi Navbar saat di-scroll */
     .sticky-summary {
         position: sticky;
-        top: 100px; /* Jarak dari atas layar agar tidak menabrak navbar */
-        z-index: 10; /* Di bawah z-index navbar (biasanya 1020) */
+        top: 100px;
+        z-index: 10;
     }
 
     .input-catatan {
@@ -68,7 +67,7 @@
                         <div>
                             <p class="mb-0 fw-bold text-dark">DocuRent Malang Pusat</p>
                             <p class="mb-0 text-muted small">
-                                Lowokwaru, kota Malang, Jawa Timur
+                                Jl. Veteran, Kota Malang, Jawa Timur
                             </p>
                         </div>
                     </div>

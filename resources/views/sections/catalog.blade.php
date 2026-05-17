@@ -159,7 +159,6 @@
 
         <!-- Daftar Produk (Kanan) -->
         <div class="col-md-9">
-            <!-- Menggunakan flex-start agar produk berjejer rapi ke kiri saat digabungkan dengan sidebar -->
             <div class="product-container" style="justify-content: flex-start;">
 
                 @foreach ($catalogs as $product)

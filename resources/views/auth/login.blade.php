@@ -1,53 +1,46 @@
 @extends('layouts.app') 
-{{-- Asumsi kamu sudah menghubungkan Bootstrap CSS & JS di layouts/app.blade.php --}}
 
 @section('content')
 <style>
-    /* Mengatur latar belakang halaman agar full screen dan berada di tengah */
     .login-wrapper {
         position: relative;
         min-height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
-        /* Ganti path url() di bawah jika ingin menggunakan gambar asli website di background */
         background-color: #f8f9fa; 
         background-image: url('/images/background.jpg'); 
         background-size: cover;
         background-position: center;
     }
 
-    /* Overlay untuk memberikan efek BLUR dan sedikit gelap pada background */
     .login-wrapper::before {
         content: "";
         position: absolute;
         top: 0; left: 0; right: 0; bottom: 0;
-        background-color: rgba(0, 0, 0, 0.4); /* Warna overlay transparan */
-        backdrop-filter: blur(8px); /* Efek blur ala modern UI */
+        background-color: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
         z-index: 1;
     }
 
-    /* Styling untuk kotak "Pop-up" Login */
     .login-card {
-        z-index: 2; /* Memastikan card berada di atas efek blur */
+        z-index: 2;
         width: 100%;
-        max-width: 850px; /* Ukuran maksimal pop-up */
+        max-width: 850px;
         border-radius: 12px;
         overflow: hidden;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     }
 
-    /* Bagian gambar (Sisi Kiri) */
     .login-image-section {
-        background-color: #212529; /* Warna dasar jika gambar gagal dimuat */
+        background-color: #212529;
         background-image: url("{{ asset('images/login-background.jpg') }}");
         background-size: cover;
         background-position: center;
         min-height: 400px;
     }
 
-    /* Styling tombol login agar membulat sesuai desain */
     .btn-login {
         background-color: #1c2024;
         color: #ffffff;
@@ -62,7 +55,6 @@
         color: #ffffff;
     }
 
-    /* Menghilangkan border focus bawaan bootstrap agar lebih elegan */
     .form-control:focus {
         border-color: #1c2024;
         box-shadow: none;

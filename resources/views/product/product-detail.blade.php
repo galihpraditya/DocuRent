@@ -2,15 +2,13 @@
 
 @section('content')
 <style>
-    /* Styling untuk garis pemisah vertikal (hanya muncul di desktop) */
     @media (min-width: 768px) {
         .detail-divider {
             border-left: 2px solid #dcdcdc;
-            padding-left: 40px; /* Jarak antara garis dengan teks detail */
+            padding-left: 40px;
         }
     }
 
-    /* Styling Custom untuk Tab Deskripsi */
     .product-tabs .nav-link {
         color: #888;
         font-weight: 500;
@@ -28,16 +26,15 @@
     .product-tabs .nav-link.active {
         color: #000;
         font-weight: 700;
-        border-bottom: 2px solid #000; /* Garis hitam tebal di bawah tab aktif */
+        border-bottom: 2px solid #000;
         background-color: transparent !important;
     }
 
     .product-tabs-container {
-        border-bottom: 1px solid #dcdcdc; /* Garis abu-abu panjang di bawah seluruh tab */
+        border-bottom: 1px solid #dcdcdc;
         margin-bottom: 20px;
     }
 
-    /* Styling Custom untuk Input di Bottom Bar */
     .custom-underline-input {
         border: none;
         border-bottom: 1px solid #aaa;
@@ -54,7 +51,6 @@
         border-bottom: 1px solid #000;
     }
     
-    /* Menghilangkan border focus bawaan bootstrap */
     .form-control:focus {
         border-color: transparent;
         box-shadow: none;
