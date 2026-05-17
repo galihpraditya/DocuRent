@@ -175,7 +175,7 @@
       <a href="{{ route('dashboard') }}" class="nav-item">
         <i class="ti ti-layout-dashboard"></i> Dashboard
       </a>
-      <a href="{{ route('products.index') }}" class="nav-item active">
+      <a href="{{ route('admin.products.index') }}" class="nav-item active">
         <i class="ti ti-package"></i> Manajemen Produk
       </a>
     </nav>
@@ -192,7 +192,7 @@
   <div class="content">
 
     <!-- Tombol kembali -->
-    <a href="{{ route('products.index') }}" class="btn-back">
+    <a href="{{ route('admin.products.index') }}" class="btn-back">
       <i class="ti ti-arrow-left"></i> Kembali ke Daftar Produk
     </a>
 
@@ -239,10 +239,10 @@
 
         {{-- Tombol Edit & Hapus --}}
         <div class="detail-actions">
-          <a href="{{ route('products.edit', $product->id) }}" class="btn-edit-detail">
+          <a href="{{ route('admin.products.edit', $product->id) }}" class="btn-edit-detail">
             <i class="ti ti-pencil"></i> Edit Produk
           </a>
-          <form action="{{ route('products.destroy', $product->id) }}" method="POST"
+          <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST"
                 style="flex:1; display:flex;"
                 onsubmit="return confirm('Yakin ingin menghapus produk ini?')">
             @csrf

@@ -95,7 +95,7 @@
       <a href="{{ route('dashboard') }}" class="nav-item">
         <i class="ti ti-layout-dashboard"></i> Dashboard
       </a>
-      <a href="{{ route('products.index') }}" class="nav-item active">
+      <a href="{{ route('admin.products.index') }}" class="nav-item active">
         <i class="ti ti-package"></i> Manajemen Produk
       </a>
     </nav>
@@ -113,7 +113,7 @@
     <div class="form-card">
       <div class="form-title">Tambah Unit Alat</div>
 
-      <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
+      <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <div class="field">

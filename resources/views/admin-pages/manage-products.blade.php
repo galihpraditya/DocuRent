@@ -104,7 +104,7 @@
       <a href="{{ route('dashboard') }}" class="nav-item">
         <i class="ti ti-layout-dashboard"></i> Dashboard
       </a>
-      <a href="{{ route('products.index') }}" class="nav-item active">
+      <a href="{{ route('admin.products.index') }}" class="nav-item active">
         <i class="ti ti-package"></i> Manajemen Produk
       </a>
     </nav>
@@ -127,7 +127,7 @@
         <input type="text" id="searchInput" placeholder="Cari alat berdasarkan nama"
                onkeyup="filterProducts()">
       </div>
-      <a href="{{ route('products.create') }}" class="btn-tambah">
+      <a href="{{ route('admin.products.create') }}" class="btn-tambah">
         <i class="ti ti-plus"></i> Tambah Produk
       </a>
     </div>
@@ -138,7 +138,7 @@
         <div class="product-card" data-name="{{ strtolower($product->nama_produk) }}">
 
           {{-- Klik gambar/nama → ke halaman detail --}}
-          <a href="{{ route('products.show', $product->id) }}" class="product-link">
+          <a href="{{ route('admin.products.show', $product->id) }}" class="product-link">
             <div class="product-thumb">
               @if ($product->gambar)
                 <img src="{{ asset('storage/' . $product->gambar) }}"
@@ -156,10 +156,10 @@
 
           {{-- Tombol Edit & Hapus — tidak ikut link ke detail --}}
           <div class="product-actions">
-            <a href="{{ route('products.edit', $product->id) }}" class="btn-edit">
+            <a href="{{ route('admin.products.edit', $product->id) }}" class="btn-edit">
               <i class="ti ti-pencil"></i> Edit
             </a>
-            <form action="{{ route('products.destroy', $product->id) }}" method="POST"
+            <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST"
                   onsubmit="return confirm('Yakin ingin menghapus produk ini?')" style="flex:1; display:flex;">
               @csrf
               @method('DELETE')
@@ -173,7 +173,7 @@
       @empty
         <div class="empty-state">
           <i class="ti ti-package"></i>
-          <p>Belum ada produk. <a href="{{ route('products.create') }}">Tambah sekarang</a></p>
+          <p>Belum ada produk. <a href="{{ route('admin.products.create') }}">Tambah sekarang</a></p>
         </div>
       @endforelse
     </div>

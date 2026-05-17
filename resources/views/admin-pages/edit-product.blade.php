@@ -108,7 +108,7 @@
       <a href="{{ route('dashboard') }}" class="nav-item">
         <i class="ti ti-layout-dashboard"></i> Dashboard
       </a>
-      <a href="{{ route('products.index') }}" class="nav-item active">
+      <a href="{{ route('admin.products.index') }}" class="nav-item active">
         <i class="ti ti-package"></i> Manajemen Produk
       </a>
     </nav>
@@ -138,7 +138,7 @@
         </div>
       </div>
 
-      <form action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
+      <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
