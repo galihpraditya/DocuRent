@@ -9,7 +9,7 @@ class UserPageController extends Controller
 {
     public function home()
     {
-        $recommendations = Product::inRandomOrder()->take(3)->get();
+        $recommendations = Product::inRandomOrder()->take(4)->get();
 
         $catalogs = Product::all();
 
