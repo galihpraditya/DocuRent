@@ -63,8 +63,9 @@
     .status-badge.ongoing    { background: #e3f2fd; color: #1971c2; }
     .status-badge.completed  { background: #ebfbee; color: #2f9e44; }
     .status-badge.cancelled  { background: #fff5f5; color: #d63031; }
-    .status-badge.verified   { background: #ebfbee; color: #2f9e44; }
-    .status-badge.unverified { background: #fff8e1; color: #f59f00; }
+    .status-badge.waiting_for_verification { background: #fff8e1; color: #f59f00; }
+    .status-badge.paid   { background: #ebfbee; color: #2f9e44; }
+    .status-badge.failed  { background: #fff5f5; color: #d63031; }
 
     /* Booking code */
     .booking-code { font-family: monospace; background: var(--input-bg); border-radius: 6px; padding: 3px 8px; font-size: 13px; color: var(--text-primary); }
@@ -158,7 +159,7 @@
           </div>
           <div class="info-row">
             <span class="info-label">Penyewa</span>
-            <span class="info-value">{{ $rental->user->name }}</span>
+            <span class="info-value">{{ $rental->user->nama }}</span>
           </div>
           <div class="info-row">
             <span class="info-label">Tanggal Sewa</span>
@@ -168,30 +169,77 @@
             <span class="info-label">Tanggal Kembali</span>
             <span class="info-value">{{ \Carbon\Carbon::parse($rental->tanggal_kembali)->format('d M Y') }}</span>
           </div>
+
           <div class="info-row">
-            <span class="info-label">Status Rental</span>
+            <span class="info-label">
+                Status Pembayaran
+            </span>
             <span class="info-value">
-              @php
-                $statusMap = [
-                  'pending'   => ['label' => 'Pending',        'class' => 'pending'],
-                  'ongoing'   => ['label' => 'Sedang Disewa',  'class' => 'ongoing'],
-                  'completed' => ['label' => 'Selesai',        'class' => 'completed'],
-                  'cancelled' => ['label' => 'Dibatalkan',     'class' => 'cancelled'],
-                ];
-                $s = $statusMap[$rental->status] ?? ['label' => ucfirst($rental->status), 'class' => 'pending'];
-              @endphp
-              <span class="status-badge {{ $s['class'] }}">{{ $s['label'] }}</span>
+                @php
+                    $paymentMap = [
+                        'waiting for verification' => [
+                            'label' => 'Menunggu Verifikasi',
+                            'class' => 'waiting_for_verification'
+                        ],
+                        'paid' => [
+                            'label' => 'Pembayaran Terverifikasi',
+                            'class' => 'paid'
+                        ],
+                        'failed' => [
+                            'label' => 'Pembayaran Gagal',
+                            'class' => 'failed'
+                        ],
+                    ];
+                    $paymentStatus =
+                        $paymentMap[$rental->payment->status_pembayaran]
+                        ?? [
+                            'label' => ucfirst($rental->payment->status_pembayaran),
+                            'class' => 'pending'
+                        ];
+                @endphp
+                <span class="status-badge {{ $paymentStatus['class'] }}">
+                    {{ $paymentStatus['label'] }}
+                </span>
             </span>
           </div>
+
           <div class="info-row">
-            <span class="info-label">Status Pembayaran</span>
-            <span class="info-value">
-              @php $payStatus = $rental->payment->status_pembayaran ?? 'unverified'; @endphp
-              <span class="status-badge {{ $payStatus === 'verified' ? 'verified' : 'unverified' }}">
-                {{ $payStatus === 'verified' ? 'Terverifikasi' : 'Belum Terverifikasi' }}
-              </span>
+            <span class="info-label">
+                Status Rental
             </span>
-          </div>
+            <span class="info-value">
+                @php
+                    $statusMap = [
+                        'pending' => [
+                            'label' => 'Pending',
+                            'class' => 'pending'
+                        ],
+                        'ongoing' => [
+                            'label' => 'Sedang Disewa',
+                            'class' => 'ongoing'
+                        ],
+                        'completed' => [
+                            'label' => 'Selesai',
+                            'class' => 'completed'
+                        ],
+                        'cancelled' => [
+                            'label' => 'Dibatalkan',
+                            'class' => 'cancelled'
+                        ],
+                    ];
+                    $rentalStatus =
+                        $statusMap[$rental->status]
+                        ?? [
+                            'label' => ucfirst($rental->status),
+                            'class' => 'pending'
+                        ];
+                @endphp
+                <span class="status-badge {{ $rentalStatus['class'] }}">
+                    {{ $rentalStatus['label'] }}
+                </span>
+            </span>
+        </div>
+
         </div>
 
         <!-- Item Rental -->
@@ -239,7 +287,7 @@
         <!-- Bukti Pembayaran + Verifikasi -->
         @if (isset($rental->payment))
         <div class="card">
-          <div class="card-title"><i class="ti ti-credit-card"></i> Pembayaran</div>
+          <div class="card-title"><i class="ti ti-credit-card"></i> Bukti Pembayaran</div>
 
           @if ($rental->payment->status_pembayaran != 'verified')
             {{-- Tampilkan bukti dan tombol verifikasi --}}
@@ -274,8 +322,9 @@
               <label>Status</label>
               <select name="status">
                 <option value="pending"   {{ $rental->status == 'pending'   ? 'selected' : '' }}>Pending</option>
-                <option value="ongoing"   {{ $rental->status == 'ongoing'   ? 'selected' : '' }}>Ongoing</option>
-                <option value="completed" {{ $rental->status == 'completed' ? 'selected' : '' }}>Completed</option>
+                <option value="ongoing"   {{ $rental->status == 'ongoing'   ? 'selected' : '' }}>Berlangsung</option>
+                <option value="completed" {{ $rental->status == 'completed' ? 'selected' : '' }}>Selesai</option>
+                <option value="cancelled" {{ $rental->status == 'cancelled' ? 'selected' : '' }}>Dibatalkan</option>
               </select>
             </div>
             <button type="submit" class="btn-update">

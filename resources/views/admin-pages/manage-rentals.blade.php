@@ -80,7 +80,7 @@
     .rental-img i { font-size: 28px; color: #bbb; }
 
     /* Info produk */
-    .rental-product { flex: 1.2; min-width: 0; }
+    .rental-product { flex: 1.2; min-width: 0; padding-right: 30px;}
     .rental-product-name { font-size: 14px; font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .rental-product-sub { font-size: 12px; color: var(--text-secondary); margin-top: 3px; }
     .rental-product-date { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
@@ -158,11 +158,11 @@
       <a href="{{ route('dashboard') }}" class="nav-item">
         <i class="ti ti-layout-dashboard"></i> Dashboard
       </a>
-      <a href="{{ route('admin.rentals.index') }}" class="nav-item active">
-        <i class="ti ti-file-text"></i> Daftar Transaksi
-      </a>
       <a href="{{ route('admin.products.index') }}" class="nav-item">
         <i class="ti ti-package"></i> Manajemen Produk
+      </a>
+      <a href="{{ route('admin.rentals.index') }}" class="nav-item active">
+        <i class="ti ti-file-text"></i> Daftar Transaksi
       </a>
     </nav>
     <div class="sidebar-bottom">
@@ -181,7 +181,7 @@
     <div class="top-bar">
       <div class="search-wrap">
         <i class="ti ti-search"></i>
-        <input type="text" id="searchInput" placeholder="Cari transaksi berdasarkan nama"
+        <input type="text" id="searchInput" placeholder="Cari transaksi berdasarkan nama user"
                onkeyup="filterRentals()">
       </div>
       <div class="sort-wrap">
@@ -197,8 +197,8 @@
     <div class="filter-bar">
       <span class="filter-label">Status:</span>
       <button class="filter-btn active" onclick="setFilter('all', this)">Semua</button>
-      <button class="filter-btn" onclick="setFilter('pending', this)">Belum dibayar</button>
-      <button class="filter-btn" onclick="setFilter('ongoing', this)">Sedang disewa</button>
+      <button class="filter-btn" onclick="setFilter('pending', this)">Pending</button>
+      <button class="filter-btn" onclick="setFilter('ongoing', this)">Berlangsung</button>
       <button class="filter-btn" onclick="setFilter('completed', this)">Selesai</button>
       <button class="filter-btn" onclick="setFilter('cancelled', this)">Dibatalkan</button>
     </div>
@@ -234,9 +234,6 @@
                 </span>
               @endif
             </div>
-            <div class="rental-product-sub">
-              Jumlah unit: {{ $firstItem ? $firstItem->jumlah : '-' }}
-            </div>
             <div class="rental-product-date">
               Tanggal sewa: {{ \Carbon\Carbon::parse($rental->tanggal_sewa)->format('d/m/y') }}
               – {{ \Carbon\Carbon::parse($rental->tanggal_kembali)->format('d/m/y') }}
@@ -260,52 +257,19 @@
             <div class="rental-col-label">Status</div>
             @php
               $statusMap = [
-                'pending'   => ['label' => 'Menunggu Konfirmasi Pembayaran', 'class' => 'pending'],
+                'pending'   => ['label' => 'Pending',                        'class' => 'pending'],
                 'ongoing'   => ['label' => 'Sedang Disewa',                  'class' => 'ongoing'],
-                'completed' => ['label' => 'Selesai',                        'class' => 'completed'],
-                'cancelled' => ['label' => 'Dibatalkan',                     'class' => 'cancelled'],
+                'completed' => ['label' => 'Selesai',                        'class' => 'completed']
               ];
               $s = $statusMap[$rental->status] ?? ['label' => ucfirst($rental->status), 'class' => 'pending'];
             @endphp
             <span class="status-badge {{ $s['class'] }}">{{ $s['label'] }}</span>
           </div>
 
-          <!-- Tombol Aksi -->
-          <div class="rental-actions">
-            {{-- Konfirmasi Pembayaran hanya muncul jika belum verified --}}
-            @if (isset($rental->payment) && $rental->payment->status_pembayaran != 'verified')
-              <form action="{{ route('admin.payments.verify', $rental->payment->id) }}"
-                    method="POST" style="margin:0;">
-                @csrf
-                @method('PUT')
-                <button type="submit" class="btn-confirm" style="width:100%;">
-                  Konfirmasi Pembayaran
-                </button>
-              </form>
-            @endif
-
             <a href="{{ route('admin.rentals.show', $rental->id) }}" class="btn-detail">
               Detail
             </a>
-
-            {{-- Batalkan hanya untuk status pending/ongoing --}}
-            @if (in_array($rental->status, ['pending', 'ongoing']))
-              <button class="btn-cancel"
-                onclick="if(confirm('Yakin ingin membatalkan transaksi ini?'))
-                  document.getElementById('cancel-form-{{ $rental->id }}').submit()">
-                Batalkan
-              </button>
-              <form id="cancel-form-{{ $rental->id }}"
-                    action="{{ route('admin.rentals.update-status', $rental->id) }}"
-                    method="POST" style="display:none;">
-                @csrf
-                @method('PUT')
-                <input type="hidden" name="status" value="cancelled">
-              </form>
-            @endif
           </div>
-
-        </div>
 
       @empty
         <div class="empty-state">
