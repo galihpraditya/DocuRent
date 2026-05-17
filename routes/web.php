@@ -13,7 +13,8 @@ use App\Http\Controllers\PaymentController;
 
 Route::get('/', [UserPageController::class, 'home'])
     ->name('home');
-Route::get('/admin', [AdminPageController::class, 'dashboard']);
+Route::get('/admin', [AdminPageController::class, 'dashboard'])
+    ->name('dashboard');
 
 // Auth Route
 Route::get('/login', [AuthController::class, 'showLogin'])

@@ -74,14 +74,14 @@
                 <li class="nav-item">
                     <a href="{{ route('rentals.filter', 'ongoing') }}"
                        class="nav-link {{ request()->segment(3) == 'ongoing' ? 'active' : '' }}">
-                        Ongoing
+                        Berlangsung
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a href="{{ route('rentals.filter', 'completed') }}"
                        class="nav-link {{ request()->segment(3) == 'completed' ? 'active' : '' }}">
-                        Completed
+                        Selesai
                     </a>
                 </li>
 

@@ -8,20 +8,24 @@ use App\Models\Rental;
 use App\Models\RentalItem;
 
 class AdminPageController extends Controller
-{   
-    public function __construct() {
-        $this->middleware('isAdmin');
-    }
-
+{
     public function dashboard()
     {
-        $totalProducts = Product::count();
+        $totalProduk = Product::count();
+        $totalPelangganAktif = Rental::where('status', 'ongoing')->distinct('user_id')->count('user_id');
 
-        $activeRentals = Rental::where('status', 'ongoing')->count();
+        $rentalsPaymentPending = Rental::whereHas('payment', function ($query) {
+            $query->where(
+                'status_pembayaran',
+                'waiting for verification'
+        );
+
+    })->latest()->get();
 
         return view('admin-pages.dashboard', compact(
-            'totalProducts',
-            'activeRentals'
+            'totalProduk', 
+            'totalPelangganAktif',
+            'rentalsPaymentPending'
         ));
     }
 }

@@ -23,9 +23,19 @@
         </form>
 
         <!-- Menu Kanan -->
-        <div class="d-flex align-items-center gap-1">
+        <div class="d-flex align-items-center gap-3">
 
             @auth
+
+                <a 
+                    href="https://wa.me/0895630582664"
+                    target="_blank"
+                    class="d-flex align-items-center justify-content-center bg-light rounded-circle text-dark text-decoration-none hover-bg"
+                    style="width: 40px; height: 40px;"
+                    title="Chat WhatsApp"
+                >
+                    <i class="bi bi-whatsapp fs-5"></i>
+                </a>
 
                 <a href="{{ route('cart.index') }}" class="d-flex align-items-center justify-content-center bg-light rounded-circle text-dark text-decoration-none hover-bg" style="width: 40px; height: 40px;" title="Keranjang">
                     <i class="bi bi-cart-fill fs-5"></i>
