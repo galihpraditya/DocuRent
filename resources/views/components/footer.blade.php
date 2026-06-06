@@ -31,7 +31,7 @@
         </div>
         <hr class="border-light" style="opacity: 0.2;">
         <div class="text-center small text-light" style="opacity: 0.6;">
-            &copy; 2026. All Rights Reserved. Design by Kelompok 5
+            &copy; 2026. All Rights Reserved.
         </div>
     </div>
 </footer>
