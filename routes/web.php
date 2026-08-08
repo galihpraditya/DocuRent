@@ -13,14 +13,6 @@ use App\Http\Controllers\PaymentController;
 
 Route::get('/', [UserPageController::class, 'home'])
     ->name('home');
-
-Route::get('/debug-log', function () {
-    $logFile = storage_path('logs/laravel.log');
-    if (file_exists($logFile)) {
-        return response('<pre>' . htmlspecialchars(file_get_contents($logFile)) . '</pre>');
-    }
-    return 'No log file found.';
-});
 Route::get('/admin', [AdminPageController::class, 'dashboard'])
     ->name('dashboard');
 
