@@ -7,14 +7,11 @@
     <div class="absolute inset-0 bg-zinc-900">
         <!-- Add a subtle gradient overlay -->
         <div class="absolute inset-0 bg-gradient-to-r from-zinc-900/90 via-zinc-900/50 to-transparent z-10"></div>
-        <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=2000&auto=format&fit=crop" alt="Hero background" class="w-full h-full object-cover opacity-60">
+        <img src="{{ asset('images/background.jpg') }}" alt="Hero background" class="w-full h-full object-cover opacity-60">
     </div>
     
     <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div class="max-w-2xl">
-            <span class="inline-block py-1 px-3 rounded-full bg-rose-500/10 text-rose-400 font-semibold text-sm mb-6 border border-rose-500/20 backdrop-blur-sm">
-                #1 Penyedia Alat Dokumentasi
-            </span>
             <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6 tracking-tight">
                 Abadikan Momen <br>
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-orange-300">Tanpa Batas</span>
