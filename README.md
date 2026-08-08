@@ -1,62 +1,69 @@
-# DocuRent - Peralatan Kamera & Dokumentasi Rental
+# DocuRent - Camera & Documentation Equipment Rental
 
-DocuRent adalah sebuah platform berbasis web yang memungkinkan pengguna untuk menyewa berbagai macam peralatan fotografi dan videografi profesional, seperti kamera, lensa, lighting, drone, dan aksesoris lainnya. Dibangun dengan framework **Laravel 12** dan styling modern menggunakan **Tailwind CSS v4**.
+🔗 **Live Demo:** [https://docurent.onrender.com](https://docurent.onrender.com)
 
-## Fitur Utama
+> **About This Project**  
+> This project was originally developed as a group final project for a Web Programming course during my 4th semester. I later revisited the project to reorganize and improve parts of the codebase, while using it as an additional repository and a personal learning project.
 
-- **Katalog Produk & Filter:** Jelajahi berbagai kategori produk dan urutkan berdasarkan kebutuhan Anda.
-- **Sistem Keranjang & Checkout:** Hitung durasi penyewaan dengan otomatis, periksa ketersediaan stok, dan lakukan pemesanan secara efisien.
-- **Autentikasi Pengguna:** Sistem registrasi dan login yang aman untuk melacak riwayat penyewaan.
-- **Verifikasi Pembayaran & Status Pemesanan:** Unggah bukti pembayaran dan pantau status persetujuan dari sisi admin.
-- **Frontend Premium:** Desain antarmuka (UI) dan UX yang bersih, mewah, dan sepenuhnya mobile-responsive.
+DocuRent is a web-based platform that allows users to rent a wide variety of professional photography and videography equipment, such as cameras, lenses, lighting, drones, and other accessories. It is built with the **Laravel 12** framework and styled modernly using **Tailwind CSS v4**.
 
-## Stack Teknologi
+## Key Features
+
+- **Product Catalog & Filters:** Browse various product categories and sort them based on your documentation equipment needs.
+- **Cart & Checkout System:** Automatically calculate rental durations, check real-time stock availability, and place orders efficiently.
+- **Premium Admin Panel:** Manage products, verify payments (Approve/Reject), and monitor incoming orders through a clean and functional dashboard. Features automated stock restoration if an order is rejected.
+- **User Authentication:** Secure registration and login system to track users' rental histories.
+- **Payment Verification & Order Status:** A dedicated feature for users to upload transfer receipts and monitor their approval or rejection status from the admin.
+- **Luxurious Frontend:** A clean, fully mobile-responsive UI/UX design applying modern concepts (*glassmorphism*, micro-animations).
+
+## Tech Stack
 
 - **Backend:** Laravel 12.x (PHP 8.2+)
 - **Frontend:** Tailwind CSS v4.x (via Vite), Blade Templating Engine
-- **Database:** SQLite (default), kompatibel dengan MySQL/PostgreSQL
+- **Database:** SQLite (for local development) and **PostgreSQL** (for production/deployment).
+- **Infrastructure:** Docker (Nginx + PHP-FPM Alpine)
 
-## Prasyarat Instalasi
+## Prerequisites
 
-Pastikan Anda telah menginstal beberapa alat berikut:
-- PHP 8.2 atau lebih tinggi
+Make sure you have the following tools installed:
+- PHP 8.2 or higher
 - Composer
-- Node.js & npm (untuk meng-compile aset frontend)
+- Node.js & npm (for compiling frontend assets)
 
-## Panduan Instalasi Lokal
+## Local Installation Guide
 
-1. **Clone repository ini:**
+1. **Clone this repository:**
    ```bash
    git clone <URL_REPO>
    cd DocuRent
    ```
 
-2. **Instal dependensi PHP:**
+2. **Install PHP dependencies:**
    ```bash
    composer install
    ```
 
-3. **Instal dependensi Node:**
+3. **Install Node dependencies:**
    ```bash
    npm install
    ```
 
-4. **Konfigurasi Environment:**
+4. **Environment Configuration:**
    ```bash
    cp .env.example .env
    ```
-   Atur koneksi database di file `.env` (secara default akan menggunakan SQLite jika dikonfigurasi).
+   Set up your database connection in the `.env` file. By default, this application uses SQLite for local development.
 
 5. **Generate App Key:**
    ```bash
    php artisan key:generate
    ```
 
-6. **Migrasi Database & Seeding (Opsional):**
+6. **Database Migration & Seeding (Optional):**
    ```bash
    php artisan migrate --seed
    ```
-   *Catatan: Anda dapat membuat file database sqlite baru (contoh: `database/database.sqlite`) sebelum menjalankan perintah migrasi jika menggunakan SQLite.*
+   *Note: If you are using SQLite, make sure to create an empty `database/database.sqlite` file before running the migration command.*
 
 7. **Compile Frontend Assets:**
    ```bash
@@ -68,26 +75,28 @@ Pastikan Anda telah menginstal beberapa alat berikut:
    php artisan storage:link
    ```
 
-9. **Jalankan Aplikasi:**
+9. **Run the Application:**
    ```bash
    php artisan serve
    ```
-   Akses aplikasi di `http://127.0.0.1:8000`.
+   Access the application at `http://127.0.0.1:8000`.
 
-## Deployment (Docker)
+## Deployment (Production via Docker)
 
-Repositori ini juga menyertakan `Dockerfile` untuk deployment instan di berbagai platform Cloud (seperti Railway, Render, Fly.io, dsb) atau di Virtual Private Server (VPS) menggunakan Docker.
+This repository includes a custom `Dockerfile` infrastructure and a startup script designed specifically for easy deployment on PaaS platforms like **Render**, Fly.io, or Railway.
 
-1. Bangun docker image:
+The Docker image comes pre-configured with the `pdo_pgsql` extension for Supabase/PostgreSQL and an automated database seeder (which automatically injects data when the server is spun up for the first time).
+
+1. **Build the Docker image:**
    ```bash
    docker build -t docurent-app .
    ```
-2. Jalankan container:
+2. **Run the container (optional, for local testing):**
    ```bash
    docker run -d -p 8080:80 docurent-app
    ```
-   Aplikasi Anda dapat diakses pada port 8080.
+   *(The application will run and be exposed on port 8080, served by Nginx and PHP-FPM inside the container).*
 
-## Lisensi
+## License
 
-Proyek ini bersifat open-source dan tersedia di bawah [MIT license](https://opensource.org/licenses/MIT).
+This project is open-source and available under the [MIT license](https://opensource.org/licenses/MIT).
