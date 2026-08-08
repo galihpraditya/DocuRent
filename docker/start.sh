@@ -7,6 +7,9 @@ php artisan optimize
 # Jalankan migrasi database
 php artisan migrate --force
 
+# Masukkan data awal jika database masih kosong
+php artisan db:seed --force
+
 # Buat link storage (diabaikan jika sudah ada)
 php artisan storage:link
 

@@ -28,15 +28,17 @@ class ProductSeeder extends Seeder
         ];
 
         foreach ($products as $product) {
-            DB::table('products')->insert([
-                'nama_produk' => $product['nama_produk'],
-                'deskripsi' => $product['deskripsi'],
-                'harga_sewa' => $product['harga_sewa'],
-                'stok' => $product['stok'],
-                'gambar' => $product['gambar'],
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+            DB::table('products')->updateOrInsert(
+                ['nama_produk' => $product['nama_produk']],
+                [
+                    'deskripsi' => $product['deskripsi'],
+                    'harga_sewa' => $product['harga_sewa'],
+                    'stok' => $product['stok'],
+                    'gambar' => $product['gambar'],
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]
+            );
         }
     }
 }

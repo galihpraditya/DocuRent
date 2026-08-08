@@ -14,7 +14,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-
+        if (DB::table('users')->count() > 0) {
+            return;
+        }
 
         DB::table('users')->insert([
             [
