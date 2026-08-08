@@ -1,214 +1,218 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Manajemen Produk – DocuRent</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.30.0/dist/tabler-icons.min.css">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg: #f2f2f0; --sidebar-bg: #fff;
-      --text-primary: #1a1a1a; --text-secondary: #6b6b6b; --text-muted: #a0a0a0;
-      --border: rgba(0,0,0,0.08); --active-bg: #f0f0ee;
-      --btn-dark: #1a1a1a; --btn-dark-text: #fff;
-      --radius-sm: 6px; --radius-md: 10px; --radius-lg: 14px; --radius-pill: 999px;
-      --font: 'Segoe UI', system-ui, sans-serif;
-    }
-    body { font-family: var(--font); background: var(--bg); color: var(--text-primary); display: flex; height: 100vh; overflow: hidden; }
-
-    /* ── SIDEBAR ── */
-    .sidebar { width: 220px; min-width: 220px; background: var(--sidebar-bg); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 20px 0; }
-    .logo { display: flex; align-items: center; gap: 10px; padding: 0 20px 28px; }
-    .logo-icon { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border); background: #f5f5f3; display: flex; align-items: center; justify-content: center; }
-    .logo-icon i { font-size: 18px; color: var(--text-primary); }
-    .logo-text { font-size: 15px; font-weight: 600; }
-    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 16px; margin: 2px 10px; border-radius: var(--radius-md); color: var(--text-secondary); font-size: 14px; text-decoration: none; transition: background 0.15s, color 0.15s; }
-    .nav-item i { font-size: 19px; }
-    .nav-item:hover { background: var(--active-bg); color: var(--text-primary); }
-    .nav-item.active { background: var(--active-bg); color: var(--text-primary); font-weight: 600; }
-    .sidebar-bottom { margin-top: auto; padding: 16px 20px; border-top: 1px solid var(--border); }
-    .admin-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
-    .admin-avatar { width: 32px; height: 32px; border-radius: 50%; background: #f0f0ee; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; }
-    .admin-avatar i { font-size: 16px; color: var(--text-secondary); }
-    .admin-name { font-size: 14px; font-weight: 500; }
-    .btn-logout { width: 100%; padding: 10px; background: var(--btn-dark); color: var(--btn-dark-text); border: none; border-radius: var(--radius-pill); font-size: 13px; font-weight: 600; cursor: pointer; }
-    .btn-logout:hover { opacity: 0.85; }
-
-    /* ── CONTENT ── */
-    .content { flex: 1; overflow-y: auto; padding: 28px 32px; }
-
-    /* Search + Tambah sejajar */
-    .top-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
-    .search-wrap { flex: 1; display: flex; align-items: center; gap: 10px; background: #fff; border: 1px solid var(--border); border-radius: var(--radius-pill); padding: 9px 18px; }
-    .search-wrap i { font-size: 17px; color: var(--text-muted); }
-    .search-wrap input { border: none; outline: none; background: transparent; font-size: 14px; color: var(--text-primary); flex: 1; }
-    .search-wrap input::placeholder { color: var(--text-muted); }
-    .btn-tambah { display: flex; align-items: center; gap: 6px; background: var(--btn-dark); color: var(--btn-dark-text); text-decoration: none; padding: 10px 20px; border-radius: var(--radius-pill); font-size: 13px; font-weight: 600; white-space: nowrap; transition: opacity 0.15s; }
-    .btn-tambah:hover { opacity: 0.82; }
-
-    /* ── PRODUCT GRID ── */
-    .product-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
-
-    /* Card: gambar bisa diklik ke detail, tombol aksi di bawah */
-    .product-card { background: #fff; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border); display: flex; flex-direction: column; transition: box-shadow 0.15s, transform 0.15s; }
-    .product-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.10); transform: translateY(-2px); }
-
-    /* Area klik menuju detail */
-    .product-link { display: block; text-decoration: none; color: inherit; }
-    .product-thumb { width: 100%; aspect-ratio: 1/1; overflow: hidden; background: #e8e8e6; display: flex; align-items: center; justify-content: center; }
-    .product-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.2s; }
-    .product-link:hover .product-thumb img { transform: scale(1.04); }
-    .product-thumb i { font-size: 36px; color: #bbb; }
-    .product-info { padding: 10px 10px 4px; }
-    .product-name { font-size: 13px; font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .product-sub { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
-    .product-hint { font-size: 10px; color: var(--text-muted); margin-top: 3px; }
-
-    /* Tombol Edit & Hapus di bawah, TIDAK ikut klik ke detail */
-    .product-actions { display: flex; gap: 6px; padding: 8px 10px 12px; }
-    .btn-edit { flex: 1; display: flex; align-items: center; justify-content: center; gap: 4px; background: var(--btn-dark); color: #fff; text-decoration: none; padding: 7px 0; border-radius: var(--radius-sm); font-size: 12px; font-weight: 500; transition: opacity 0.15s; }
-    .btn-edit:hover { opacity: 0.8; }
-    .btn-edit i { font-size: 13px; }
-    .btn-hapus { flex: 1; display: flex; align-items: center; justify-content: center; gap: 4px; background: #d63031; color: #fff; border: none; padding: 7px 0; border-radius: var(--radius-sm); font-size: 12px; font-weight: 500; cursor: pointer; width: 100%; transition: background 0.15s; }
-    .btn-hapus:hover { background: #b52828; }
-    .btn-hapus i { font-size: 13px; }
-
-    /* Empty state */
-    .empty-state { grid-column: 1 / -1; text-align: center; padding: 60px 0; color: var(--text-muted); }
-    .empty-state i { font-size: 48px; display: block; margin-bottom: 12px; }
-    .empty-state a { color: var(--text-primary); font-weight: 600; }
-
-    /* ── LOGOUT MODAL ── */
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 999; align-items: center; justify-content: center; }
-    .modal-overlay.show { display: flex; }
-    .modal-box { background: #5a5a5a; border-radius: 18px; padding: 32px 28px 24px; width: 340px; text-align: center; animation: popIn 0.18s ease; }
-    @keyframes popIn { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-    .modal-box p { color: #fff; font-size: 16px; font-weight: 600; margin-bottom: 28px; line-height: 1.5; }
-    .modal-actions { display: flex; gap: 14px; }
-    .btn-modal-no { flex: 1; padding: 12px; background: #d0d0d0; color: #1a1a1a; border: none; border-radius: var(--radius-pill); font-size: 15px; font-weight: 700; cursor: pointer; }
-    .btn-modal-no:hover { background: #bbb; }
-    .btn-modal-yes { flex: 1; padding: 12px; background: #d63031; color: #fff; border: none; border-radius: var(--radius-pill); font-size: 15px; font-weight: 700; cursor: pointer; }
-    .btn-modal-yes:hover { background: #b52828; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Produk – DocuRent</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        body { font-family: 'Outfit', sans-serif; }
+    </style>
 </head>
-<body>
+<body class="bg-zinc-50 text-zinc-900 h-screen overflow-hidden flex selection:bg-rose-500 selection:text-white">
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="logo">
-      <div class="logo-icon"><i class="ti ti-camera"></i></div>
-      <span class="logo-text">DocuRent</span>
-    </div>
-    <nav>
-      <a href="{{ route('dashboard') }}" class="nav-item">
-        <i class="ti ti-layout-dashboard"></i> Dashboard
-      </a>
-      <a href="{{ route('admin.products.index') }}" class="nav-item active">
-        <i class="ti ti-package"></i> Manajemen Produk
-      </a>
-      <a href="{{ route('admin.rentals.index') }}" class="nav-item">
-        <i class="ti ti-file-text"></i> Daftar Transaksi
-      </a>
-    </nav>
-    <div class="sidebar-bottom">
-      <div class="admin-row">
-        <div class="admin-avatar"><i class="ti ti-user"></i></div>
-        <span class="admin-name">Admin</span>
-      </div>
-      <button class="btn-logout" onclick="openLogout()">Log Out</button>
-    </div>
-  </aside>
-
-  <!-- CONTENT -->
-  <div class="content">
-
-    <!-- Search + Tambah sejajar -->
-    <div class="top-bar">
-      <div class="search-wrap">
-        <i class="ti ti-search"></i>
-        <input type="text" id="searchInput" placeholder="Cari alat berdasarkan nama"
-               onkeyup="filterProducts()">
-      </div>
-      <a href="{{ route('admin.products.create') }}" class="btn-tambah">
-        <i class="ti ti-plus"></i> Tambah Produk
-      </a>
-    </div>
-
-    <!-- Grid produk -->
-    <div class="product-grid" id="productGrid">
-      @forelse ($products as $product)
-        <div class="product-card" data-name="{{ strtolower($product->nama_produk) }}">
-
-          {{-- Klik gambar/nama → ke halaman detail --}}
-          <a href="{{ route('admin.products.show', $product->id) }}" class="product-link">
-            <div class="product-thumb">
-              @if ($product->gambar)
-                <img src="{{ asset('storage/' . $product->gambar) }}"
-                     alt="{{ $product->nama_produk }}">
-              @else
-                <i class="ti ti-camera"></i>
-              @endif
+    <!-- SIDEBAR -->
+    <aside class="w-64 bg-white border-r border-zinc-200 flex flex-col justify-between h-full shrink-0 shadow-sm z-20">
+        <div>
+            <!-- LOGO -->
+            <div class="h-20 flex items-center px-8 border-b border-zinc-100">
+                <div class="w-10 h-10 rounded-xl bg-zinc-900 text-white flex items-center justify-center mr-3 shadow-md">
+                    <i class="ti ti-camera text-xl"></i>
+                </div>
+                <span class="text-xl font-bold tracking-tight">DocuRent<span class="text-rose-500">.</span></span>
             </div>
-            <div class="product-info">
-              <div class="product-name">{{ $product->nama_produk }}</div>
-              <div class="product-sub">Rp{{ number_format($product->harga_sewa) }}/hari &bull; Stok: {{ $product->stok }}</div>
-              <div class="product-hint">Klik untuk lihat detail</div>
+            
+            <!-- NAV -->
+            <nav class="p-4 space-y-1.5 mt-4">
+                <p class="px-4 text-xs font-bold text-zinc-400 tracking-widest uppercase mb-3">Menu Utama</p>
+                
+                <a href="{{ route('dashboard') }}" class="flex items-center px-4 py-3 text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 rounded-xl font-semibold transition-all group">
+                    <i class="ti ti-layout-dashboard text-lg mr-3 text-zinc-400 group-hover:text-zinc-900 transition-colors"></i> 
+                    Dashboard
+                </a>
+                
+                <a href="{{ route('admin.products.index') }}" class="flex items-center px-4 py-3 bg-zinc-900 text-white rounded-xl font-semibold shadow-md transition-all group">
+                    <i class="ti ti-package text-lg mr-3"></i> 
+                    Manajemen Produk
+                </a>
+                
+                <a href="{{ route('admin.rentals.index') }}" class="flex items-center px-4 py-3 text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 rounded-xl font-semibold transition-all group">
+                    <i class="ti ti-file-text text-lg mr-3 text-zinc-400 group-hover:text-zinc-900 transition-colors"></i> 
+                    Daftar Transaksi
+                </a>
+            </nav>
+        </div>
+
+        <!-- SIDEBAR BOTTOM -->
+        <div class="p-4 border-t border-zinc-100 bg-zinc-50/50">
+            <div class="flex items-center p-3 bg-white border border-zinc-200 rounded-xl mb-3 shadow-sm">
+                <div class="w-10 h-10 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mr-3">
+                    <i class="ti ti-user font-bold"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-bold text-zinc-900">Administrator</p>
+                    <p class="text-xs text-zinc-500">admin@docurent.id</p>
+                </div>
             </div>
-          </a>
-
-          {{-- Tombol Edit & Hapus — tidak ikut link ke detail --}}
-          <div class="product-actions">
-            <a href="{{ route('admin.products.edit', $product->id) }}" class="btn-edit">
-              <i class="ti ti-pencil"></i> Edit
-            </a>
-            <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST"
-                  onsubmit="return confirm('Yakin ingin menghapus produk ini?')" style="flex:1; display:flex;">
-              @csrf
-              @method('DELETE')
-              <button type="submit" class="btn-hapus" style="flex:1;">
-                <i class="ti ti-trash"></i> Hapus
-              </button>
-            </form>
-          </div>
-
+            <button onclick="openLogout()" class="w-full flex items-center justify-center px-4 py-2.5 border border-zinc-200 text-zinc-600 hover:text-rose-600 hover:bg-rose-50 hover:border-rose-100 rounded-xl font-semibold transition-all">
+                <i class="ti ti-logout text-lg mr-2"></i> Log Out
+            </button>
         </div>
-      @empty
-        <div class="empty-state">
-          <i class="ti ti-package"></i>
-          <p>Belum ada produk. <a href="{{ route('admin.products.create') }}">Tambah sekarang</a></p>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 h-full overflow-y-auto bg-zinc-50/50 relative">
+        <!-- TOPBAR -->
+        <header class="h-20 bg-white/80 backdrop-blur-md border-b border-zinc-200 flex items-center justify-between px-8 sticky top-0 z-10">
+            <div>
+                <h1 class="text-2xl font-bold text-zinc-900 tracking-tight">Manajemen Produk</h1>
+                <p class="text-sm text-zinc-500 font-medium">Kelola inventaris peralatan rental Anda.</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="{{ route('admin.products.create') }}" class="px-6 py-2.5 bg-rose-500 text-white rounded-full font-bold shadow-lg shadow-rose-500/30 hover:bg-rose-600 transition-all flex items-center">
+                    <i class="ti ti-plus mr-2"></i> Tambah Alat Baru
+                </a>
+            </div>
+        </header>
+
+        <div class="p-8 max-w-7xl mx-auto space-y-6">
+            
+            <!-- SEARCH BAR -->
+            <div class="bg-white p-4 rounded-3xl border border-zinc-200 shadow-sm flex items-center gap-4">
+                <div class="flex-1 relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <i class="ti ti-search text-zinc-400 text-lg"></i>
+                    </div>
+                    <input type="text" id="searchInput" onkeyup="filterProducts()" class="w-full pl-12 pr-4 py-3 bg-zinc-50 border border-zinc-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-transparent transition-all text-sm font-medium" placeholder="Cari berdasarkan nama peralatan...">
+                </div>
+            </div>
+
+            <!-- PRODUCT GRID -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6" id="productGrid">
+                @forelse ($products as $product)
+                    <div class="product-card group bg-white rounded-3xl border border-zinc-200 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col h-full" data-name="{{ strtolower($product->nama_produk) }}">
+                        
+                        <a href="{{ route('admin.products.show', $product->id) }}" class="flex-grow block relative overflow-hidden">
+                            <div class="w-full aspect-square bg-zinc-100 flex items-center justify-center">
+                                @if ($product->gambar)
+                                    <img src="{{ asset('storage/' . $product->gambar) }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                @else
+                                    <i class="ti ti-camera text-4xl text-zinc-300"></i>
+                                @endif
+                            </div>
+                            <div class="absolute top-3 right-3">
+                                @if($product->stok > 0)
+                                    <span class="px-3 py-1 bg-white/90 backdrop-blur text-green-700 text-xs font-bold rounded-full border border-green-200 shadow-sm">
+                                        Sisa: {{ $product->stok }}
+                                    </span>
+                                @else
+                                    <span class="px-3 py-1 bg-white/90 backdrop-blur text-rose-700 text-xs font-bold rounded-full border border-rose-200 shadow-sm">
+                                        Habis
+                                    </span>
+                                @endif
+                            </div>
+                            
+                            <div class="p-5">
+                                <h3 class="font-bold text-zinc-900 text-base leading-tight mb-1 line-clamp-2">{{ $product->nama_produk }}</h3>
+                                <p class="text-rose-500 font-bold text-sm">Rp {{ number_format($product->harga_sewa, 0, ',', '.') }} <span class="text-zinc-400 font-normal">/ hari</span></p>
+                            </div>
+                        </a>
+
+                        <!-- ACTIONS -->
+                        <div class="p-4 pt-0 mt-auto flex gap-2">
+                            <a href="{{ route('admin.products.edit', $product->id) }}" class="flex-1 py-2 bg-zinc-100 hover:bg-zinc-200 text-zinc-700 rounded-xl text-xs font-bold flex items-center justify-center transition-colors">
+                                <i class="ti ti-edit mr-1"></i> Edit
+                            </a>
+                            <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" class="flex-1 m-0" onsubmit="return confirm('Apakah Anda yakin ingin menghapus produk ini? Semua data terkait mungkin akan terpengaruh.')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="w-full py-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-xl text-xs font-bold flex items-center justify-center transition-colors">
+                                    <i class="ti ti-trash mr-1"></i> Hapus
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                @empty
+                    <div class="col-span-full bg-white rounded-3xl border border-zinc-200 border-dashed p-16 flex flex-col items-center justify-center text-center shadow-sm">
+                        <div class="w-20 h-20 bg-zinc-50 rounded-full flex items-center justify-center mb-6">
+                            <i class="ti ti-box text-3xl text-zinc-400"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-zinc-900 mb-2">Inventaris Kosong</h3>
+                        <p class="text-zinc-500 mb-6">Belum ada produk yang ditambahkan ke sistem.</p>
+                        <a href="{{ route('admin.products.create') }}" class="px-6 py-2.5 bg-zinc-900 text-white rounded-full font-bold shadow-md hover:bg-zinc-800 transition-colors">
+                            <i class="ti ti-plus mr-1"></i> Tambah Produk Pertama
+                        </a>
+                    </div>
+                @endforelse
+            </div>
         </div>
-      @endforelse
+    </main>
+
+    <!-- LOGOUT MODAL -->
+    <div id="logoutModal" class="fixed inset-0 bg-zinc-900/40 backdrop-blur-sm z-50 hidden items-center justify-center transition-opacity">
+        <div class="bg-white rounded-3xl p-8 max-w-sm w-full mx-4 shadow-2xl transform scale-95 transition-transform" id="logoutModalBox">
+            <div class="w-16 h-16 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-4 text-rose-500">
+                <i class="ti ti-logout text-3xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-center text-zinc-900 mb-2">Akhiri Sesi?</h3>
+            <p class="text-center text-zinc-500 mb-8 text-sm">Anda akan keluar dari akun Administrator. Anda harus login kembali untuk masuk.</p>
+            <div class="flex gap-3">
+                <button onclick="closeLogout()" class="flex-1 py-3 px-4 bg-white border-2 border-zinc-200 text-zinc-700 rounded-xl font-bold hover:bg-zinc-50 transition-colors">
+                    Batal
+                </button>
+                <form action="{{ route('logout') }}" method="POST" class="flex-1">
+                    @csrf
+                    <button type="submit" class="w-full py-3 px-4 bg-rose-500 text-white rounded-xl font-bold hover:bg-rose-600 shadow-lg shadow-rose-500/30 transition-all">
+                        Ya, Keluar
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
 
-  </div>
+    <script>
+        const modal = document.getElementById('logoutModal');
+        const modalBox = document.getElementById('logoutModalBox');
 
-  <!-- LOGOUT MODAL -->
-  <div class="modal-overlay" id="logoutModal">
-    <div class="modal-box">
-      <p>Apakah Anda ingin keluar dari sesi ini?</p>
-      <div class="modal-actions">
-        <button class="btn-modal-no" onclick="closeLogout()">Tidak</button>
-        <form action="{{ route('logout') }}" method="POST" style="flex:1;">
-          @csrf
-          <button type="submit" class="btn-modal-yes" style="width:100%;">Ya</button>
-        </form>
-      </div>
-    </div>
-  </div>
+        function openLogout() { 
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                modalBox.classList.remove('scale-95');
+                modalBox.classList.add('scale-100');
+            }, 10);
+        }
 
-  <script>
-    function openLogout() { document.getElementById('logoutModal').classList.add('show'); }
-    function closeLogout() { document.getElementById('logoutModal').classList.remove('show'); }
-    document.getElementById('logoutModal').addEventListener('click', function(e) {
-      if (e.target === this) closeLogout();
-    });
-    function filterProducts() {
-      const q = document.getElementById('searchInput').value.toLowerCase();
-      document.querySelectorAll('#productGrid .product-card').forEach(card => {
-        card.style.display = card.dataset.name.includes(q) ? '' : 'none';
-      });
-    }
-  </script>
+        function closeLogout() { 
+            modalBox.classList.remove('scale-100');
+            modalBox.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 200);
+        }
+
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) closeLogout();
+        });
+
+        function filterProducts() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            document.querySelectorAll('#productGrid .product-card').forEach(card => {
+                if (card.dataset.name.includes(q)) {
+                    card.classList.remove('hidden');
+                    card.classList.add('flex');
+                } else {
+                    card.classList.add('hidden');
+                    card.classList.remove('flex');
+                }
+            });
+        }
+    </script>
 </body>
 </html>

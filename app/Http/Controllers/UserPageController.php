@@ -4,14 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Illuminate\Support\Facades\Cache;
 
 class UserPageController extends Controller
 {
     public function home()
     {
-        $recommendations = Product::inRandomOrder()->take(4)->get();
+        $recommendations = Cache::remember('recommendations', 600, function () {
+            return Product::inRandomOrder()->take(4)->get();
+        });
 
-        $catalogs = Product::all();
+        $catalogs = Cache::remember('catalogs', 600, function () {
+            return Product::all();
+        });
 
         return view('home.home-page', compact(
             'recommendations',
@@ -33,6 +38,11 @@ class UserPageController extends Controller
             'recommendations',
             'catalogs'
         ));
+    }
+
+    public function profile()
+    {
+        return view('profile.index');
     }
 
     public function filterProducts(Request $request)

@@ -1,270 +1,236 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard – DocuRent</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.30.0/dist/tabler-icons.min.css">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg: #f2f2f0; --sidebar-bg: #fff; --stat-bg: #2b2b2b;
-      --text-primary: #1a1a1a; --text-secondary: #6b6b6b; --text-muted: #a0a0a0;
-      --border: rgba(0,0,0,0.08); --active-bg: #f0f0ee;
-      --btn-dark: #1a1a1a; --btn-dark-text: #fff;
-      --radius-md: 10px; --radius-lg: 14px; --radius-pill: 999px;
-      --font: 'Segoe UI', system-ui, sans-serif;
-    }
-    body { font-family: var(--font); background: var(--bg); color: var(--text-primary); display: flex; height: 100vh; overflow: hidden; }
-
-    /* SIDEBAR */
-    .sidebar { width: 220px; min-width: 220px; background: var(--sidebar-bg); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 20px 0; }
-    .logo { display: flex; align-items: center; gap: 10px; padding: 0 20px 28px; }
-    .logo-icon { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border); background: #f5f5f3; display: flex; align-items: center; justify-content: center; }
-    .logo-icon i { font-size: 18px; color: var(--text-primary); }
-    .logo-text { font-size: 15px; font-weight: 600; }
-    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 16px; margin: 2px 10px; border-radius: var(--radius-md); color: var(--text-secondary); font-size: 14px; text-decoration: none; transition: background 0.15s, color 0.15s; }
-    .nav-item i { font-size: 19px; }
-    .nav-item:hover { background: var(--active-bg); color: var(--text-primary); }
-    .nav-item.active { background: var(--active-bg); color: var(--text-primary); font-weight: 600; }
-    .sidebar-bottom { margin-top: auto; padding: 16px 20px; border-top: 1px solid var(--border); }
-    .admin-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
-    .admin-avatar { width: 32px; height: 32px; border-radius: 50%; background: #f0f0ee; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; }
-    .admin-avatar i { font-size: 16px; color: var(--text-secondary); }
-    .admin-name { font-size: 14px; font-weight: 500; }
-    .btn-logout { width: 100%; padding: 10px; background: var(--btn-dark); color: var(--btn-dark-text); border: none; border-radius: var(--radius-pill); font-size: 13px; font-weight: 600; cursor: pointer; }
-    .btn-logout:hover { opacity: 0.85; }
-
-    /* MAIN */
-    .main { flex: 1; overflow-y: auto; padding: 36px 40px; }
-    .page-title { font-size: 28px; font-weight: 700; margin-bottom: 28px; }
-
-    /* STAT CARDS */
-    .stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 32px; }
-    .stat-card { background: var(--stat-bg); border-radius: var(--radius-lg); padding: 28px 28px; color: #fff; }
-    .stat-card .label { font-size: 13px; opacity: 0.8; margin-bottom: 14px; }
-    .stat-card .value { font-size: 36px; font-weight: 700; }
-
-    /* TRANSAKSI */
-    .section-label {
-        font-size: 1rem;
-        font-weight: 700;
-        margin-bottom: 16px;
-        color: #111;
-    }
-
-    .tx-box {
-        background: #ffffff;
-        border-radius: 18px;
-        border: 1px solid #e5e5e5;
-        overflow: hidden;
-    }
-
-    .tx-header,
-    .tx-row {
-        display: grid;
-        grid-template-columns: 80px 1.5fr 1fr 1.2fr 120px;
-        align-items: center;
-        gap: 16px;
-        padding: 18px 24px;
-        text-align: center;
-    }
-
-    .tx-header {
-        background-color: #2b2b2b;
-        color: white;
-        font-size: 0.85rem;
-        font-weight: 600;
-        text-align: center;
-    }
-
-    .tx-row {
-        border-bottom: 1px solid #ededed;
-        font-size: 0.9rem;
-    }
-
-    .tx-row:last-child {
-        border-bottom: none;
-    }
-
-    .tx-user {
-        font-weight: 600;
-        color: #111;
-    }
-
-    .tx-total {
-        font-weight: 700;
-        color: #111;
-    }
-
-    .tx-status {
-        display: inline-block;
-        background: #fff3cd;
-        color: #856404;
-        padding: 6px 12px;
-        border-radius: 999px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        text-transform: capitalize;
-    }
-
-    .btn-detail {
-        background: #111;
-        color: white;
-        border: none;
-        border-radius: 999px;
-        padding: 8px 18px;
-        font-size: 0.8rem;
-        font-weight: 600;
-        text-decoration: none;
-        transition: 0.2s;
-    }
-
-    .btn-detail:hover {
-        opacity: 0.85;
-        color: white;
-    }
-
-    /* LOGOUT MODAL */
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 999; align-items: center; justify-content: center; }
-    .modal-overlay.show { display: flex; }
-    .modal-box { background: #5a5a5a; border-radius: 18px; padding: 32px 28px 24px; width: 340px; text-align: center; animation: popIn 0.18s ease; }
-    @keyframes popIn { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-    .modal-box p { color: #fff; font-size: 16px; font-weight: 600; margin-bottom: 28px; line-height: 1.5; }
-    .modal-actions { display: flex; gap: 14px; }
-    .btn-modal-no { flex: 1; padding: 12px; background: #d0d0d0; color: #1a1a1a; border: none; border-radius: var(--radius-pill); font-size: 15px; font-weight: 700; cursor: pointer; }
-    .btn-modal-no:hover { background: #bbb; }
-    .btn-modal-yes { flex: 1; padding: 12px; background: #d63031; color: #fff; border: none; border-radius: var(--radius-pill); font-size: 15px; font-weight: 700; cursor: pointer; }
-    .btn-modal-yes:hover { background: #b52828; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin – DocuRent</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        body { font-family: 'Outfit', sans-serif; }
+    </style>
 </head>
-<body>
+<body class="bg-zinc-50 text-zinc-900 h-screen overflow-hidden flex selection:bg-rose-500 selection:text-white">
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="logo">
-      <div class="logo-icon"><i class="ti ti-camera"></i></div>
-      <span class="logo-text">DocuRent</span>
-    </div>
-    <nav>
-      <a href="{{ route('dashboard') }}" class="nav-item active">
-        <i class="ti ti-layout-dashboard"></i> Dashboard
-      </a>
-      <a href="{{ route('admin.products.index') }}" class="nav-item">
-        <i class="ti ti-package"></i> Manajemen Produk
-      </a>
-      <a href="{{ route('admin.rentals.index') }}" class="nav-item">
-        <i class="ti ti-file-text"></i> Daftar Transaksi
-      </a>
-    </nav>
-    <div class="sidebar-bottom">
-      <div class="admin-row">
-        <div class="admin-avatar"><i class="ti ti-user"></i></div>
-        <span class="admin-name">Admin</span>
-      </div>
-      <button class="btn-logout" onclick="openLogout()">Log Out</button>
-    </div>
-  </aside>
-
-  <!-- MAIN -->
-  <main class="main">
-    <div class="page-title">Dashboard</div>
-
-    <div class="stat-grid">
-      <div class="stat-card">
-        <div class="label">Total Produk</div>
-        <div class="value">{{ $totalProduk ?? 0 }}</div>
-      </div>
-      <div class="stat-card">
-        <div class="label">Jumlah Pelanggan Aktif</div>
-        <div class="value">{{ $totalPelanggan ?? 0 }}</div>
-      </div>
-    </div>
-
-    <div class="section-label">
-        Transaksi yang Perlu Dikonfirmasi
-    </div>
-
-    <div class="tx-box">
-
-        <!-- Header -->
-        <div class="tx-header">
-
-            <div>ID</div>
-
-            <div>Penyewa</div>
-
-            <div>Total</div>
-
-            <div>Status Pembayaran</div>
-
-            <div class="text-center">Aksi</div>
-
+    <!-- SIDEBAR -->
+    <aside class="w-64 bg-white border-r border-zinc-200 flex flex-col justify-between h-full shrink-0 shadow-sm z-20">
+        <div>
+            <!-- LOGO -->
+            <div class="h-20 flex items-center px-8 border-b border-zinc-100">
+                <div class="w-10 h-10 rounded-xl bg-zinc-900 text-white flex items-center justify-center mr-3 shadow-md">
+                    <i class="ti ti-camera text-xl"></i>
+                </div>
+                <span class="text-xl font-bold tracking-tight">DocuRent<span class="text-rose-500">.</span></span>
+            </div>
+            
+            <!-- NAV -->
+            <nav class="p-4 space-y-1.5 mt-4">
+                <p class="px-4 text-xs font-bold text-zinc-400 tracking-widest uppercase mb-3">Menu Utama</p>
+                
+                <a href="{{ route('dashboard') }}" class="flex items-center px-4 py-3 bg-zinc-900 text-white rounded-xl font-semibold shadow-md transition-all group">
+                    <i class="ti ti-layout-dashboard text-lg mr-3"></i> 
+                    Dashboard
+                </a>
+                
+                <a href="{{ route('admin.products.index') }}" class="flex items-center px-4 py-3 text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 rounded-xl font-semibold transition-all group">
+                    <i class="ti ti-package text-lg mr-3 text-zinc-400 group-hover:text-zinc-900 transition-colors"></i> 
+                    Manajemen Produk
+                </a>
+                
+                <a href="{{ route('admin.rentals.index') }}" class="flex items-center px-4 py-3 text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 rounded-xl font-semibold transition-all group">
+                    <i class="ti ti-file-text text-lg mr-3 text-zinc-400 group-hover:text-zinc-900 transition-colors"></i> 
+                    Daftar Transaksi
+                </a>
+            </nav>
         </div>
 
-        <!-- Data -->
-        @foreach($rentalsPaymentPending as $rental)
-
-            <div class="tx-row">
-
+        <!-- SIDEBAR BOTTOM -->
+        <div class="p-4 border-t border-zinc-100 bg-zinc-50/50">
+            <div class="flex items-center p-3 bg-white border border-zinc-200 rounded-xl mb-3 shadow-sm">
+                <div class="w-10 h-10 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mr-3">
+                    <i class="ti ti-user font-bold"></i>
+                </div>
                 <div>
-                    #{{ $rental->id }}
+                    <p class="text-sm font-bold text-zinc-900">Administrator</p>
+                    <p class="text-xs text-zinc-500">admin@docurent.id</p>
+                </div>
+            </div>
+            <button onclick="openLogout()" class="w-full flex items-center justify-center px-4 py-2.5 border border-zinc-200 text-zinc-600 hover:text-rose-600 hover:bg-rose-50 hover:border-rose-100 rounded-xl font-semibold transition-all">
+                <i class="ti ti-logout text-lg mr-2"></i> Log Out
+            </button>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 h-full overflow-y-auto bg-zinc-50/50 relative">
+        <!-- TOPBAR -->
+        <header class="h-20 bg-white/80 backdrop-blur-md border-b border-zinc-200 flex items-center justify-between px-8 sticky top-0 z-10">
+            <div>
+                <h1 class="text-2xl font-bold text-zinc-900 tracking-tight">Ikhtisar Dashboard</h1>
+                <p class="text-sm text-zinc-500 font-medium">Selamat datang kembali, pantau kinerja penyewaan hari ini.</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <button class="w-10 h-10 rounded-full border border-zinc-200 bg-white text-zinc-500 hover:text-zinc-900 flex items-center justify-center hover:bg-zinc-50 transition-colors relative">
+                    <i class="ti ti-bell"></i>
+                    <span class="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full animate-ping"></span>
+                    <span class="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full border-2 border-white"></span>
+                </button>
+            </div>
+        </header>
+
+        <div class="p-8 max-w-7xl mx-auto space-y-8">
+            <!-- STATS -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Stat 1 -->
+                <div class="bg-zinc-900 rounded-3xl p-8 relative overflow-hidden text-white shadow-xl">
+                    <div class="absolute -right-8 -top-8 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl"></div>
+                    <div class="flex items-start justify-between relative z-10">
+                        <div>
+                            <p class="text-zinc-400 text-sm font-semibold uppercase tracking-widest mb-1">Total Produk</p>
+                            <h3 class="text-5xl font-bold tracking-tight">{{ $totalProduk ?? 0 }}</h3>
+                        </div>
+                        <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center backdrop-blur-sm border border-white/10">
+                            <i class="ti ti-package text-2xl"></i>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="tx-user">
-                    {{ $rental->user->nama }}
+                <!-- Stat 2 -->
+                <div class="bg-white rounded-3xl p-8 border border-zinc-200 shadow-sm relative overflow-hidden">
+                    <div class="absolute -right-8 -top-8 w-32 h-32 bg-rose-50 opacity-50 rounded-full blur-2xl"></div>
+                    <div class="flex items-start justify-between relative z-10">
+                        <div>
+                            <p class="text-zinc-500 text-sm font-semibold uppercase tracking-widest mb-1">Pelanggan Aktif</p>
+                            <h3 class="text-5xl font-bold tracking-tight text-zinc-900">{{ $totalPelanggan ?? 0 }}</h3>
+                        </div>
+                        <div class="w-12 h-12 bg-rose-50 text-rose-500 rounded-2xl flex items-center justify-center border border-rose-100">
+                            <i class="ti ti-users text-2xl"></i>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="tx-total">
-                    Rp {{ number_format($rental->total_harga) }}
-                </div>
-
-                <div>
-
-                    <span class="tx-status">
-                        {{ $rental->payment->status_pembayaran ?? '-' }}
-                    </span>
-
-                </div>
-
-                <div class="text-center">
-
-                    <a 
-                        href="{{ route('admin.rentals.show', $rental->id) }}"
-                        class="btn-detail"
-                    >
-                        Detail
-                    </a>
-
-                </div>
-
             </div>
 
-        @endforeach
+            <!-- TRANSAKSI TABLE -->
+            <div class="bg-white border border-zinc-200 rounded-3xl overflow-hidden shadow-sm">
+                <div class="p-6 border-b border-zinc-100 flex items-center justify-between bg-zinc-50/50">
+                    <div>
+                        <h2 class="text-lg font-bold text-zinc-900">Transaksi Perlu Konfirmasi</h2>
+                        <p class="text-sm text-zinc-500 mt-1">Segera verifikasi pembayaran yang berstatus pending.</p>
+                    </div>
+                    <a href="{{ route('admin.rentals.index') }}" class="text-sm font-semibold text-rose-500 hover:text-rose-600 transition-colors flex items-center">
+                        Lihat Semua <i class="ti ti-arrow-right ml-1"></i>
+                    </a>
+                </div>
 
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-white border-b border-zinc-100 text-xs text-zinc-400 font-bold uppercase tracking-widest">
+                                <th class="px-6 py-4 font-semibold">ID Pesanan</th>
+                                <th class="px-6 py-4 font-semibold">Penyewa</th>
+                                <th class="px-6 py-4 font-semibold text-right">Total Belanja</th>
+                                <th class="px-6 py-4 font-semibold text-center">Status</th>
+                                <th class="px-6 py-4 font-semibold text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm divide-y divide-zinc-50">
+                            @forelse($rentalsPaymentPending as $rental)
+                                <tr class="hover:bg-zinc-50 transition-colors group">
+                                    <td class="px-6 py-4 font-bold text-zinc-900 whitespace-nowrap">
+                                        #{{ $rental->id }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-full bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-500 font-bold text-xs">
+                                                {{ substr($rental->user->nama, 0, 1) }}
+                                            </div>
+                                            <span class="font-semibold text-zinc-900">{{ $rental->user->nama }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 font-bold text-rose-500 text-right whitespace-nowrap">
+                                        Rp {{ number_format($rental->total_harga, 0, ',', '.') }}
+                                    </td>
+                                    <td class="px-6 py-4 text-center whitespace-nowrap">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-amber-600 mr-1.5 animate-pulse"></span>
+                                            {{ ucwords($rental->payment->status_pembayaran ?? '-') }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-center whitespace-nowrap">
+                                        <a href="{{ route('admin.rentals.show', $rental->id) }}" class="inline-flex items-center px-4 py-2 bg-zinc-900 text-white rounded-lg text-xs font-bold hover:bg-zinc-800 transition-colors shadow-sm transform group-hover:-translate-y-0.5">
+                                            Detail
+                                        </a>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="px-6 py-12 text-center text-zinc-500">
+                                        <div class="w-16 h-16 bg-zinc-50 rounded-full flex items-center justify-center mx-auto mb-3">
+                                            <i class="ti ti-inbox text-2xl text-zinc-400"></i>
+                                        </div>
+                                        <p class="font-semibold text-zinc-900">Tidak ada transaksi tertunda</p>
+                                        <p class="text-sm">Semua pembayaran telah dikonfirmasi.</p>
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- LOGOUT MODAL -->
+    <div id="logoutModal" class="fixed inset-0 bg-zinc-900/40 backdrop-blur-sm z-50 hidden items-center justify-center transition-opacity">
+        <div class="bg-white rounded-3xl p-8 max-w-sm w-full mx-4 shadow-2xl transform scale-95 transition-transform" id="logoutModalBox">
+            <div class="w-16 h-16 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-4 text-rose-500">
+                <i class="ti ti-logout text-3xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-center text-zinc-900 mb-2">Akhiri Sesi?</h3>
+            <p class="text-center text-zinc-500 mb-8 text-sm">Anda akan keluar dari akun Administrator. Anda harus login kembali untuk masuk.</p>
+            <div class="flex gap-3">
+                <button onclick="closeLogout()" class="flex-1 py-3 px-4 bg-white border-2 border-zinc-200 text-zinc-700 rounded-xl font-bold hover:bg-zinc-50 transition-colors">
+                    Batal
+                </button>
+                <form action="{{ route('logout') }}" method="POST" class="flex-1">
+                    @csrf
+                    <button type="submit" class="w-full py-3 px-4 bg-rose-500 text-white rounded-xl font-bold hover:bg-rose-600 shadow-lg shadow-rose-500/30 transition-all">
+                        Ya, Keluar
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
-  </main>
 
-  <!-- LOGOUT MODAL -->
-  <div class="modal-overlay" id="logoutModal">
-    <div class="modal-box">
-      <p>Apakah Anda ingin keluar dari sesi ini?</p>
-      <div class="modal-actions">
-        <button class="btn-modal-no" onclick="closeLogout()">Tidak</button>
-        <form action="{{ route('logout') }}" method="POST" style="flex:1;">
-          @csrf
-          <button type="submit" class="btn-modal-yes" style="width:100%;">Ya</button>
-        </form>
-      </div>
-    </div>
-  </div>
+    <script>
+        const modal = document.getElementById('logoutModal');
+        const modalBox = document.getElementById('logoutModalBox');
 
-  <script>
-    function openLogout() { document.getElementById('logoutModal').classList.add('show'); }
-    function closeLogout() { document.getElementById('logoutModal').classList.remove('show'); }
-    document.getElementById('logoutModal').addEventListener('click', function(e) {
-      if (e.target === this) closeLogout();
-    });
-  </script>
+        function openLogout() { 
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                modalBox.classList.remove('scale-95');
+                modalBox.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeLogout() { 
+            modalBox.classList.remove('scale-100');
+            modalBox.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 200);
+        }
+
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) closeLogout();
+        });
+    </script>
 </body>
 </html>

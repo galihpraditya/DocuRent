@@ -1,285 +1,191 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Detail Produk – DocuRent</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.30.0/dist/tabler-icons.min.css">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg: #f2f2f0; --sidebar-bg: #fff; --card-bg: #fff;
-      --text-primary: #1a1a1a; --text-secondary: #6b6b6b; --text-muted: #a0a0a0;
-      --border: rgba(0,0,0,0.08); --active-bg: #f0f0ee; --input-bg: #e8e8e6;
-      --btn-dark: #1a1a1a; --btn-dark-text: #fff;
-      --radius-md: 10px; --radius-lg: 14px; --radius-xl: 20px; --radius-pill: 999px;
-      --font: 'Segoe UI', system-ui, sans-serif;
-    }
-    body { font-family: var(--font); background: var(--bg); color: var(--text-primary); display: flex; height: 100vh; overflow: hidden; }
-
-    /* ── SIDEBAR ── */
-    .sidebar { width: 220px; min-width: 220px; background: var(--sidebar-bg); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 20px 0; }
-    .logo { display: flex; align-items: center; gap: 10px; padding: 0 20px 28px; }
-    .logo-icon { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border); background: #f5f5f3; display: flex; align-items: center; justify-content: center; }
-    .logo-icon i { font-size: 18px; color: var(--text-primary); }
-    .logo-text { font-size: 15px; font-weight: 600; }
-    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 16px; margin: 2px 10px; border-radius: var(--radius-md); color: var(--text-secondary); font-size: 14px; text-decoration: none; transition: background 0.15s, color 0.15s; }
-    .nav-item i { font-size: 19px; }
-    .nav-item:hover { background: var(--active-bg); color: var(--text-primary); }
-    .nav-item.active { background: var(--active-bg); color: var(--text-primary); font-weight: 600; }
-    .sidebar-bottom { margin-top: auto; padding: 16px 20px; border-top: 1px solid var(--border); }
-    .admin-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
-    .admin-avatar { width: 32px; height: 32px; border-radius: 50%; background: #f0f0ee; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; }
-    .admin-avatar i { font-size: 16px; color: var(--text-secondary); }
-    .admin-name { font-size: 14px; font-weight: 500; }
-    .btn-logout { width: 100%; padding: 10px; background: var(--btn-dark); color: var(--btn-dark-text); border: none; border-radius: var(--radius-pill); font-size: 13px; font-weight: 600; cursor: pointer; }
-    .btn-logout:hover { opacity: 0.85; }
-
-    /* ── CONTENT ── */
-    .content { flex: 1; overflow-y: auto; padding: 36px 48px; }
-
-    /* Tombol kembali */
-    .btn-back { display: inline-flex; align-items: center; gap: 6px; color: var(--text-secondary); font-size: 13px; text-decoration: none; margin-bottom: 24px; transition: color 0.15s; }
-    .btn-back:hover { color: var(--text-primary); }
-    .btn-back i { font-size: 17px; }
-
-    /* Card detail */
-    .detail-card {
-      background: var(--card-bg);
-      border-radius: var(--radius-xl);
-      border: 1px solid var(--border);
-      overflow: hidden;
-      max-width: 860px;
-      margin: 0 auto;
-      display: flex;
-      gap: 0;
-    }
-
-    /* Sisi kiri: gambar */
-    .detail-img-side {
-      width: 340px;
-      min-width: 340px;
-      background: #e8e8e6;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-    .detail-img-side img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .detail-img-side i { font-size: 64px; color: #bbb; }
-
-    /* Sisi kanan: info */
-    .detail-info-side {
-      flex: 1;
-      padding: 36px 40px;
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-
-    .detail-title {
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: 6px;
-    }
-
-    /* Badge stok */
-    .stok-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      background: var(--input-bg);
-      border-radius: var(--radius-pill);
-      padding: 4px 12px;
-      font-size: 12px;
-      color: var(--text-secondary);
-      font-weight: 500;
-      margin-bottom: 20px;
-      width: fit-content;
-    }
-    .stok-badge i { font-size: 14px; }
-    .stok-badge.low { background: #fdecea; color: #d63031; }
-
-    /* Harga */
-    .harga-box {
-      background: #5a6375;
-      border-radius: var(--radius-lg);
-      padding: 16px 20px;
-      margin-bottom: 24px;
-      display: flex;
-      align-items: baseline;
-      gap: 6px;
-    }
-    .harga-label { font-size: 12px; color: rgba(255,255,255,0.7); }
-    .harga-value { font-size: 24px; font-weight: 700; color: #fff; }
-    .harga-unit { font-size: 13px; color: rgba(255,255,255,0.7); }
-
-    /* Divider */
-    .divider { height: 1px; background: var(--border); margin: 0 0 20px; }
-
-    /* Deskripsi */
-    .desc-label { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
-    .desc-text { font-size: 14px; color: var(--text-secondary); line-height: 1.7; flex: 1; }
-    .desc-empty { font-size: 14px; color: var(--text-muted); font-style: italic; }
-
-    /* Tombol aksi bawah */
-    .detail-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 28px;
-    }
-    .btn-edit-detail {
-      flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
-      background: var(--btn-dark); color: #fff; text-decoration: none;
-      padding: 11px 0; border-radius: var(--radius-pill);
-      font-size: 13px; font-weight: 600; transition: opacity 0.15s;
-    }
-    .btn-edit-detail:hover { opacity: 0.82; }
-    .btn-hapus-detail {
-      flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
-      background: #fff; color: #d63031;
-      border: 1.5px solid #d63031;
-      padding: 11px 0; border-radius: var(--radius-pill);
-      font-size: 13px; font-weight: 600; cursor: pointer; width: 100%;
-      transition: background 0.15s, color 0.15s;
-    }
-    .btn-hapus-detail:hover { background: #d63031; color: #fff; }
-
-    /* ── LOGOUT MODAL ── */
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 999; align-items: center; justify-content: center; }
-    .modal-overlay.show { display: flex; }
-    .modal-box { background: #5a5a5a; border-radius: 18px; padding: 32px 28px 24px; width: 340px; text-align: center; animation: popIn 0.18s ease; }
-    @keyframes popIn { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-    .modal-box p { color: #fff; font-size: 16px; font-weight: 600; margin-bottom: 28px; line-height: 1.5; }
-    .modal-actions { display: flex; gap: 14px; }
-    .btn-modal-no { flex: 1; padding: 12px; background: #d0d0d0; color: #1a1a1a; border: none; border-radius: var(--radius-pill); font-size: 15px; font-weight: 700; cursor: pointer; }
-    .btn-modal-no:hover { background: #bbb; }
-    .btn-modal-yes { flex: 1; padding: 12px; background: #d63031; color: #fff; border: none; border-radius: var(--radius-pill); font-size: 15px; font-weight: 700; cursor: pointer; }
-    .btn-modal-yes:hover { background: #b52828; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Produk – DocuRent</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        body { font-family: 'Outfit', sans-serif; }
+    </style>
 </head>
-<body>
+<body class="bg-zinc-50 text-zinc-900 h-screen overflow-hidden flex selection:bg-rose-500 selection:text-white">
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="logo">
-      <div class="logo-icon"><i class="ti ti-camera"></i></div>
-      <span class="logo-text">DocuRent</span>
-    </div>
-    <nav>
-      <a href="{{ route('dashboard') }}" class="nav-item">
-        <i class="ti ti-layout-dashboard"></i> Dashboard
-      </a>
-      <a href="{{ route('admin.rentals.index') }}" class="nav-item">
-        <i class="ti ti-file-text"></i> Daftar Transaksi
-      </a>
-      <a href="{{ route('admin.products.index') }}" class="nav-item active">
-        <i class="ti ti-package"></i> Manajemen Produk
-      </a>
-    </nav>
-    <div class="sidebar-bottom">
-      <div class="admin-row">
-        <div class="admin-avatar"><i class="ti ti-user"></i></div>
-        <span class="admin-name">Admin</span>
-      </div>
-      <button class="btn-logout" onclick="openLogout()">Log Out</button>
-    </div>
-  </aside>
-
-  <!-- CONTENT -->
-  <div class="content">
-
-    <!-- Tombol kembali -->
-    <a href="{{ route('admin.products.index') }}" class="btn-back">
-      <i class="ti ti-arrow-left"></i> Kembali ke Daftar Produk
-    </a>
-
-    <!-- Card detail produk -->
-    <div class="detail-card">
-
-      <!-- Gambar -->
-      <div class="detail-img-side">
-        @if ($product->gambar)
-          <img src="{{ asset('storage/' . $product->gambar) }}"
-               alt="{{ $product->nama_produk }}">
-        @else
-          <i class="ti ti-camera"></i>
-        @endif
-      </div>
-
-      <!-- Info -->
-      <div class="detail-info-side">
-
-        <div class="detail-title">{{ $product->nama_produk }}</div>
-
-        {{-- Badge stok --}}
-        <div class="stok-badge {{ $product->stok <= 2 ? 'low' : '' }}">
-          <i class="ti ti-stack-2"></i>
-          Stok tersedia: {{ $product->stok }} unit
+    <!-- SIDEBAR -->
+    <aside class="w-64 bg-white border-r border-zinc-200 flex flex-col justify-between h-full shrink-0 shadow-sm z-20">
+        <div>
+            <!-- LOGO -->
+            <div class="h-20 flex items-center px-8 border-b border-zinc-100">
+                <div class="w-10 h-10 rounded-xl bg-zinc-900 text-white flex items-center justify-center mr-3 shadow-md">
+                    <i class="ti ti-camera text-xl"></i>
+                </div>
+                <span class="text-xl font-bold tracking-tight">DocuRent<span class="text-rose-500">.</span></span>
+            </div>
+            
+            <!-- NAV -->
+            <nav class="p-4 space-y-1.5 mt-4">
+                <p class="px-4 text-xs font-bold text-zinc-400 tracking-widest uppercase mb-3">Menu Utama</p>
+                
+                <a href="{{ route('dashboard') }}" class="flex items-center px-4 py-3 text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 rounded-xl font-semibold transition-all group">
+                    <i class="ti ti-layout-dashboard text-lg mr-3 text-zinc-400 group-hover:text-zinc-900 transition-colors"></i> 
+                    Dashboard
+                </a>
+                
+                <a href="{{ route('admin.products.index') }}" class="flex items-center px-4 py-3 bg-zinc-900 text-white rounded-xl font-semibold shadow-md transition-all group">
+                    <i class="ti ti-package text-lg mr-3"></i> 
+                    Manajemen Produk
+                </a>
+                
+                <a href="{{ route('admin.rentals.index') }}" class="flex items-center px-4 py-3 text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 rounded-xl font-semibold transition-all group">
+                    <i class="ti ti-file-text text-lg mr-3 text-zinc-400 group-hover:text-zinc-900 transition-colors"></i> 
+                    Daftar Transaksi
+                </a>
+            </nav>
         </div>
 
-        {{-- Harga --}}
-        <div class="harga-box">
-          <span class="harga-label">Harga Sewa</span>
-          <span class="harga-value">Rp{{ number_format($product->harga_sewa) }}</span>
-          <span class="harga-unit">/ hari</span>
-        </div>
-
-        <div class="divider"></div>
-
-        {{-- Deskripsi --}}
-        <div class="desc-label">Deskripsi</div>
-        @if ($product->deskripsi)
-          <p class="desc-text">{{ $product->deskripsi }}</p>
-        @else
-          <p class="desc-empty">Tidak ada deskripsi.</p>
-        @endif
-
-        {{-- Tombol Edit & Hapus --}}
-        <div class="detail-actions">
-          <a href="{{ route('admin.products.edit', $product->id) }}" class="btn-edit-detail">
-            <i class="ti ti-pencil"></i> Edit Produk
-          </a>
-          <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST"
-                style="flex:1; display:flex;"
-                onsubmit="return confirm('Yakin ingin menghapus produk ini?')">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn-hapus-detail" style="flex:1;">
-              <i class="ti ti-trash"></i> Hapus Produk
+        <!-- SIDEBAR BOTTOM -->
+        <div class="p-4 border-t border-zinc-100 bg-zinc-50/50">
+            <div class="flex items-center p-3 bg-white border border-zinc-200 rounded-xl mb-3 shadow-sm">
+                <div class="w-10 h-10 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mr-3">
+                    <i class="ti ti-user font-bold"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-bold text-zinc-900">Administrator</p>
+                    <p class="text-xs text-zinc-500">admin@docurent.id</p>
+                </div>
+            </div>
+            <button onclick="openLogout()" class="w-full flex items-center justify-center px-4 py-2.5 border border-zinc-200 text-zinc-600 hover:text-rose-600 hover:bg-rose-50 hover:border-rose-100 rounded-xl font-semibold transition-all">
+                <i class="ti ti-logout text-lg mr-2"></i> Log Out
             </button>
-          </form>
         </div>
+    </aside>
 
-      </div>
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 h-full overflow-y-auto bg-zinc-50/50 relative">
+        <div class="p-8 max-w-5xl mx-auto space-y-6">
+            
+            <!-- BACK BUTTON -->
+            <a href="{{ route('admin.products.index') }}" class="inline-flex items-center text-sm font-bold text-zinc-500 hover:text-zinc-900 transition-colors mb-4">
+                <i class="ti ti-arrow-left mr-2"></i> Kembali ke Daftar Produk
+            </a>
+
+            <!-- PRODUCT DETAIL CARD -->
+            <div class="bg-white rounded-3xl border border-zinc-200 overflow-hidden shadow-sm flex flex-col md:flex-row">
+                
+                <!-- IMAGE SIDE -->
+                <div class="w-full md:w-2/5 bg-zinc-100 relative group min-h-[300px] flex items-center justify-center">
+                    @if ($product->gambar)
+                        <img src="{{ asset('storage/' . $product->gambar) }}" class="absolute inset-0 w-full h-full object-cover">
+                    @else
+                        <i class="ti ti-camera text-6xl text-zinc-300"></i>
+                    @endif
+                </div>
+
+                <!-- INFO SIDE -->
+                <div class="w-full md:w-3/5 p-8 lg:p-10 flex flex-col">
+                    
+                    <h2 class="text-3xl font-bold text-zinc-900 leading-tight mb-2">{{ $product->nama_produk }}</h2>
+                    
+                    <div class="mb-6 flex flex-wrap gap-2">
+                        @if($product->stok > 0)
+                            <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold bg-green-100 text-green-700 border border-green-200">
+                                <i class="ti ti-box mr-1.5"></i> Stok Tersedia: {{ $product->stok }}
+                            </span>
+                        @else
+                            <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold bg-rose-100 text-rose-700 border border-rose-200">
+                                <i class="ti ti-alert-circle mr-1.5"></i> Stok Habis
+                            </span>
+                        @endif
+                    </div>
+
+                    <div class="bg-zinc-900 rounded-2xl p-6 mb-8 text-white relative overflow-hidden shadow-lg">
+                        <div class="absolute -right-8 -top-8 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl"></div>
+                        <p class="text-zinc-400 text-xs font-bold uppercase tracking-widest mb-1 relative z-10">Harga Sewa</p>
+                        <div class="flex items-end gap-2 relative z-10">
+                            <h3 class="text-3xl font-bold">Rp {{ number_format($product->harga_sewa, 0, ',', '.') }}</h3>
+                            <span class="text-zinc-400 font-medium mb-1">/ hari</span>
+                        </div>
+                    </div>
+
+                    <div class="mb-8 flex-grow">
+                        <h4 class="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-3">Deskripsi Produk</h4>
+                        @if ($product->deskripsi)
+                            <p class="text-zinc-600 leading-relaxed text-sm">{{ $product->deskripsi }}</p>
+                        @else
+                            <p class="text-zinc-400 italic text-sm">Tidak ada deskripsi yang ditambahkan untuk produk ini.</p>
+                        @endif
+                    </div>
+
+                    <div class="flex gap-4 mt-auto pt-6 border-t border-zinc-100">
+                        <a href="{{ route('admin.products.edit', $product->id) }}" class="flex-1 px-6 py-3.5 bg-zinc-900 text-white rounded-xl font-bold text-sm text-center shadow-md hover:bg-zinc-800 transition-colors flex items-center justify-center">
+                            <i class="ti ti-edit mr-2"></i> Edit Produk
+                        </a>
+                        <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" class="flex-1" onsubmit="return confirm('Apakah Anda yakin ingin menghapus produk ini secara permanen?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="w-full px-6 py-3.5 bg-white border-2 border-rose-100 text-rose-600 rounded-xl font-bold text-sm text-center hover:bg-rose-50 hover:border-rose-200 transition-colors flex items-center justify-center">
+                                <i class="ti ti-trash mr-2"></i> Hapus Produk
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- LOGOUT MODAL -->
+    <div id="logoutModal" class="fixed inset-0 bg-zinc-900/40 backdrop-blur-sm z-50 hidden items-center justify-center transition-opacity">
+        <div class="bg-white rounded-3xl p-8 max-w-sm w-full mx-4 shadow-2xl transform scale-95 transition-transform" id="logoutModalBox">
+            <div class="w-16 h-16 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-4 text-rose-500">
+                <i class="ti ti-logout text-3xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-center text-zinc-900 mb-2">Akhiri Sesi?</h3>
+            <p class="text-center text-zinc-500 mb-8 text-sm">Anda akan keluar dari akun Administrator. Anda harus login kembali untuk masuk.</p>
+            <div class="flex gap-3">
+                <button onclick="closeLogout()" class="flex-1 py-3 px-4 bg-white border-2 border-zinc-200 text-zinc-700 rounded-xl font-bold hover:bg-zinc-50 transition-colors">
+                    Batal
+                </button>
+                <form action="{{ route('logout') }}" method="POST" class="flex-1">
+                    @csrf
+                    <button type="submit" class="w-full py-3 px-4 bg-rose-500 text-white rounded-xl font-bold hover:bg-rose-600 shadow-lg shadow-rose-500/30 transition-all">
+                        Ya, Keluar
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- LOGOUT MODAL -->
-  <div class="modal-overlay" id="logoutModal">
-    <div class="modal-box">
-      <p>Apakah Anda ingin keluar dari sesi ini?</p>
-      <div class="modal-actions">
-        <button class="btn-modal-no" onclick="closeLogout()">Tidak</button>
-        <form action="{{ route('logout') }}" method="POST" style="flex:1;">
-          @csrf
-          <button type="submit" class="btn-modal-yes" style="width:100%;">Ya</button>
-        </form>
-      </div>
-    </div>
-  </div>
+    <script>
+        const modal = document.getElementById('logoutModal');
+        const modalBox = document.getElementById('logoutModalBox');
 
-  <script>
-    function openLogout() { document.getElementById('logoutModal').classList.add('show'); }
-    function closeLogout() { document.getElementById('logoutModal').classList.remove('show'); }
-    document.getElementById('logoutModal').addEventListener('click', function(e) {
-      if (e.target === this) closeLogout();
-    });
-  </script>
+        function openLogout() { 
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                modalBox.classList.remove('scale-95');
+                modalBox.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeLogout() { 
+            modalBox.classList.remove('scale-100');
+            modalBox.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 200);
+        }
+
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) closeLogout();
+        });
+    </script>
 </body>
 </html>

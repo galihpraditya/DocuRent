@@ -21,27 +21,22 @@ class CartController extends Controller
     {
         $request->validate([
             'tanggal_sewa' => 'required|date',
-            'tanggal_kembali' => 'required|date|after:tanggal_sewa'
+            'tanggal_kembali' => 'required|date|after_or_equal:tanggal_sewa'
         ]);
 
         $cart = Cart::with('cartItems.product')
             ->where('user_id', auth()->id())
             ->first();
 
+        if (!$cart || $cart->cartItems->isEmpty()) {
+            return redirect()->route('cart.index')->with('error', 'Keranjang kosong.');
+        }
+
         $hari = Carbon::parse($request->tanggal_sewa)
             ->diffInDays($request->tanggal_kembali);
+        $hari = max(1, $hari);
 
-        $totalHarga = 0;
-
-        foreach ($cart->cartItems as $item) {
-
-            $subtotal =
-                $item->product->harga_sewa *
-                $item->jumlah *
-                $hari;
-
-            $totalHarga += $subtotal;
-        }
+        $totalHarga = $cart->calculateTotal($hari);
 
         return view('cart.cart-page', [
             'cart' => $cart,
@@ -58,20 +53,15 @@ class CartController extends Controller
             ->where('user_id', auth()->id())
             ->first();
 
+        if (!$cart || $cart->cartItems->isEmpty()) {
+            return redirect()->route('cart.index')->with('error', 'Keranjang kosong.');
+        }
+
         $hari = Carbon::parse($request->tanggal_sewa)
             ->diffInDays($request->tanggal_kembali);
+        $hari = max(1, $hari);
 
-        $totalHarga = 0;
-
-        foreach ($cart->cartItems as $item) {
-
-            $subtotal =
-                $item->product->harga_sewa *
-                $item->jumlah *
-                $hari;
-
-            $totalHarga += $subtotal;
-        }
+        $totalHarga = $cart->calculateTotal($hari);
 
         return view('payments.checkout-page', [
             'cart' => $cart,

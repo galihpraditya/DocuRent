@@ -48,6 +48,12 @@ class PaymentController extends Controller
             'status_pembayaran' => 'paid'
         ]);
 
+        if ($payment->rental) {
+            $payment->rental->update([
+                'status' => 'ongoing'
+            ]);
+        }
+
         return back();
     }
 }

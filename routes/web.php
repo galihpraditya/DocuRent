@@ -84,6 +84,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/payments/{payment}/status', [PaymentController::class, 'status'])
         ->name('payments.status');
 
+    // profil user
+    Route::get('/profile', [UserPageController::class, 'profile'])
+        ->name('profile');
+
     // semua transaksi user
     Route::get('/rentals-list', [RentalController::class, 'rentalsList'])
         ->name('rentals.list');

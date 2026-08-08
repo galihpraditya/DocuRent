@@ -15,7 +15,7 @@ class RentalController extends Controller
     // ADMIN - halaman manajemen rental
     public function index()
     {
-        $rentals = Rental::with('user')
+        $rentals = Rental::with(['user', 'rentalItems.product'])
             ->latest()
             ->get();
 
@@ -27,7 +27,7 @@ class RentalController extends Controller
     {
         $request->validate([
             'tanggal_sewa' => 'required|date',
-            'tanggal_kembali' => 'required|date|after:tanggal_sewa',
+            'tanggal_kembali' => 'required|date|after_or_equal:tanggal_sewa',
             'metode_pembayaran' => 'required'
         ]);
 
@@ -36,23 +36,22 @@ class RentalController extends Controller
             ->first();
 
         if (!$cart || $cart->cartItems->isEmpty()) {
-            return redirect()->route('cart.index');
+            return redirect()->route('cart.index')->with('error', 'Keranjang kosong.');
+        }
+
+        // Cek stok sebelum proses
+        foreach ($cart->cartItems as $item) {
+            if ($item->jumlah > $item->product->stok) {
+                return redirect()->route('cart.index')
+                    ->with('error', "Stok untuk produk {$item->product->nama_produk} tidak mencukupi. Tersedia: {$item->product->stok}");
+            }
         }
 
         $hari = Carbon::parse($request->tanggal_sewa)
             ->diffInDays($request->tanggal_kembali);
+        $hari = max(1, $hari);
 
-        $totalHarga = 0;
-
-        foreach ($cart->cartItems as $item) {
-
-            $subtotal =
-                $item->product->harga_sewa *
-                $item->jumlah *
-                $hari;
-
-            $totalHarga += $subtotal;
-        }
+        $totalHarga = $cart->calculateTotal($hari);
 
         $rental = Rental::create([
             'user_id' => auth()->id(),
@@ -112,6 +111,16 @@ class RentalController extends Controller
             'status' => 'required'
         ]);
 
+        if ($request->status == 'cancelled' && $rental->status != 'cancelled') {
+            foreach ($rental->rentalItems as $item) {
+                $item->product->increment('stok', $item->jumlah);
+            }
+        } elseif ($rental->status == 'cancelled' && $request->status != 'cancelled') {
+            foreach ($rental->rentalItems as $item) {
+                $item->product->decrement('stok', $item->jumlah);
+            }
+        }
+
         $rental->update([
             'status' => $request->status
         ]);
@@ -142,7 +151,9 @@ class RentalController extends Controller
 
     public function hitungHari($tanggalSewa, $tanggalKembali)
     {
-        return Carbon::parse($tanggalSewa)
+        $hari = Carbon::parse($tanggalSewa)
             ->diffInDays(Carbon::parse($tanggalKembali));
+            
+        return max(1, $hari);
     }
 }

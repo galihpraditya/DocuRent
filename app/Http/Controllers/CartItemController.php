@@ -15,6 +15,12 @@ class CartItemController extends Controller
             'jumlah' => 'required|integer|min:1'
         ]);
 
+        $product = \App\Models\Product::findOrFail($request->product_id);
+        
+        if ($request->jumlah > $product->stok) {
+            return redirect()->back()->with('error', "Stok tidak mencukupi. Tersedia: {$product->stok}");
+        }
+
         $cart = Cart::firstOrCreate([
             'user_id' => auth()->id()
         ]);
@@ -24,7 +30,11 @@ class CartItemController extends Controller
             ->first();
         
         if ($cartItem) {
-            $cartItem->jumlah += $request->jumlah;
+            $newJumlah = $cartItem->jumlah + $request->jumlah;
+            if ($newJumlah > $product->stok) {
+                return redirect()->back()->with('error', "Total kuantitas di keranjang melebihi stok yang tersedia.");
+            }
+            $cartItem->jumlah = $newJumlah;
             $cartItem->save();
         } 
         else {
@@ -35,7 +45,7 @@ class CartItemController extends Controller
             ]);
         }
 
-        return redirect()->route('cart.index');
+        return redirect()->route('cart.index')->with('success', 'Produk ditambahkan ke keranjang.');
     }
 
     public function update(Request $request, CartItem $cartItem)
@@ -43,6 +53,10 @@ class CartItemController extends Controller
         $request->validate([
             'jumlah' => 'required|integer|min:1'
         ]);
+
+        if ($request->jumlah > $cartItem->product->stok) {
+            return redirect()->back()->with('error', "Kuantitas melebihi stok yang tersedia.");
+        }
 
         $cartItem->update([
             'jumlah' => $request->jumlah

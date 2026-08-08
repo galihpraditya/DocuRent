@@ -1,132 +1,103 @@
 @extends('layouts.app')
 
 @section('content')
-<style>
-    html {
-        scroll-behavior: smooth;
-    }
 
-    .hero-section {
-        background-image: url("{{ asset('images/hero.jpg') }}");
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        color: #fff;
-        padding: 50px 0;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .hero-section::before {
-        content: "";
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background-color: rgba(0, 0, 0, 0.65);
-        z-index: 1;
-    }
-
-    .hero-content {
-        position: relative;
-        z-index: 2; 
-    }
-
-    .nav-button-container {
-        display: flex;
-        justify-content: center;
-        gap: 15px;
-        margin: 30px 0;
-        flex-wrap: wrap;
-    }
-
-    .nav-button {
-        background-color: #ffffff;
-        border: 1px solid #ccc;
-        padding: 10px 25px;
-        border-radius: 30px;
-        color: #333;
-        font-weight: 600;
-        text-decoration: none;
-        transition: all 0.3s ease;
-    }
-
-    .nav-button:hover {
-        background-color: #1c2024;
-        color: #fff;
-        border-color: #1c2024;
-    }
-
-    .content-section {
-        margin-top: 20px;
-        padding-top: 20px;
-        margin-bottom: 50px;
-    }
-
-    .product-container {
-        display: flex;
-        gap: 20px;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .product-card {
-        width: 220px;
-        border: 1px solid #eaeaea;
-        border-radius: 8px;
-        padding: 12px;
-        text-align: left;
-        background: #fff;
-        transition: transform 0.2s;
-    }
-
-    .product-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-    }
-
-    .product-card img {
-        width: 100%;
-        height: 150px;
-        object-fit: cover;
-        background: #f4f4f4;
-        border-radius: 6px;
-        margin-bottom: 10px;
-    }
-</style>
-
-<section class="hero-section">
-    <div class="container py-md-5 hero-content">
-        <div class="row">
-            <div class="col-md-8">
-                <h1 class="fw-bold display-5 mb-4" style="line-height: 1.2;">SEWA KAMERA & ALAT DOKUMENTASI DENGAN CEPAT DAN MUDAH HANYA DI DOCURENT</h1>
-                <a href="#recommendation" class="btn btn-light rounded-pill px-5 py-2 fw-semibold">Mulai sewa</a>
+<!-- Hero Section -->
+<section class="relative h-[600px] flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0 bg-zinc-900">
+        <!-- Add a subtle gradient overlay -->
+        <div class="absolute inset-0 bg-gradient-to-r from-zinc-900/90 via-zinc-900/50 to-transparent z-10"></div>
+        <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=2000&auto=format&fit=crop" alt="Hero background" class="w-full h-full object-cover opacity-60">
+    </div>
+    
+    <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div class="max-w-2xl">
+            <span class="inline-block py-1 px-3 rounded-full bg-rose-500/10 text-rose-400 font-semibold text-sm mb-6 border border-rose-500/20 backdrop-blur-sm">
+                #1 Penyedia Alat Dokumentasi
+            </span>
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6 tracking-tight">
+                Abadikan Momen <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-orange-300">Tanpa Batas</span>
+            </h1>
+            <p class="text-lg text-zinc-300 mb-8 max-w-xl leading-relaxed">
+                Sewa perlengkapan kamera, drone, dan alat dokumentasi profesional dengan mudah, cepat, dan terpercaya hanya di DocuRent.
+            </p>
+            <div class="flex flex-wrap gap-4">
+                <a href="#catalog" class="px-8 py-3.5 rounded-full bg-white text-zinc-900 font-semibold hover:bg-zinc-100 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                    Mulai Sewa
+                </a>
+                <a href="#recommendation" class="px-8 py-3.5 rounded-full bg-zinc-800/50 text-white font-semibold hover:bg-zinc-800 border border-zinc-700/50 backdrop-blur-md transition-all">
+                    Lihat Rekomendasi
+                </a>
             </div>
         </div>
     </div>
 </section>
 
-<div class="container">
+<!-- Navigation Pills -->
+<div class="sticky top-20 z-40 bg-white/80 backdrop-blur-md border-b border-zinc-200 shadow-sm py-4">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-center gap-3 overflow-x-auto no-scrollbar">
+            <a href="#recommendation" class="whitespace-nowrap px-6 py-2 rounded-full bg-zinc-100 text-zinc-600 hover:bg-zinc-900 hover:text-white font-medium text-sm transition-colors">Rekomendasi</a>
+            <a href="#catalog" class="whitespace-nowrap px-6 py-2 rounded-full bg-zinc-100 text-zinc-600 hover:bg-zinc-900 hover:text-white font-medium text-sm transition-colors">Katalog</a>
+            <a href="#gallery" class="whitespace-nowrap px-6 py-2 rounded-full bg-zinc-100 text-zinc-600 hover:bg-zinc-900 hover:text-white font-medium text-sm transition-colors">Galeri</a>
+        </div>
+    </div>
+</div>
 
-    <div class="nav-button-container">
-        <a href="#recommendation" class="nav-button">Rekomendasi</a>
-        <a href="#catalog" class="nav-button">Katalog</a>
-        <a href="#gallery" class="nav-button">Galeri</a>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-24">
+
+    <!-- Recommendation Section -->
+    <div id="recommendation" class="scroll-mt-32">
+        <div class="flex items-end justify-between mb-8">
+            <div>
+                <h3 class="text-2xl font-bold text-zinc-900 tracking-tight">Rekomendasi Pilihan</h3>
+                <p class="text-zinc-500 mt-1">Gear terbaik yang sering disewa oleh profesional.</p>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            @foreach ($recommendations as $product)
+            <div class="group bg-white rounded-2xl border border-zinc-200 overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                <a href="{{ route('products.show', $product->id) }}" class="block relative aspect-[4/3] overflow-hidden bg-zinc-100">
+                    <img src="{{ asset('storage/' . $product->gambar) }}" alt="{{ $product->nama_produk }}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </a>
+                <div class="p-5">
+                    <h6 class="font-bold text-zinc-900 truncate mb-1" title="{{ $product->nama_produk }}">{{ $product->nama_produk }}</h6>
+                    <div class="flex items-center justify-between mt-4">
+                        <p class="text-rose-500 font-bold">
+                            Rp {{ number_format($product->harga_sewa, 0, ',', '.') }}<span class="text-xs font-normal text-zinc-500"> /hari</span>
+                        </p>
+                        <a href="{{ route('products.show', $product->id) }}" class="w-8 h-8 rounded-full bg-zinc-100 flex items-center justify-center text-zinc-600 group-hover:bg-zinc-900 group-hover:text-white transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
     </div>
 
-    <div id="recommendation" class="content-section">
-        @include('sections.recommendation')
-    </div>
-
-    <hr style="border-color: #ddd;">
-
-    <div id="catalog" class="content-section">
+    <!-- Catalog Section -->
+    <div id="catalog" class="scroll-mt-32">
         @include('sections.catalog')
     </div>
 
-    <hr style="border-color: #ddd;">
-
-    <div id="gallery" class="content-section">
+    <!-- Gallery Section -->
+    <div id="gallery" class="scroll-mt-32">
         @include('sections.gallery')
     </div>
 
 </div>
+
+<style>
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+</style>
 @endsection

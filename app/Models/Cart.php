@@ -19,4 +19,18 @@ class Cart extends Model
     protected $fillable = [
         'user_id'
     ];
+
+    public function calculateTotal($days)
+    {
+        $days = max(1, $days); // Minimal 1 day
+        $total = 0;
+
+        foreach ($this->cartItems as $item) {
+            if ($item->product) {
+                $total += $item->product->harga_sewa * $item->jumlah * $days;
+            }
+        }
+
+        return $total;
+    }
 }
