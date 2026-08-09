@@ -10,11 +10,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
     
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- HTMX for Instant Navigation -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <style>
         body { font-family: 'Outfit', sans-serif; }
     </style>
 </head>
-<body class="bg-zinc-50 text-zinc-900 h-screen overflow-hidden flex selection:bg-rose-500 selection:text-white">
+<body hx-boost="true" class="bg-zinc-50 text-zinc-900 h-screen overflow-hidden flex selection:bg-rose-500 selection:text-white">
 
     <!-- SIDEBAR -->
     <aside class="w-64 bg-white border-r border-zinc-200 flex flex-col justify-between h-full shrink-0 shadow-sm z-20">
