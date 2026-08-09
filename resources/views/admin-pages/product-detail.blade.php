@@ -5,7 +5,7 @@
 @section('header_subtitle', 'Informasi lengkap tentang peralatan rental.')
 
 @section('content')
-        <div class="max-w-5xl mx-auto space-y-6">">
+        <div class="max-w-5xl mx-auto space-y-6">
             
             <!-- BACK BUTTON -->
             <a href="{{ route('admin.products.index') }}" class="inline-flex items-center text-sm font-bold text-zinc-500 hover:text-zinc-900 transition-colors mb-4">

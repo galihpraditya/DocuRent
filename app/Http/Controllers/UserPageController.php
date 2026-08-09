@@ -8,31 +8,36 @@ use Illuminate\Support\Facades\Cache;
 
 class UserPageController extends Controller
 {
-    public function home()
+    public function home(Request $request)
     {
         $recommendations = Cache::remember('recommendations', 600, function () {
             return Product::inRandomOrder()->take(4)->get();
         });
 
-        $catalogs = Cache::remember('catalogs', 600, function () {
-            return Product::all();
-        });
+        $query = Product::query();
 
-        return view('home.home-page', compact(
-            'recommendations',
-            'catalogs'
-        ));
-    }
+        // Pencarian (Search)
+        if ($request->filled('search')) {
+            $query->whereRaw('LOWER(nama_produk) LIKE LOWER(?)', ['%' . $request->search . '%']);
+        }
 
-    public function searchProducts(Request $request)
-    {
-        $catalogs = Product::where(
-            'nama_produk',
-            'like',
-            '%' . $request->search . '%'
-        )->get();
+        // Filter Kategori (berdasarkan nama_produk karena tidak ada kolom kategori)
+        if ($request->filled('kategori')) {
+            $query->whereRaw('LOWER(nama_produk) LIKE LOWER(?)', ['%' . $request->kategori . '%']);
+        }
 
-        $recommendations = Product::inRandomOrder()->take(3)->get();
+        // Urutan
+        if ($request->filled('urutan')) {
+            if ($request->urutan == 'nama') {
+                $query->orderBy('nama_produk', 'asc');
+            } elseif ($request->urutan == 'termurah') {
+                $query->orderBy('harga_sewa', 'asc');
+            } elseif ($request->urutan == 'terbaru') {
+                $query->latest();
+            }
+        }
+
+        $catalogs = $query->get();
 
         return view('home.home-page', compact(
             'recommendations',
@@ -43,40 +48,5 @@ class UserPageController extends Controller
     public function profile()
     {
         return view('profile.index');
-    }
-
-    public function filterProducts(Request $request)
-    {
-        $query = Product::query();
-
-        if ($request->filled('kategori')) {
-
-            $query->where(
-                'nama_produk',
-                'like',
-                '%' . $request->kategori . '%'
-            );
-        }
-
-        if ($request->filled('urutan')) {
-
-            if ($request->urutan == 'nama') {
-
-                $query->orderBy('nama_produk', 'asc');
-
-            } elseif ($request->urutan == 'termurah') {
-
-                $query->orderBy('harga_sewa', 'asc');
-
-            } elseif ($request->urutan == 'terbaru') {
-
-                $query->latest();
-            }
-        }
-
-        $catalogs = $query->get();
-        $recommendations = Product::inRandomOrder()->take(3)->get();
-
-        return view('home.home-page', compact('recommendations', 'catalogs'));
     }
 }
