@@ -16,11 +16,42 @@
 
     <!-- HTMX for Instant Navigation -->
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    
+    <!-- NProgress for Loading Indicator -->
+    <link rel="stylesheet" href="https://unpkg.com/nprogress@0.2.0/nprogress.css">
+    <script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
+
     <style>
         body {
             font-family: 'Outfit', sans-serif;
         }
+        /* Custom NProgress Colors */
+        #nprogress .bar {
+            background: #f43f5e !important; /* Tailwind rose-500 */
+            height: 4px !important;
+        }
+        #nprogress .peg {
+            box-shadow: 0 0 10px #f43f5e, 0 0 5px #f43f5e !important;
+        }
+        #nprogress .spinner-icon {
+            border-top-color: #f43f5e !important;
+            border-left-color: #f43f5e !important;
+        }
     </style>
+    
+    <script>
+        // HTMX NProgress Integration
+        document.addEventListener('htmx:beforeRequest', function() {
+            NProgress.start();
+        });
+        document.addEventListener('htmx:afterRequest', function() {
+            NProgress.done();
+        });
+        document.addEventListener('htmx:beforeHistorySave', function() {
+            const np = document.getElementById('nprogress');
+            if (np) np.remove();
+        });
+    </script>
 </head>
 <body hx-boost="true" class="bg-zinc-50 text-zinc-900 antialiased selection:bg-rose-500 selection:text-white flex flex-col min-h-screen">
     

@@ -3,6 +3,12 @@
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     
+    <!-- Back Button -->
+    <a href="javascript:history.back()" class="inline-flex items-center text-sm font-bold text-zinc-500 hover:text-zinc-900 transition-colors mb-6">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+        Kembali
+    </a>
+
     <div class="mb-10">
         <h2 class="text-3xl font-bold text-zinc-900 tracking-tight">Ringkasan Pesanan</h2>
         <p class="text-zinc-500 mt-2">Periksa kembali detail pesanan Anda sebelum melanjutkan ke pembayaran.</p>

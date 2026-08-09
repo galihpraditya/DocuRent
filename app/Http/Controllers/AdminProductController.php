@@ -16,7 +16,7 @@ class AdminProductController extends Controller
 
     public function show(Product $product)
     {
-        return view('product.product-detail', compact('product'));
+        return view('admin-pages.product-detail', compact('product'));
     }
 
     public function create()

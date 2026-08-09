@@ -1,85 +1,11 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Transaksi – DocuRent</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
-    
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <!-- HTMX for Instant Navigation -->
-    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-    <style>
-        body { font-family: 'Outfit', sans-serif; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    </style>
-</head>
-<body hx-boost="true" class="bg-zinc-50 text-zinc-900 h-screen overflow-hidden flex selection:bg-rose-500 selection:text-white">
+@extends('layouts.admin')
 
-    <!-- SIDEBAR -->
-    <aside class="w-64 bg-white border-r border-zinc-200 flex flex-col justify-between h-full shrink-0 shadow-sm z-20">
-        <div>
-            <!-- LOGO -->
-            <div class="h-20 flex items-center px-8 border-b border-zinc-100">
-                <div class="w-10 h-10 rounded-xl bg-zinc-900 text-white flex items-center justify-center mr-3 shadow-md">
-                    <i class="ti ti-camera text-xl"></i>
-                </div>
-                <span class="text-xl font-bold tracking-tight">DocuRent<span class="text-rose-500">.</span></span>
-            </div>
-            
-            <!-- NAV -->
-            <nav class="p-4 space-y-1.5 mt-4">
-                <p class="px-4 text-xs font-bold text-zinc-400 tracking-widest uppercase mb-3">Menu Utama</p>
-                
-                <a href="{{ route('dashboard') }}" class="flex items-center px-4 py-3 text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 rounded-xl font-semibold transition-all group">
-                    <i class="ti ti-layout-dashboard text-lg mr-3 text-zinc-400 group-hover:text-zinc-900 transition-colors"></i> 
-                    Dashboard
-                </a>
-                
-                <a href="{{ route('admin.products.index') }}" class="flex items-center px-4 py-3 text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 rounded-xl font-semibold transition-all group">
-                    <i class="ti ti-package text-lg mr-3 text-zinc-400 group-hover:text-zinc-900 transition-colors"></i> 
-                    Manajemen Produk
-                </a>
-                
-                <a href="{{ route('admin.rentals.index') }}" class="flex items-center px-4 py-3 bg-zinc-900 text-white rounded-xl font-semibold shadow-md transition-all group">
-                    <i class="ti ti-file-text text-lg mr-3"></i> 
-                    Daftar Transaksi
-                </a>
-            </nav>
-        </div>
+@section('title', 'Daftar Transaksi')
+@section('header_title', 'Daftar Transaksi')
+@section('header_subtitle', 'Kelola dan pantau seluruh transaksi rental.')
 
-        <!-- SIDEBAR BOTTOM -->
-        <div class="p-4 border-t border-zinc-100 bg-zinc-50/50">
-            <div class="flex items-center p-3 bg-white border border-zinc-200 rounded-xl mb-3 shadow-sm">
-                <div class="w-10 h-10 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mr-3">
-                    <i class="ti ti-user font-bold"></i>
-                </div>
-                <div>
-                    <p class="text-sm font-bold text-zinc-900">Administrator</p>
-                    <p class="text-xs text-zinc-500">admin@docurent.id</p>
-                </div>
-            </div>
-            <button onclick="openLogout()" class="w-full flex items-center justify-center px-4 py-2.5 border border-zinc-200 text-zinc-600 hover:text-rose-600 hover:bg-rose-50 hover:border-rose-100 rounded-xl font-semibold transition-all">
-                <i class="ti ti-logout text-lg mr-2"></i> Log Out
-            </button>
-        </div>
-    </aside>
-
-    <!-- MAIN CONTENT -->
-    <main class="flex-1 h-full overflow-y-auto bg-zinc-50/50 relative">
-        <!-- TOPBAR -->
-        <header class="h-20 bg-white/80 backdrop-blur-md border-b border-zinc-200 flex items-center justify-between px-8 sticky top-0 z-10">
-            <div>
-                <h1 class="text-2xl font-bold text-zinc-900 tracking-tight">Daftar Transaksi</h1>
-                <p class="text-sm text-zinc-500 font-medium">Kelola dan pantau seluruh transaksi rental.</p>
-            </div>
-        </header>
-
-        <div class="p-8 max-w-7xl mx-auto space-y-6">
+@section('content')
+        <div class="max-w-7xl mx-auto space-y-6">
             
             <!-- SEARCH & SORT -->
             <div class="flex flex-col sm:flex-row gap-4">
@@ -206,101 +132,52 @@
                 @endforelse
             </div>
         </div>
-    </main>
+@endsection
 
-    <!-- LOGOUT MODAL -->
-    <div id="logoutModal" class="fixed inset-0 bg-zinc-900/40 backdrop-blur-sm z-50 hidden items-center justify-center transition-opacity">
-        <div class="bg-white rounded-3xl p-8 max-w-sm w-full mx-4 shadow-2xl transform scale-95 transition-transform" id="logoutModalBox">
-            <div class="w-16 h-16 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-4 text-rose-500">
-                <i class="ti ti-logout text-3xl"></i>
-            </div>
-            <h3 class="text-xl font-bold text-center text-zinc-900 mb-2">Akhiri Sesi?</h3>
-            <p class="text-center text-zinc-500 mb-8 text-sm">Anda akan keluar dari akun Administrator. Anda harus login kembali untuk masuk.</p>
-            <div class="flex gap-3">
-                <button onclick="closeLogout()" class="flex-1 py-3 px-4 bg-white border-2 border-zinc-200 text-zinc-700 rounded-xl font-bold hover:bg-zinc-50 transition-colors">
-                    Batal
-                </button>
-                <form action="{{ route('logout') }}" method="POST" class="flex-1">
-                    @csrf
-                    <button type="submit" class="w-full py-3 px-4 bg-rose-500 text-white rounded-xl font-bold hover:bg-rose-600 shadow-lg shadow-rose-500/30 transition-all">
-                        Ya, Keluar
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
+<script>
+    let activeFilter = 'all';
 
-    <script>
-        const modal = document.getElementById('logoutModal');
-        const modalBox = document.getElementById('logoutModalBox');
-
-        function openLogout() { 
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            setTimeout(() => {
-                modalBox.classList.remove('scale-95');
-                modalBox.classList.add('scale-100');
-            }, 10);
-        }
-
-        function closeLogout() { 
-            modalBox.classList.remove('scale-100');
-            modalBox.classList.add('scale-95');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-            }, 200);
-        }
-
-        modal.addEventListener('click', function(e) {
-            if (e.target === this) closeLogout();
+    function setFilter(status, btn) {
+        activeFilter = status;
+        
+        // Update button styles
+        document.querySelectorAll('.filter-btn').forEach(b => {
+            b.classList.remove('bg-zinc-900', 'text-white', 'shadow-md');
+            b.classList.add('bg-white', 'text-zinc-600', 'border', 'border-zinc-200', 'hover:bg-zinc-50');
         });
+        btn.classList.remove('bg-white', 'text-zinc-600', 'border', 'border-zinc-200', 'hover:bg-zinc-50');
+        btn.classList.add('bg-zinc-900', 'text-white', 'shadow-md');
+        
+        applyFilters();
+    }
 
-        let activeFilter = 'all';
+    function filterRentals() { applyFilters(); }
 
-        function setFilter(status, btn) {
-            activeFilter = status;
-            
-            // Update button styles
-            document.querySelectorAll('.filter-btn').forEach(b => {
-                b.classList.remove('bg-zinc-900', 'text-white', 'shadow-md');
-                b.classList.add('bg-white', 'text-zinc-600', 'border', 'border-zinc-200', 'hover:bg-zinc-50');
-            });
-            btn.classList.remove('bg-white', 'text-zinc-600', 'border', 'border-zinc-200', 'hover:bg-zinc-50');
-            btn.classList.add('bg-zinc-900', 'text-white', 'shadow-md');
-            
-            applyFilters();
-        }
+    function applyFilters() {
+        const q = document.getElementById('searchInput').value.toLowerCase();
+        document.querySelectorAll('#rentalList .rental-card').forEach(card => {
+            const matchStatus = activeFilter === 'all' || card.dataset.status === activeFilter;
+            const matchName   = card.dataset.name.includes(q);
+            if (matchStatus && matchName) {
+                card.classList.remove('hidden');
+                card.classList.add('flex');
+            } else {
+                card.classList.add('hidden');
+                card.classList.remove('flex');
+            }
+        });
+    }
 
-        function filterRentals() { applyFilters(); }
-
-        function applyFilters() {
-            const q = document.getElementById('searchInput').value.toLowerCase();
-            document.querySelectorAll('#rentalList .rental-card').forEach(card => {
-                const matchStatus = activeFilter === 'all' || card.dataset.status === activeFilter;
-                const matchName   = card.dataset.name.includes(q);
-                if (matchStatus && matchName) {
-                    card.classList.remove('hidden');
-                    card.classList.add('flex');
-                } else {
-                    card.classList.add('hidden');
-                    card.classList.remove('flex');
-                }
-            });
-        }
-
-        function sortRentals() {
-            const list = document.getElementById('rentalList');
-            const cards = [...list.querySelectorAll('.rental-card')];
-            const asc = document.getElementById('sortSelect').value === 'asc';
-            
-            cards.sort((a, b) => {
-                const na = a.dataset.name, nb = b.dataset.name;
-                return asc ? na.localeCompare(nb) : nb.localeCompare(na);
-            });
-            
-            cards.forEach(c => list.appendChild(c));
-        }
-    </script>
-</body>
-</html>
+    function sortRentals() {
+        const list = document.getElementById('rentalList');
+        const cards = [...list.querySelectorAll('.rental-card')];
+        const asc = document.getElementById('sortSelect').value === 'asc';
+        
+        cards.sort((a, b) => {
+            const na = a.dataset.name, nb = b.dataset.name;
+            return asc ? na.localeCompare(nb) : nb.localeCompare(na);
+        });
+        
+        cards.forEach(c => list.appendChild(c));
+    }
+</script>

@@ -1,75 +1,11 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Produk – DocuRent</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
-    
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <!-- HTMX for Instant Navigation -->
-    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-    <style>
-        body { font-family: 'Outfit', sans-serif; }
-    </style>
-</head>
-<body hx-boost="true" class="bg-zinc-50 text-zinc-900 h-screen overflow-hidden flex selection:bg-rose-500 selection:text-white">
+@extends('layouts.admin')
 
-    <!-- SIDEBAR -->
-    <aside class="w-64 bg-white border-r border-zinc-200 flex flex-col justify-between h-full shrink-0 shadow-sm z-20">
-        <div>
-            <!-- LOGO -->
-            <div class="h-20 flex items-center px-8 border-b border-zinc-100">
-                <div class="w-10 h-10 rounded-xl bg-zinc-900 text-white flex items-center justify-center mr-3 shadow-md">
-                    <i class="ti ti-camera text-xl"></i>
-                </div>
-                <span class="text-xl font-bold tracking-tight">DocuRent<span class="text-rose-500">.</span></span>
-            </div>
-            
-            <!-- NAV -->
-            <nav class="p-4 space-y-1.5 mt-4">
-                <p class="px-4 text-xs font-bold text-zinc-400 tracking-widest uppercase mb-3">Menu Utama</p>
-                
-                <a href="{{ route('dashboard') }}" class="flex items-center px-4 py-3 text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 rounded-xl font-semibold transition-all group">
-                    <i class="ti ti-layout-dashboard text-lg mr-3 text-zinc-400 group-hover:text-zinc-900 transition-colors"></i> 
-                    Dashboard
-                </a>
-                
-                <a href="{{ route('admin.products.index') }}" class="flex items-center px-4 py-3 bg-zinc-900 text-white rounded-xl font-semibold shadow-md transition-all group">
-                    <i class="ti ti-package text-lg mr-3"></i> 
-                    Manajemen Produk
-                </a>
-                
-                <a href="{{ route('admin.rentals.index') }}" class="flex items-center px-4 py-3 text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 rounded-xl font-semibold transition-all group">
-                    <i class="ti ti-file-text text-lg mr-3 text-zinc-400 group-hover:text-zinc-900 transition-colors"></i> 
-                    Daftar Transaksi
-                </a>
-            </nav>
-        </div>
+@section('title', 'Edit Produk')
+@section('header_title', 'Perbarui Unit Alat')
+@section('header_subtitle', 'Ubah informasi detail peralatan rental.')
 
-        <!-- SIDEBAR BOTTOM -->
-        <div class="p-4 border-t border-zinc-100 bg-zinc-50/50">
-            <div class="flex items-center p-3 bg-white border border-zinc-200 rounded-xl mb-3 shadow-sm">
-                <div class="w-10 h-10 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mr-3">
-                    <i class="ti ti-user font-bold"></i>
-                </div>
-                <div>
-                    <p class="text-sm font-bold text-zinc-900">Administrator</p>
-                    <p class="text-xs text-zinc-500">admin@docurent.id</p>
-                </div>
-            </div>
-            <button onclick="openLogout()" class="w-full flex items-center justify-center px-4 py-2.5 border border-zinc-200 text-zinc-600 hover:text-rose-600 hover:bg-rose-50 hover:border-rose-100 rounded-xl font-semibold transition-all">
-                <i class="ti ti-logout text-lg mr-2"></i> Log Out
-            </button>
-        </div>
-    </aside>
-
-    <!-- MAIN CONTENT -->
-    <main class="flex-1 h-full overflow-y-auto bg-zinc-50/50 relative">
-        <div class="p-8 max-w-4xl mx-auto space-y-6">
+@section('content')
+        <div class="max-w-4xl mx-auto space-y-6">">
             
             <!-- BACK BUTTON -->
             <a href="{{ route('admin.products.show', $product->id) }}" class="inline-flex items-center text-sm font-bold text-zinc-500 hover:text-zinc-900 transition-colors mb-2">
@@ -195,82 +131,33 @@
             </div>
 
         </div>
-    </main>
+@endsection
 
-    <!-- LOGOUT MODAL -->
-    <div id="logoutModal" class="fixed inset-0 bg-zinc-900/40 backdrop-blur-sm z-50 hidden items-center justify-center transition-opacity">
-        <div class="bg-white rounded-3xl p-8 max-w-sm w-full mx-4 shadow-2xl transform scale-95 transition-transform" id="logoutModalBox">
-            <div class="w-16 h-16 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-4 text-rose-500">
-                <i class="ti ti-logout text-3xl"></i>
-            </div>
-            <h3 class="text-xl font-bold text-center text-zinc-900 mb-2">Akhiri Sesi?</h3>
-            <p class="text-center text-zinc-500 mb-8 text-sm">Anda akan keluar dari akun Administrator. Anda harus login kembali untuk masuk.</p>
-            <div class="flex gap-3">
-                <button onclick="closeLogout()" class="flex-1 py-3 px-4 bg-white border-2 border-zinc-200 text-zinc-700 rounded-xl font-bold hover:bg-zinc-50 transition-colors">
-                    Batal
-                </button>
-                <form action="{{ route('logout') }}" method="POST" class="flex-1">
-                    @csrf
-                    <button type="submit" class="w-full py-3 px-4 bg-rose-500 text-white rounded-xl font-bold hover:bg-rose-600 shadow-lg shadow-rose-500/30 transition-all">
-                        Ya, Keluar
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const modal = document.getElementById('logoutModal');
-        const modalBox = document.getElementById('logoutModalBox');
-
-        function openLogout() { 
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            setTimeout(() => {
-                modalBox.classList.remove('scale-95');
-                modalBox.classList.add('scale-100');
-            }, 10);
-        }
-
-        function closeLogout() { 
-            modalBox.classList.remove('scale-100');
-            modalBox.classList.add('scale-95');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-            }, 200);
-        }
-
-        modal.addEventListener('click', function(e) {
-            if (e.target === this) closeLogout();
-        });
-
-        // Image Preview Function
-        function previewImage(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('imagePreview').src = e.target.result;
-                    document.getElementById('imagePreviewContainer').classList.remove('hidden');
-                    document.getElementById('imagePreviewContainer').classList.add('flex');
-                }
-                reader.readAsDataURL(input.files[0]);
+<script>
+    // Image Preview Function
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('imagePreview').src = e.target.result;
+                document.getElementById('imagePreviewContainer').classList.remove('hidden');
+                document.getElementById('imagePreviewContainer').classList.add('flex');
             }
+            reader.readAsDataURL(input.files[0]);
         }
+    }
 
-        function clearImage() {
-            document.getElementById('gambar').value = '';
-            document.getElementById('imagePreviewContainer').classList.add('hidden');
-            document.getElementById('imagePreviewContainer').classList.remove('flex');
+    function clearImage() {
+        document.getElementById('gambar').value = '';
+        document.getElementById('imagePreviewContainer').classList.add('hidden');
+        document.getElementById('imagePreviewContainer').classList.remove('flex');
+    }
+
+    // Initialize char count on load
+    document.addEventListener('DOMContentLoaded', function() {
+        const textarea = document.getElementById('deskripsi');
+        if(textarea) {
+            document.getElementById('charCount').textContent = textarea.value.length + '/1500';
         }
-
-        // Initialize char count on load
-        document.addEventListener('DOMContentLoaded', function() {
-            const textarea = document.getElementById('deskripsi');
-            if(textarea) {
-                document.getElementById('charCount').textContent = textarea.value.trim().length + '/1500';
-            }
-        });
-    </script>
-</body>
-</html>
+    });
+</script>

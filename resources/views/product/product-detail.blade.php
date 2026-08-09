@@ -4,6 +4,12 @@
 <div class="bg-zinc-50 py-12 md:py-24">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
+        <!-- Back Button -->
+        <a href="javascript:history.back()" class="inline-flex items-center text-sm font-bold text-zinc-500 hover:text-zinc-900 transition-colors mb-4">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            Kembali
+        </a>
+        
         <!-- Breadcrumb -->
         <nav class="flex text-sm text-zinc-500 mb-8 font-medium">
             <a href="{{ route('home') }}" class="hover:text-zinc-900 transition-colors">Beranda</a>

@@ -40,7 +40,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('login.process') }}" method="POST" class="space-y-5">
+            <form action="{{ route('login.process') }}" method="POST" hx-boost="false" class="space-y-5">
                 @csrf 
                 
                 <div>
