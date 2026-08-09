@@ -24,7 +24,7 @@ RUN apk add --no-cache \
 
 # Configure and install PHP extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) gd pdo_mysql pdo_pgsql pgsql mbstring zip exif pcntl bcmath
+    && docker-php-ext-install -j$(nproc) gd pdo_mysql pdo_pgsql pgsql mbstring zip exif pcntl bcmath opcache
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -41,6 +41,7 @@ RUN npm run build
 COPY docker/nginx.conf /etc/nginx/nginx.conf
 COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY docker/start.sh /usr/local/bin/start.sh
+COPY docker/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
 # Set permissions
 RUN chmod +x /usr/local/bin/start.sh \
