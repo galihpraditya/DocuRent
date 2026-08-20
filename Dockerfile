@@ -20,11 +20,12 @@ RUN apk add --no-cache \
     curl \
     nginx \
     supervisor \
-    postgresql-dev
+    postgresql-dev \
+    sqlite-dev
 
 # Configure and install PHP extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) gd pdo_mysql pdo_pgsql pgsql mbstring zip exif pcntl bcmath opcache
+    && docker-php-ext-install -j$(nproc) gd pdo_mysql pdo_pgsql pgsql pdo_sqlite mbstring zip exif pcntl bcmath opcache
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
