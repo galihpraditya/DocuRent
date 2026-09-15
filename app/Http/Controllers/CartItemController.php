@@ -50,6 +50,10 @@ class CartItemController extends Controller
 
     public function update(Request $request, CartItem $cartItem)
     {
+        if ($cartItem->cart && $cartItem->cart->user_id !== auth()->id()) {
+            abort(403, 'Akses keranjang tidak diizinkan.');
+        }
+
         $request->validate([
             'jumlah' => 'required|integer|min:1'
         ]);
@@ -67,6 +71,10 @@ class CartItemController extends Controller
 
     public function destroy(CartItem $cartItem)
     {
+        if ($cartItem->cart && $cartItem->cart->user_id !== auth()->id()) {
+            abort(403, 'Akses keranjang tidak diizinkan.');
+        }
+
         $cartItem->delete();
 
         return redirect()->route('cart.index');

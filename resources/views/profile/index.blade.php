@@ -1,66 +1,85 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="bg-zinc-50 py-12 md:py-24 min-h-screen">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="bg-[#FCFCFC] py-10 sm:py-16 min-h-[calc(100vh-5rem)]">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <!-- Breadcrumb -->
-        <nav class="flex text-sm text-zinc-500 mb-8 font-medium">
+        <nav class="flex items-center space-x-2 text-xs font-medium text-zinc-400 mb-8">
             <a href="{{ route('home') }}" class="hover:text-zinc-900 transition-colors">Beranda</a>
-            <span class="mx-3 text-zinc-300">/</span>
+            <span>/</span>
             <span class="text-zinc-900">Profil Saya</span>
         </nav>
 
-        <div class="bg-white rounded-[2rem] border border-zinc-200 shadow-sm overflow-hidden">
-            <!-- Header Cover -->
-            <div class="h-32 bg-gradient-to-r from-zinc-800 to-zinc-900 relative">
-                <div class="absolute -bottom-12 left-8">
+        <div class="bg-white rounded-3xl border border-zinc-200/80 shadow-2xs overflow-hidden">
+            <!-- Header Cover Studio -->
+            <div class="h-28 bg-zinc-900 relative">
+                <div class="absolute -bottom-10 left-6 sm:left-8">
                     <img 
-                        class="h-24 w-24 rounded-full border-4 border-white bg-white object-cover shadow-md" 
-                        src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->username) }}&size=150&background=0D8ABC&color=fff" 
-                        alt="Avatar"
+                        class="h-20 w-20 rounded-full border-4 border-white bg-zinc-100 object-cover shadow-2xs" 
+                        src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->username) }}&size=120&background=18181b&color=ffffff&bold=true" 
+                        alt="{{ auth()->user()->username }}"
                     >
                 </div>
             </div>
 
-            <div class="pt-16 pb-8 px-8">
+            <div class="pt-14 pb-8 px-6 sm:px-8">
                 <!-- User Info -->
-                <div class="mb-8">
-                    <h1 class="text-2xl font-bold text-zinc-900 tracking-tight">{{ auth()->user()->nama ?? auth()->user()->username }}</h1>
-                    <p class="text-zinc-500 font-medium">{{ auth()->user()->email }}</p>
-                    <div class="mt-4 flex flex-wrap gap-2">
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-zinc-100 text-zinc-700 border border-zinc-200">
-                            Member DocuRent
-                        </span>
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 border border-green-200">
-                            Akun Aktif
+                <div class="mb-6">
+                    <div class="flex items-center justify-between">
+                        <h1 class="text-xl font-bold text-zinc-900 tracking-tight">{{ auth()->user()->nama ?? auth()->user()->username }}</h1>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                            Member Terverifikasi
                         </span>
                     </div>
+                    <p class="text-xs text-zinc-500 mt-0.5">{{ auth()->user()->email }} &bull; @<span>{{ auth()->user()->username }}</span></p>
+                    
+                    @if(auth()->user()->no_hp)
+                        <p class="text-xs text-zinc-400 mt-1">WhatsApp: {{ auth()->user()->no_hp }}</p>
+                    @endif
+                    @if(auth()->user()->alamat)
+                        <p class="text-xs text-zinc-400 mt-0.5">Alamat: {{ auth()->user()->alamat }}</p>
+                    @endif
                 </div>
 
                 <div class="border-t border-zinc-100 my-6"></div>
 
-                <!-- Menu Links -->
+                <!-- Action Links -->
                 <div class="space-y-3">
-                    <a href="{{ route('rentals.list') }}" class="flex items-center justify-between p-4 rounded-xl border border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50 transition-all group">
-                        <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 rounded-full bg-zinc-100 text-zinc-600 flex items-center justify-center group-hover:bg-zinc-200 group-hover:text-zinc-900 transition-colors">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                    @if(auth()->user()->role === 'admin')
+                        <a href="{{ route('dashboard') }}" hx-boost="false" class="flex items-center justify-between p-4 rounded-2xl border border-zinc-200/80 hover:bg-zinc-50 transition-all group">
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-9 h-9 rounded-xl bg-zinc-900 text-white flex items-center justify-center">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path></svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-zinc-900 text-xs">Panel Dashboard Admin</h3>
+                                    <p class="text-[11px] text-zinc-400">Kelola katalog produk, stok, dan verifikasi transaksi</p>
+                                </div>
+                            </div>
+                            <svg class="w-4 h-4 text-zinc-400 group-hover:text-zinc-900 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </a>
+                    @endif
+
+                    <a href="{{ route('rentals.list') }}" class="flex items-center justify-between p-4 rounded-2xl border border-zinc-200/80 hover:bg-zinc-50 transition-all group">
+                        <div class="flex items-center gap-3.5">
+                            <div class="w-9 h-9 rounded-xl bg-zinc-100 text-zinc-700 flex items-center justify-center group-hover:bg-zinc-200 transition-colors">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
                             </div>
                             <div>
-                                <h3 class="font-bold text-zinc-900">Daftar Pesanan Saya</h3>
-                                <p class="text-sm text-zinc-500">Lihat riwayat dan status penyewaan Anda</p>
+                                <h3 class="font-semibold text-zinc-900 text-xs">Riwayat Pesanan Saya</h3>
+                                <p class="text-[11px] text-zinc-400">Lihat status sewa dan upload bukti transfer</p>
                             </div>
                         </div>
-                        <svg class="w-5 h-5 text-zinc-400 group-hover:text-zinc-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        <svg class="w-4 h-4 text-zinc-400 group-hover:text-zinc-900 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </a>
 
                     <!-- Logout Button -->
-                    <form action="{{ route('logout') }}" method="POST" class="mt-6">
+                    <form action="{{ route('logout') }}" method="POST" class="pt-3">
                         @csrf
-                        <button type="submit" class="w-full flex items-center justify-center gap-2 p-4 rounded-xl border-2 border-rose-100 bg-rose-50 text-rose-600 font-bold hover:bg-rose-100 hover:border-rose-200 transition-all focus:outline-none focus:ring-4 focus:ring-rose-50">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                            Keluar dari Akun (Logout)
+                        <button type="submit" class="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-zinc-200 text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50 font-medium text-xs transition-colors cursor-pointer">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                            Keluar dari Akun
                         </button>
                     </form>
                 </div>

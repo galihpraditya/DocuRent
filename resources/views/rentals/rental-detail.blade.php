@@ -1,118 +1,145 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
     
-    <div class="max-w-4xl mx-auto">
+    <div class="max-w-3xl mx-auto">
         
-        <div class="mb-8">
-            <a href="{{ route('rentals.list') }}" class="inline-flex items-center text-sm font-semibold text-zinc-500 hover:text-zinc-900 transition-colors">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                Kembali ke Daftar Pesanan
+        <div class="mb-8 flex items-center justify-between">
+            <nav class="flex items-center space-x-2 text-xs font-medium text-zinc-400">
+                <a href="{{ route('home') }}" class="hover:text-zinc-900 transition-colors">Beranda</a>
+                <span>/</span>
+                <a href="{{ route('rentals.list') }}" class="hover:text-zinc-900 transition-colors">Pesanan</a>
+                <span>/</span>
+                <span class="text-zinc-900">#{{ $rental->id }}</span>
+            </nav>
+
+            <a href="{{ route('rentals.list') }}" class="inline-flex items-center text-xs font-semibold text-zinc-500 hover:text-zinc-900 transition-colors">
+                <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                Kembali ke Daftar
             </a>
         </div>
 
-        <div class="bg-white rounded-3xl border border-zinc-200 overflow-hidden shadow-sm">
+        <div class="bg-white rounded-3xl border border-zinc-200/80 overflow-hidden shadow-2xs">
             
             <!-- Header -->
-            <div class="p-8 border-b border-zinc-100 flex flex-col md:flex-row md:items-center justify-between gap-6 bg-zinc-50/50">
+            <div class="p-6 sm:p-8 border-b border-zinc-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-zinc-50/50">
                 <div>
-                    <h2 class="text-2xl font-bold text-zinc-900 tracking-tight mb-1">Detail Pesanan</h2>
-                    <p class="text-zinc-500 text-sm">No. Invoice: <span class="font-bold text-zinc-900">INV-RNT-{{ $rental->id }}</span></p>
+                    <h1 class="text-xl sm:text-2xl font-bold text-zinc-900 tracking-tight">Rincian Sewa #{{ $rental->id }}</h1>
+                    <p class="text-zinc-400 text-xs mt-0.5">Dibuat pada {{ \Carbon\Carbon::parse($rental->created_at)->translatedFormat('d M Y, H:i') }} WIB</p>
                 </div>
-                <div class="flex flex-col sm:flex-row gap-3">
-                    @if($rental->payment->status_pembayaran == 'paid')
-                        <div class="inline-flex items-center px-4 py-2 rounded-xl bg-green-100 border border-green-200">
-                            <span class="w-2 h-2 rounded-full bg-green-600 mr-2"></span>
-                            <span class="text-sm font-bold text-green-800">Pembayaran Lunas</span>
-                        </div>
+                
+                <div class="flex items-center gap-2">
+                    @if($rental->payment && $rental->payment->status_pembayaran == 'paid')
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-800 border border-emerald-200/80">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>
+                            Pembayaran Lunas
+                        </span>
+                    @elseif($rental->payment && $rental->payment->status_pembayaran == 'waiting for verification')
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-800 border border-amber-200/80">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-500 mr-1.5 animate-pulse"></span>
+                            Verifikasi Pembayaran
+                        </span>
                     @else
-                        <div class="inline-flex items-center px-4 py-2 rounded-xl bg-amber-100 border border-amber-200">
-                            <span class="w-2 h-2 rounded-full bg-amber-600 mr-2 animate-pulse"></span>
-                            <span class="text-sm font-bold text-amber-800">Menunggu Verifikasi</span>
-                        </div>
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-zinc-100 text-zinc-700 border border-zinc-200/80">
+                            {{ ucfirst($rental->status) }}
+                        </span>
                     @endif
-
-                    <div class="inline-flex items-center px-4 py-2 rounded-xl bg-blue-100 border border-blue-200">
-                        <svg class="w-4 h-4 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
-                        <span class="text-sm font-bold text-blue-800">{{ ucfirst($rental->status) }}</span>
-                    </div>
                 </div>
             </div>
 
             <!-- Body -->
-            <div class="p-8">
+            <div class="p-6 sm:p-8 space-y-8">
                 
-                <!-- Dates -->
-                <div class="bg-zinc-900 rounded-2xl p-6 mb-10 text-white flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
-                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-white opacity-5 rounded-full blur-2xl"></div>
-                    <div class="text-center md:text-left z-10 w-full md:w-auto">
-                        <p class="text-xs text-zinc-400 font-semibold tracking-wider uppercase mb-1">Tanggal Pengambilan</p>
-                        <p class="text-xl font-bold">{{ \Carbon\Carbon::parse($rental->tanggal_sewa)->format('d M Y') }}</p>
+                <!-- Dates Card (Clean Minimalist Studio) -->
+                <div class="bg-zinc-50 rounded-2xl p-5 sm:p-6 border border-zinc-200/70 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div>
+                        <span class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider block mb-1">Tanggal Ambil</span>
+                        <p class="text-sm font-bold text-zinc-900">{{ \Carbon\Carbon::parse($rental->tanggal_sewa)->translatedFormat('l, d F Y') }}</p>
+                        <span class="text-[11px] text-zinc-400">Pukul 08.00 – 20.00 WIB</span>
                     </div>
-                    <div class="z-10 hidden md:block">
-                        <svg class="w-8 h-8 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+
+                    <div class="hidden sm:block text-zinc-300">
+                        &rarr;
                     </div>
-                    <div class="text-center md:text-right z-10 w-full md:w-auto">
-                        <p class="text-xs text-zinc-400 font-semibold tracking-wider uppercase mb-1">Tanggal Pengembalian</p>
-                        <p class="text-xl font-bold">{{ \Carbon\Carbon::parse($rental->tanggal_kembali)->format('d M Y') }}</p>
+
+                    <div class="sm:text-right">
+                        <span class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider block mb-1">Tanggal Kembali</span>
+                        <p class="text-sm font-bold text-zinc-900">{{ \Carbon\Carbon::parse($rental->tanggal_kembali)->translatedFormat('l, d F Y') }}</p>
+                        <span class="text-[11px] text-zinc-400">Sebelum pukul 20.00 WIB</span>
                     </div>
                 </div>
 
-                <!-- Items -->
-                <h3 class="text-lg font-bold text-zinc-900 mb-6">Item Disewa</h3>
-                <div class="space-y-4 mb-10">
-                    @foreach($rental->rentalItems as $item)
-                        @php
-                            $subtotal = $item->harga_saat_sewa * $item->jumlah;
-                        @endphp
-                        <div class="flex items-center gap-4 p-4 rounded-2xl border border-zinc-100 bg-zinc-50 hover:bg-white hover:border-zinc-200 transition-colors">
-                            <div class="w-16 h-16 rounded-xl bg-white border border-zinc-200 overflow-hidden shrink-0">
-                                <img src="{{ asset('storage/' . $item->product->gambar) }}" class="w-full h-full object-cover">
+                <!-- Items Disewa -->
+                <div>
+                    <h3 class="text-xs font-bold text-zinc-900 uppercase tracking-wider mb-4">Peralatan yang Disewa</h3>
+                    <div class="divide-y divide-zinc-100 border-t border-b border-zinc-100">
+                        @foreach($rental->rentalItems as $item)
+                            @php
+                                $subtotal = $item->harga_saat_sewa * $item->jumlah;
+                            @endphp
+                            <div class="py-4 flex items-center gap-4">
+                                <div class="w-14 h-14 rounded-xl bg-zinc-50 border border-zinc-200/70 overflow-hidden shrink-0">
+                                    @if($item->product && $item->product->gambar)
+                                        <img src="{{ asset('storage/' . $item->product->gambar) }}" alt="{{ $item->product->nama_produk }}" class="w-full h-full object-cover">
+                                    @else
+                                        <div class="w-full h-full flex items-center justify-center bg-zinc-100 text-zinc-400 text-xs">Gear</div>
+                                    @endif
+                                </div>
+                                <div class="flex-grow">
+                                    <h4 class="font-semibold text-zinc-900 text-sm">{{ $item->product->nama_produk ?? 'Alat Dokumentasi' }}</h4>
+                                    <p class="text-xs text-zinc-400 mt-0.5">{{ $item->jumlah }} unit &times; Rp {{ number_format($item->harga_saat_sewa, 0, ',', '.') }} / hari</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-sm font-bold text-zinc-900">Rp {{ number_format($subtotal, 0, ',', '.') }}</span>
+                                    <span class="block text-[10px] text-zinc-400 font-normal">/ hari</span>
+                                </div>
                             </div>
-                            <div class="flex-grow">
-                                <h6 class="font-bold text-zinc-900">{{ $item->product->nama_produk }}</h6>
-                                <p class="text-sm text-zinc-500">{{ $item->jumlah }} x Rp {{ number_format($item->harga_saat_sewa, 0, ',', '.') }} / hari</p>
-                            </div>
-                            <div class="text-right">
-                                <p class="font-bold text-zinc-900">Rp {{ number_format($subtotal, 0, ',', '.') }}</p>
-                            </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    </div>
                 </div>
 
                 <!-- Payment Details -->
-                <h3 class="text-lg font-bold text-zinc-900 mb-6">Rincian Pembayaran</h3>
-                <div class="bg-zinc-50 rounded-2xl p-6 border border-zinc-100 mb-8">
-                    <div class="space-y-4 mb-6">
-                        <div class="flex justify-between items-center text-sm">
-                            <span class="text-zinc-500">Durasi Sewa</span>
-                            <span class="font-medium text-zinc-900">{{ $hari ?? 1 }} Hari</span>
-                        </div>
-                        <div class="flex justify-between items-center text-sm">
-                            <span class="text-zinc-500">Metode Pembayaran</span>
-                            <span class="font-bold text-zinc-900 uppercase">{{ $rental->payment->metode_pembayaran }}</span>
-                        </div>
-                        <div class="flex justify-between items-center text-sm">
-                            <span class="text-zinc-500">Total Harga Sewa</span>
-                            <span class="font-medium text-zinc-900">Rp {{ number_format($rental->total_harga, 0, ',', '.') }}</span>
-                        </div>
-                    </div>
+                <div class="bg-zinc-50/70 rounded-2xl p-6 border border-zinc-200/70 space-y-3 text-xs">
+                    <h4 class="text-xs font-bold text-zinc-900 uppercase tracking-wider mb-3">Rincian Transaksi</h4>
                     
-                    <div class="pt-6 border-t border-zinc-200 border-dashed flex justify-between items-end">
-                        <span class="font-bold text-zinc-900 text-lg">Total Tagihan</span>
-                        <span class="text-2xl font-bold text-rose-500">Rp {{ number_format($rental->total_harga, 0, ',', '.') }}</span>
+                    <div class="flex justify-between items-center text-zinc-500">
+                        <span>Metode Pembayaran</span>
+                        <span class="font-medium text-zinc-900">{{ strtoupper($rental->payment->metode_pembayaran ?? 'TRANSFER') }}</span>
+                    </div>
+
+                    <div class="flex justify-between items-center text-zinc-500">
+                        <span>Status Verifikasi</span>
+                        <span class="font-medium text-zinc-900 capitalize">{{ $rental->payment->status_pembayaran ?? '-' }}</span>
+                    </div>
+
+                    <div class="pt-3 border-t border-zinc-200 flex justify-between items-baseline">
+                        <span class="text-sm font-bold text-zinc-900">Total Biaya Sewa</span>
+                        <span class="text-xl font-bold text-zinc-900">Rp {{ number_format($rental->total_harga, 0, ',', '.') }}</span>
                     </div>
                 </div>
 
-                @if($rental->payment->bukti_pembayaran)
-                    <div class="flex justify-end">
-                        <a href="{{ asset('storage/' . $rental->payment->bukti_pembayaran) }}" target="_blank" class="inline-flex items-center px-6 py-2.5 bg-white border border-zinc-200 rounded-xl text-sm font-semibold text-zinc-900 hover:bg-zinc-50 transition-colors shadow-sm">
-                            <svg class="w-4 h-4 mr-2 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path></svg>
-                            Lihat Bukti Pembayaran
-                        </a>
+                <!-- Actions: View Payment Proof or Upload -->
+                <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+                    <div class="text-xs text-zinc-400">
+                        Lokasi: Studio DocuRent Malang Pusat
                     </div>
-                @endif
+
+                    <div class="flex items-center gap-2">
+                        @if($rental->payment && $rental->payment->bukti_pembayaran)
+                            <a href="{{ asset('storage/' . $rental->payment->bukti_pembayaran) }}" target="_blank" class="inline-flex items-center px-4 py-2 bg-white border border-zinc-200 rounded-xl text-xs font-semibold text-zinc-700 hover:bg-zinc-50 transition-colors shadow-2xs">
+                                <svg class="w-3.5 h-3.5 mr-1.5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                                Lihat Bukti Transfer
+                            </a>
+                        @endif
+
+                        @if($rental->status == 'pending' && $rental->payment && $rental->payment->status_pembayaran == 'pending')
+                            <a href="{{ route('payments.paymentPage', $rental->payment->id) }}" class="inline-flex items-center px-4 py-2 bg-zinc-900 text-white rounded-xl text-xs font-semibold hover:bg-zinc-800 transition-colors shadow-2xs">
+                                Unggah Bukti Bayar
+                            </a>
+                        @endif
+                    </div>
+                </div>
 
             </div>
         </div>

@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Docurent - Sewa Kamera & Alat Dokumentasi</title>
+    <title>DocuRent — Sewa Kamera & Alat Dokumentasi</title>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -23,19 +23,19 @@
 
     <style>
         body {
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Plus Jakarta Sans', 'Outfit', sans-serif;
         }
-        /* Custom NProgress Colors */
+        /* Minimalist Sleek NProgress Colors */
         #nprogress .bar {
-            background: #f43f5e !important; /* Tailwind rose-500 */
-            height: 4px !important;
+            background: #18181b !important;
+            height: 3px !important;
         }
         #nprogress .peg {
-            box-shadow: 0 0 10px #f43f5e, 0 0 5px #f43f5e !important;
+            box-shadow: 0 0 8px #18181b, 0 0 4px #18181b !important;
         }
         #nprogress .spinner-icon {
-            border-top-color: #f43f5e !important;
-            border-left-color: #f43f5e !important;
+            border-top-color: #18181b !important;
+            border-left-color: #18181b !important;
         }
     </style>
     
@@ -53,7 +53,7 @@
         });
     </script>
 </head>
-<body hx-boost="true" class="bg-zinc-50 text-zinc-900 antialiased selection:bg-rose-500 selection:text-white flex flex-col min-h-screen">
+<body hx-boost="true" class="bg-[#FCFCFC] text-zinc-900 antialiased selection:bg-zinc-900 selection:text-white flex flex-col min-h-screen">
     
     @if(!Request::is('login') && !Request::is('register'))
         @include('components.navbar')
@@ -63,7 +63,7 @@
         @yield('content')
     </main>
 
-    @if(Request::is('/'))
+    @if(!Request::is('login') && !Request::is('register'))
         @include('components.footer')
     @endif
 

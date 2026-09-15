@@ -54,20 +54,36 @@ class CartController extends Controller
             ->first();
 
         if (!$cart || $cart->cartItems->isEmpty()) {
-            return redirect()->route('cart.index')->with('error', 'Keranjang kosong.');
+            return redirect()->route('cart.index')->with('error', 'Keranjang belanja kosong.');
         }
 
-        $hari = Carbon::parse($request->tanggal_sewa)
-            ->diffInDays($request->tanggal_kembali);
-        $hari = max(1, $hari);
+        $tanggalSewa = $request->input('tanggal_sewa', now()->format('Y-m-d'));
+        $tanggalKembali = $request->input('tanggal_kembali', now()->addDay()->format('Y-m-d'));
+
+        try {
+            $sewaCarbon = Carbon::parse($tanggalSewa);
+            $kembaliCarbon = Carbon::parse($tanggalKembali);
+
+            if ($kembaliCarbon->lt($sewaCarbon)) {
+                $kembaliCarbon = $sewaCarbon->copy()->addDay();
+                $tanggalKembali = $kembaliCarbon->format('Y-m-d');
+            }
+
+            $hari = max(1, $sewaCarbon->diffInDays($kembaliCarbon));
+        } catch (\Exception $e) {
+            $tanggalSewa = now()->format('Y-m-d');
+            $tanggalKembali = now()->addDay()->format('Y-m-d');
+            $hari = 1;
+        }
 
         $totalHarga = $cart->calculateTotal($hari);
 
         return view('payments.checkout-page', [
             'cart' => $cart,
             'totalHarga' => $totalHarga,
-            'tanggalSewa' => $request->tanggal_sewa,
-            'tanggalKembali' => $request->tanggal_kembali
+            'tanggalSewa' => $tanggalSewa,
+            'tanggalKembali' => $tanggalKembali,
+            'hari' => $hari
         ]);
     }
 }

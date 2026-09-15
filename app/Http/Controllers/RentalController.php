@@ -26,9 +26,9 @@ class RentalController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'tanggal_sewa' => 'required|date',
+            'tanggal_sewa' => 'required|date|after_or_equal:today',
             'tanggal_kembali' => 'required|date|after_or_equal:tanggal_sewa',
-            'metode_pembayaran' => 'required'
+            'metode_pembayaran' => 'required|in:Transfer,E-Wallet,QRIS'
         ]);
 
         $cart = Cart::with('cartItems.product')
@@ -108,24 +108,31 @@ class RentalController extends Controller
     public function updateStatus(Request $request, Rental $rental)
     {
         $request->validate([
-            'status' => 'required'
+            'status' => ['required', 'in:pending,ongoing,completed,cancelled,canceled']
         ]);
 
-        if ($request->status == 'cancelled' && $rental->status != 'cancelled') {
+        $newStatus = $request->status === 'canceled' ? 'cancelled' : $request->status;
+
+        if ($newStatus == 'cancelled' && $rental->status != 'cancelled') {
             foreach ($rental->rentalItems as $item) {
                 $item->product->increment('stok', $item->jumlah);
             }
-        } elseif ($rental->status == 'cancelled' && $request->status != 'cancelled') {
+            if ($rental->payment) {
+                $rental->payment->update([
+                    'status_pembayaran' => 'failed'
+                ]);
+            }
+        } elseif ($rental->status == 'cancelled' && $newStatus != 'cancelled') {
             foreach ($rental->rentalItems as $item) {
                 $item->product->decrement('stok', $item->jumlah);
             }
         }
 
         $rental->update([
-            'status' => $request->status
+            'status' => $newStatus
         ]);
 
-        return back();
+        return back()->with('success', 'Status pesanan berhasil diperbarui.');
     }
 
     // USER - halaman rental
@@ -141,8 +148,10 @@ class RentalController extends Controller
     // USER - filter halaman
     public function filterByStatus($status)
     {
+        $normalizedStatus = ($status === 'canceled' || $status === 'cancelled') ? 'cancelled' : $status;
+
         $rentals = Rental::where('user_id', auth()->id())
-            ->where('status', $status)
+            ->where('status', $normalizedStatus)
             ->latest()
             ->get();
 

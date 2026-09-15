@@ -131,7 +131,7 @@
                         <div class="bg-white rounded-3xl p-6 md:p-8 border border-zinc-200 shadow-sm">
                             <h3 class="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-6">Bukti Pembayaran</h3>
                             
-                            @if ($rental->payment->status_pembayaran != 'verified' && $rental->payment->status_pembayaran != 'paid')
+                            @if ($rental->payment->status_pembayaran != 'verified' && $rental->payment->status_pembayaran != 'paid' && $rental->payment->status_pembayaran != 'failed')
                                 @if ($rental->payment->bukti_pembayaran)
                                     <div class="rounded-2xl overflow-hidden border border-zinc-200 mb-6 bg-zinc-50">
                                         <a href="{{ asset('storage/' . $rental->payment->bukti_pembayaran) }}" target="_blank">
@@ -139,13 +139,23 @@
                                         </a>
                                     </div>
                                     
-                                    <form action="{{ route('admin.payments.verify', $rental->payment->id) }}" method="POST">
-                                        @csrf
-                                        @method('PUT')
-                                        <button type="submit" class="w-full py-3.5 bg-green-500 text-white rounded-xl font-bold hover:bg-green-600 shadow-lg shadow-green-500/30 transition-all flex items-center justify-center">
-                                            <i class="ti ti-check mr-2"></i> Konfirmasi Valid
-                                        </button>
-                                    </form>
+                                    <div class="space-y-2.5">
+                                        <form action="{{ route('admin.payments.verify', $rental->payment->id) }}" method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="submit" class="w-full py-3 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 shadow-sm transition-all flex items-center justify-center text-xs cursor-pointer">
+                                                <i class="ti ti-check mr-2"></i> Konfirmasi Valid
+                                            </button>
+                                        </form>
+
+                                        <form action="{{ route('admin.payments.reject', $rental->payment->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menolak bukti pembayaran ini? Pesanan akan otomatis dibatalkan dan stok produk dikembalikan.');">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="submit" class="w-full py-2.5 bg-white text-rose-600 border border-rose-200 rounded-xl font-semibold hover:bg-rose-50 transition-all flex items-center justify-center text-xs cursor-pointer">
+                                                <i class="ti ti-x mr-1.5"></i> Tolak Bukti Pembayaran
+                                            </button>
+                                        </form>
+                                    </div>
                                 @else
                                     <div class="p-8 text-center bg-zinc-50 rounded-2xl border border-zinc-100 border-dashed">
                                         <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm">
@@ -155,6 +165,19 @@
                                         <p class="text-xs text-zinc-500">Penyewa belum mengunggah bukti.</p>
                                     </div>
                                 @endif
+                            @elseif ($rental->payment->status_pembayaran == 'failed')
+                                <div class="bg-rose-50 border border-rose-200 rounded-2xl p-6 text-center">
+                                    <div class="w-12 h-12 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                        <i class="ti ti-circle-x text-rose-600 text-2xl"></i>
+                                    </div>
+                                    <p class="font-bold text-rose-800">Pembayaran Ditolak</p>
+                                    <p class="text-xs text-rose-600 mt-1">Pesanan dibatalkan dan stok telah dikembalikan ke inventaris.</p>
+                                    @if ($rental->payment->bukti_pembayaran)
+                                        <a href="{{ asset('storage/' . $rental->payment->bukti_pembayaran) }}" target="_blank" class="inline-block mt-3 text-xs font-bold text-rose-700 hover:text-rose-900 underline">
+                                            Lihat Bukti Foto
+                                        </a>
+                                    @endif
+                                </div>
                             @else
                                 <div class="bg-green-50 border border-green-200 rounded-2xl p-6 text-center">
                                     <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">

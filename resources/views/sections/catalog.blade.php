@@ -1,111 +1,153 @@
+@php
+    $currentKat = request('kategori');
+    $currentSort = request('urutan');
+    $currentSearch = request('search');
+    $categories = [
+        'kamera' => 'Kamera',
+        'lensa' => 'Lensa',
+        'lighting' => 'Lighting',
+        'audio' => 'Audio & Mic',
+        'drone' => 'Drone',
+        'aksesoris' => 'Aksesoris'
+    ];
+@endphp
+
 <div>
+    <!-- Section Header & Filter Controls -->
     <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
         <div>
-            <h3 class="text-2xl font-bold text-zinc-900 tracking-tight">Katalog Produk</h3>
-            <p class="text-zinc-500 mt-1">Eksplorasi gear terlengkap untuk setiap kebutuhan produksi Anda.</p>
+            <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Inventaris Gear</span>
+            <h3 class="text-2xl sm:text-3xl font-bold text-zinc-900 tracking-tight mt-1">Katalog Produk</h3>
+            <p class="text-zinc-500 text-sm mt-1">Pilih perlengkapan dokumentasi yang sesuai dengan kebutuhan produksi Anda.</p>
         </div>
-    </div>
-    
-    <div class="flex flex-col lg:flex-row gap-8">
-        
-        <!-- Sidebar Filter (Kiri) -->
-        <div class="lg:w-1/4 shrink-0">
-            <form action="{{ route('home') }}#catalog" method="GET" class="sticky top-40 bg-white border border-zinc-200 rounded-2xl p-6 shadow-sm">
-                
-                <h6 class="font-bold text-lg text-zinc-900 border-b border-zinc-100 pb-4 mb-6 flex items-center">
-                    <svg class="w-5 h-5 mr-2 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
-                    Filter Produk
-                </h6>
 
-                <a href="{{ route('home') }}#catalog" class="flex items-center text-zinc-600 hover:text-zinc-900 mb-6 font-medium transition-colors">
-                    <svg class="w-5 h-5 mr-3 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-                    Semua Produk
+        <!-- Sort Control -->
+        <form action="{{ route('home') }}#catalog" method="GET" class="flex items-center gap-2" id="sortForm">
+            @if($currentKat)
+                <input type="hidden" name="kategori" value="{{ $currentKat }}">
+            @endif
+            @if($currentSearch)
+                <input type="hidden" name="search" value="{{ $currentSearch }}">
+            @endif
+
+            <label for="urutan" class="text-xs font-medium text-zinc-500 whitespace-nowrap">Urutkan:</label>
+            <select 
+                name="urutan" 
+                id="urutan" 
+                onchange="document.getElementById('sortForm').submit()"
+                class="bg-white border border-zinc-200 text-zinc-800 text-xs font-medium rounded-full py-2 px-3.5 focus:border-zinc-400 focus:ring-0 outline-none transition-colors cursor-pointer shadow-2xs"
+            >
+                <option value="">Default (Pilihan)</option>
+                <option value="nama" {{ $currentSort == 'nama' ? 'selected' : '' }}>Nama (A - Z)</option>
+                <option value="termurah" {{ $currentSort == 'termurah' ? 'selected' : '' }}>Harga Termurah</option>
+                <option value="terbaru" {{ $currentSort == 'terbaru' ? 'selected' : '' }}>Terbaru Ditambahkan</option>
+            </select>
+        </form>
+    </div>
+
+    <!-- Category Filter Bar (Pills) -->
+    <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-8 no-scrollbar">
+        <a 
+            href="{{ route('home', array_filter(['urutan' => $currentSort, 'search' => $currentSearch])) }}#catalog"
+            class="whitespace-nowrap px-4 py-2 rounded-full text-xs font-medium transition-all {{ empty($currentKat) ? 'bg-zinc-900 text-white shadow-2xs' : 'bg-white text-zinc-600 border border-zinc-200/90 hover:bg-zinc-50 hover:text-zinc-900' }}"
+        >
+            Semua Produk
+        </a>
+        @foreach($categories as $slug => $label)
+            <a 
+                href="{{ route('home', array_filter(['kategori' => $slug, 'urutan' => $currentSort, 'search' => $currentSearch])) }}#catalog"
+                class="whitespace-nowrap px-4 py-2 rounded-full text-xs font-medium transition-all {{ $currentKat == $slug ? 'bg-zinc-900 text-white shadow-2xs' : 'bg-white text-zinc-600 border border-zinc-200/90 hover:bg-zinc-50 hover:text-zinc-900' }}"
+            >
+                {{ $label }}
+            </a>
+        @endforeach
+
+        @if($currentKat || $currentSearch)
+            <a 
+                href="{{ route('home') }}#catalog" 
+                class="whitespace-nowrap px-3 py-2 rounded-full text-xs font-medium text-zinc-400 hover:text-zinc-900 transition-colors inline-flex items-center"
+                title="Hapus semua filter"
+            >
+                <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                Reset
+            </a>
+        @endif
+    </div>
+
+    <!-- Search Active Notice (If filtered) -->
+    @if($currentSearch)
+        <div class="mb-6 flex items-center justify-between p-3.5 rounded-xl bg-zinc-50 border border-zinc-200/80 text-xs text-zinc-600">
+            <span>Hasil pencarian untuk: <strong class="text-zinc-900">"{{ $currentSearch }}"</strong></span>
+            <a href="{{ route('home', array_filter(['kategori' => $currentKat, 'urutan' => $currentSort])) }}#catalog" class="text-zinc-500 hover:text-zinc-900 font-medium">Hapus kata kunci &times;</a>
+        </div>
+    @endif
+
+    <!-- Product Grid -->
+    @if($catalogs->isEmpty())
+        <div class="flex flex-col items-center justify-center py-20 bg-white rounded-3xl border border-zinc-200/80 border-dashed text-center px-4">
+            <div class="w-14 h-14 rounded-full bg-zinc-50 flex items-center justify-center text-zinc-400 mb-4 border border-zinc-100">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+            <h4 class="text-base font-semibold text-zinc-900 mb-1">Gear tidak ditemukan</h4>
+            <p class="text-zinc-500 text-xs max-w-sm mb-6">Coba pilih kategori lain atau atur ulang kata kunci pencarian Anda.</p>
+            <a href="{{ route('home') }}#catalog" class="px-5 py-2.5 rounded-full bg-zinc-900 text-white text-xs font-semibold hover:bg-zinc-800 transition-colors">
+                Lihat Semua Gear
+            </a>
+        </div>
+    @else
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            @foreach ($catalogs as $product)
+            <div class="group bg-white rounded-2xl border border-zinc-200/80 overflow-hidden hover:border-zinc-300 hover:shadow-sm transition-all duration-200 flex flex-col">
+                
+                <!-- Product Image -->
+                <a href="{{ route('products.show', $product->id) }}" class="block relative aspect-[4/3] overflow-hidden bg-zinc-100/70">
+                    <img src="{{ asset('storage/' . $product->gambar) }}" alt="{{ $product->nama_produk }}" loading="lazy" class="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300">
+                    
+                    @if($product->stok <= 0)
+                        <div class="absolute inset-0 bg-white/70 backdrop-blur-2xs flex items-center justify-center">
+                            <span class="px-3 py-1 bg-zinc-900 text-white text-[10px] font-semibold tracking-wider rounded-full uppercase">Habis Disewa</span>
+                        </div>
+                    @else
+                        <div class="absolute top-3 left-3">
+                            <span class="px-2.5 py-1 bg-white/95 text-zinc-800 text-[10px] font-medium tracking-tight rounded-full border border-zinc-200/60 shadow-2xs">
+                                Ready {{ $product->stok }}
+                            </span>
+                        </div>
+                    @endif
                 </a>
 
-                <!-- Kategori -->
-                <div class="mb-6">
-                    <p class="font-semibold text-zinc-900 mb-3 flex items-center">
-                        <svg class="w-5 h-5 mr-2 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
-                        Kategori
-                    </p>
-                    
-                    <div class="space-y-2.5 ml-1">
-                        @php
-                            $kategori = request('kategori');
-                        @endphp
-                        @foreach(['kamera', 'lensa', 'lighting', 'audio', 'drone', 'aksesoris'] as $kat)
-                        <label class="flex items-center group cursor-pointer">
-                            <input type="radio" name="kategori" value="{{ $kat }}" class="w-4 h-4 text-zinc-900 border-zinc-300 focus:ring-zinc-900" {{ $kategori == $kat ? 'checked' : '' }}>
-                            <span class="ml-3 text-sm text-zinc-600 group-hover:text-zinc-900 capitalize">{{ $kat }}</span>
-                        </label>
-                        @endforeach
-                    </div>
-                </div>
-
-                <!-- Urutkan -->
-                <div class="mb-8">
-                    <p class="font-semibold text-zinc-900 mb-3 flex items-center">
-                        <svg class="w-5 h-5 mr-2 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path></svg>
-                        Urutkan
-                    </p>
-                    <select name="urutan" class="w-full bg-zinc-50 border border-zinc-200 text-zinc-900 text-sm rounded-xl focus:ring-zinc-900 focus:border-zinc-900 block p-2.5 outline-none">
-                        <option value="">Default</option>
-                        <option value="nama" {{ request('urutan') == 'nama' ? 'selected' : '' }}>Nama (A-Z)</option>
-                        <option value="termurah" {{ request('urutan') == 'termurah' ? 'selected' : '' }}>Termurah</option>
-                        <option value="terbaru" {{ request('urutan') == 'terbaru' ? 'selected' : '' }}>Terbaru</option>
-                    </select>
-                </div>
-
-                <button type="submit" class="w-full bg-zinc-900 text-white rounded-xl py-3 text-sm font-semibold hover:bg-zinc-800 transition-colors shadow-sm">
-                    Terapkan Filter
-                </button>
-            </form>
-        </div>
-
-        <!-- Daftar Produk (Kanan) -->
-        <div class="lg:w-3/4">
-            @if($catalogs->isEmpty())
-                <div class="flex flex-col items-center justify-center py-16 bg-zinc-50 rounded-2xl border border-zinc-200 border-dashed">
-                    <svg class="w-16 h-16 text-zinc-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <h4 class="text-lg font-medium text-zinc-900 mb-1">Tidak ada produk ditemukan</h4>
-                    <p class="text-zinc-500 text-sm">Coba ubah filter atau kata kunci pencarian Anda.</p>
-                </div>
-            @else
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    @foreach ($catalogs as $product)
-                    <div class="group bg-white rounded-2xl border border-zinc-200 overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col">
-                        <a href="{{ route('products.show', $product->id) }}" class="block relative aspect-square overflow-hidden bg-zinc-100">
-                            <img src="{{ asset('storage/' . $product->gambar) }}" alt="{{ $product->nama_produk }}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                            @if($product->stok <= 0)
-                                <div class="absolute inset-0 bg-white/60 backdrop-blur-[2px] flex items-center justify-center">
-                                    <span class="px-4 py-1.5 bg-zinc-900 text-white text-xs font-bold tracking-wider rounded-full uppercase">Habis Disewa</span>
-                                </div>
-                            @endif
+                <!-- Product Details -->
+                <div class="p-5 flex flex-col flex-grow justify-between">
+                    <div>
+                        <span class="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">{{ $product->kategori }}</span>
+                        <a href="{{ route('products.show', $product->id) }}">
+                            <h5 class="font-semibold text-zinc-900 text-sm truncate mt-0.5 hover:text-zinc-700 transition-colors" title="{{ $product->nama_produk }}">
+                                {{ $product->nama_produk }}
+                            </h5>
                         </a>
-                        <div class="p-5 flex flex-col flex-grow">
-                            <h6 class="font-bold text-zinc-900 truncate mb-1" title="{{ $product->nama_produk }}">{{ $product->nama_produk }}</h6>
-                            <p class="text-rose-500 font-bold mb-4">
-                                Rp {{ number_format($product->harga_sewa, 0, ',', '.') }}<span class="text-xs font-normal text-zinc-500"> /hari</span>
-                            </p>
-                            
-                            <div class="mt-auto">
-                                @if($product->stok > 0)
-                                    <a href="{{ route('products.show', $product->id) }}" class="flex items-center justify-center w-full py-2.5 rounded-xl border-2 border-zinc-900 text-zinc-900 font-semibold text-sm hover:bg-zinc-900 hover:text-white transition-colors">
-                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                                        Sewa Sekarang
-                                    </a>
-                                @else
-                                    <button disabled class="flex items-center justify-center w-full py-2.5 rounded-xl bg-zinc-100 text-zinc-400 font-semibold text-sm cursor-not-allowed">
-                                        Stok Kosong
-                                    </button>
-                                @endif
-                            </div>
-                        </div>
                     </div>
-                    @endforeach
+                    
+                    <div class="mt-4 pt-3 border-t border-zinc-100">
+                        <div class="flex items-baseline justify-between mb-3">
+                            <span class="text-[11px] text-zinc-400">Tarif sewa:</span>
+                            <p class="text-sm font-bold text-zinc-900">
+                                Rp {{ number_format($product->harga_sewa, 0, ',', '.') }}<span class="text-[11px] font-normal text-zinc-400"> /hari</span>
+                            </p>
+                        </div>
+                        
+                        @if($product->stok > 0)
+                            <a href="{{ route('products.show', $product->id) }}" class="flex items-center justify-center w-full py-2.5 rounded-xl bg-zinc-900 text-white font-medium text-xs hover:bg-zinc-800 transition-colors shadow-2xs">
+                                Sewa Sekarang
+                            </a>
+                        @else
+                            <button disabled class="flex items-center justify-center w-full py-2.5 rounded-xl bg-zinc-100 text-zinc-400 font-medium text-xs cursor-not-allowed">
+                                Stok Kosong
+                            </button>
+                        @endif
+                    </div>
                 </div>
-            @endif
+            </div>
+            @endforeach
         </div>
-
-    </div>
+    @endif
 </div>

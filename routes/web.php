@@ -38,7 +38,9 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
     Route::put('/rentals/{rental}/status', [RentalController::class, 'updateStatus'])
         ->name('rentals.update-status');
     Route::put('/payments/{payment}/verify', [PaymentController::class, 'verify'])
-        ->name('payments.verify');    
+        ->name('payments.verify');
+    Route::put('/payments/{payment}/reject', [PaymentController::class, 'reject'])
+        ->name('payments.reject');
 });
 
 // Guest & User Route
@@ -62,8 +64,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/cart/calculate', [CartController::class, 'calculate'])
         ->name('cart.calculate');
 
-    // masuk ke halaman pembayaran
-    Route::post('/checkout-page', [CartController::class, 'checkoutPage'])
+    // masuk ke halaman pembayaran (dukung GET dan POST untuk mencegah error 405 saat refresh)
+    Route::match(['get', 'post'], '/checkout-page', [CartController::class, 'checkoutPage'])
         ->name('cart.checkout-page');
 
     // checkout rental
