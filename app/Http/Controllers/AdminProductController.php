@@ -5,9 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Cache;
 
 class AdminProductController extends Controller
 {
+    /**
+     * Core seed images that should be preserved on disk for demo resets.
+     */
+    protected array $seedImages = [
+        'products/kameracanon.jpg', 'products/sonya6400.jpg', 'products/fujifilmxt30.jpg',
+        'products/lensa50.jpg', 'products/godoxsl60.jpg', 'products/ringlight.jpg',
+        'products/rodego.jpg', 'products/boya.jpg', 'products/djimini3.jpg',
+        'products/djiair2s.jpg', 'products/tripod.jpg', 'products/gimbal.jpg'
+    ];
+
     public function index()
     {
         $products = Product::latest()->get();
@@ -40,7 +51,10 @@ class AdminProductController extends Controller
 
         Product::create($validated);
 
-        return redirect()->route('admin.products.index');
+        Cache::forget('admin_total_produk');
+        Cache::forget('recommendations');
+
+        return redirect()->route('admin.products.index')->with('success', 'Produk baru berhasil ditambahkan ke inventaris.');
     }
 
     public function edit(Product $product)
@@ -59,7 +73,7 @@ class AdminProductController extends Controller
         ]);
 
         if ($request->hasFile('gambar')) {
-            if ($product->gambar) {
+            if ($product->gambar && !in_array($product->gambar, $this->seedImages)) {
                 Storage::disk('public')->delete($product->gambar);
             }
             $validated['gambar'] = $request->file('gambar')->store('products', 'public');
@@ -67,14 +81,22 @@ class AdminProductController extends Controller
 
         $product->update($validated);
 
-        return redirect()->route('admin.products.index');
+        Cache::forget('admin_total_produk');
+        Cache::forget('recommendations');
+
+        return redirect()->route('admin.products.index')->with('success', 'Perubahan data produk berhasil disimpan.');
     }
 
     public function destroy(Product $product)
     {
-        Storage::disk('public')->delete($product->gambar);
+        if ($product->gambar && !in_array($product->gambar, $this->seedImages)) {
+            Storage::disk('public')->delete($product->gambar);
+        }
         $product->delete();
 
-        return redirect()->route('admin.products.index');
+        Cache::forget('admin_total_produk');
+        Cache::forget('recommendations');
+
+        return redirect()->route('admin.products.index')->with('success', 'Produk berhasil dihapus dari inventaris.');
     }
 }

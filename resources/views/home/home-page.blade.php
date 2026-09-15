@@ -10,20 +10,20 @@
             <!-- Left Column: Copywriting & CTA (col 12 -> 7) -->
             <div class="lg:col-span-7">
                 <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-zinc-900 tracking-tight leading-[1.12] mb-6">
-                    Sewa alat dokumentasi profesional,<br>
-                    <span class="text-zinc-500 font-normal">disewa dengan tenang & mudah.</span>
+                    {{ __('Rent professional production gear,') }}<br>
+                    <span class="text-zinc-500 font-normal">{{ __('seamless & hassle-free rental.') }}</span>
                 </h1>
 
                 <p class="text-base sm:text-lg text-zinc-600 mb-8 max-w-xl leading-relaxed font-normal">
-                    DocuRent menghadirkan kamera sinema & mirrorless, lensa prima, audio nirkabel, lighting studio, dan drone dengan sensor terawat dan paket lengkap siap produksi.
+                    {{ __('DocuRent provides cinema & mirrorless cameras, prime lenses, wireless audio, studio lighting, and drones with clean sensors and complete production-ready kits.') }}
                 </p>
 
                 <div class="flex items-center gap-3.5 mb-8 lg:mb-0">
                     <a href="#catalog" class="flex-1 sm:flex-initial text-center px-7 py-3.5 rounded-full bg-zinc-900 text-white font-medium text-sm hover:bg-zinc-800 transition-all shadow-sm hover:shadow">
-                        Eksplorasi Katalog
+                        {{ __('Explore Catalog') }}
                     </a>
                     <a href="#recommendation" class="flex-1 sm:flex-initial text-center px-7 py-3.5 rounded-full bg-white text-zinc-800 font-medium text-sm hover:bg-zinc-50 border border-zinc-200/80 transition-all">
-                        Lihat Rekomendasi
+                        {{ __('View Recommendations') }}
                     </a>
                 </div>
             </div>
@@ -50,20 +50,20 @@
         <!-- Value Proposition Pillars: Full-width row below both Headline and Showcase -->
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-10 sm:pt-12 mt-10 sm:mt-14 border-t border-zinc-200/70 text-zinc-600 pb-2">
             <div>
-                <p class="text-xs font-semibold text-zinc-900 uppercase tracking-wider mb-1">Sensor Terawat</p>
-                <p class="text-xs text-zinc-500 leading-relaxed">Optik & bodi bersih terjaga</p>
+                <p class="text-xs font-semibold text-zinc-900 uppercase tracking-wider mb-1">{{ __('Clean Sensors') }}</p>
+                <p class="text-xs text-zinc-500 leading-relaxed">{{ __('Immaculate optics & clean body') }}</p>
             </div>
             <div>
-                <p class="text-xs font-semibold text-zinc-900 uppercase tracking-wider mb-1">Paket Lengkap</p>
-                <p class="text-xs text-zinc-500 leading-relaxed">Baterai, charger, & tas</p>
+                <p class="text-xs font-semibold text-zinc-900 uppercase tracking-wider mb-1">{{ __('Complete Kit') }}</p>
+                <p class="text-xs text-zinc-500 leading-relaxed">{{ __('Batteries, charger, & bag included') }}</p>
             </div>
             <div>
-                <p class="text-xs font-semibold text-zinc-900 uppercase tracking-wider mb-1">Durasi Fleksibel</p>
-                <p class="text-xs text-zinc-500 leading-relaxed">Harian atau mingguan</p>
+                <p class="text-xs font-semibold text-zinc-900 uppercase tracking-wider mb-1">{{ __('Flexible Duration') }}</p>
+                <p class="text-xs text-zinc-500 leading-relaxed">{{ __('Daily or weekly rental') }}</p>
             </div>
             <div>
-                <p class="text-xs font-semibold text-zinc-900 uppercase tracking-wider mb-1">Malang Pusat</p>
-                <p class="text-xs text-zinc-500 leading-relaxed">Pengambilan mudah & cepat</p>
+                <p class="text-xs font-semibold text-zinc-900 uppercase tracking-wider mb-1">{{ __('Central Malang') }}</p>
+                <p class="text-xs text-zinc-500 leading-relaxed">{{ __('Easy & swift gear pickup') }}</p>
             </div>
         </div>
     </div>
@@ -77,11 +77,11 @@
     <div id="recommendation" class="scroll-mt-32">
         <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-3">
             <div>
-                <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Pilihan Favorit</span>
-                <h3 class="text-2xl sm:text-3xl font-bold text-zinc-900 tracking-tight mt-1">Rekomendasi Gear</h3>
+                <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider">{{ __('Curated Favorites') }}</span>
+                <h3 class="text-2xl sm:text-3xl font-bold text-zinc-900 tracking-tight mt-1">{{ __('Recommended Gear') }}</h3>
             </div>
             <a href="#catalog" class="text-xs font-semibold text-zinc-600 hover:text-zinc-900 inline-flex items-center">
-                Lihat semua katalog
+                {{ __('View all catalog') }}
                 <svg class="w-3.5 h-3.5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
             </a>
         </div>
@@ -93,27 +93,27 @@
                     <img src="{{ asset('storage/' . $product->gambar) }}" alt="{{ $product->nama_produk }}" loading="lazy" class="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300">
                     @if($product->stok <= 0)
                         <div class="absolute inset-0 bg-white/70 backdrop-blur-2xs flex items-center justify-center">
-                            <span class="px-3 py-1 bg-zinc-900 text-white text-[10px] font-semibold tracking-wider rounded-full uppercase">Habis Disewa</span>
+                            <span class="px-3 py-1 bg-zinc-900 text-white text-[10px] font-semibold tracking-wider rounded-full uppercase">{{ __('Rented Out') }}</span>
                         </div>
                     @else
                         <div class="absolute top-3 left-3">
                             <span class="px-2.5 py-1 bg-white/95 text-zinc-800 text-[10px] font-medium tracking-tight rounded-full border border-zinc-200/60 shadow-2xs">
-                                Sisa {{ $product->stok }} unit
+                                {{ __('Available') }} ({{ $product->stok }})
                             </span>
                         </div>
                     @endif
                 </a>
                 <div class="p-5 flex flex-col flex-grow justify-between">
                     <div>
-                        <span class="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider capitalize">{{ $product->kategori }}</span>
+                        <span class="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider capitalize">{{ __($product->kategori) }}</span>
                         <h4 class="font-semibold text-zinc-900 text-sm truncate mt-0.5" title="{{ $product->nama_produk }}">{{ $product->nama_produk }}</h4>
                     </div>
                     
                     <div class="flex items-center justify-between mt-5 pt-3 border-t border-zinc-100">
                         <div>
-                            <span class="text-xs text-zinc-400 font-normal">Harga Sewa</span>
+                            <span class="text-xs text-zinc-400 font-normal">{{ __('Rental Rate') }}</span>
                             <p class="text-sm font-bold text-zinc-900">
-                                Rp {{ number_format($product->harga_sewa, 0, ',', '.') }}<span class="text-xs font-normal text-zinc-500"> /hari</span>
+                                Rp {{ number_format($product->harga_sewa, 0, ',', '.') }}<span class="text-xs font-normal text-zinc-500"> {{ __('/day') }}</span>
                             </p>
                         </div>
                         <a href="{{ route('products.show', $product->id) }}" class="w-8 h-8 rounded-full bg-zinc-100 hover:bg-zinc-900 text-zinc-600 hover:text-white flex items-center justify-center transition-colors" title="Lihat detail">

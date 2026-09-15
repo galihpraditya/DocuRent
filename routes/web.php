@@ -41,6 +41,8 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
         ->name('payments.verify');
     Route::put('/payments/{payment}/reject', [PaymentController::class, 'reject'])
         ->name('payments.reject');
+    Route::post('/demo-reset', [AdminPageController::class, 'resetDemo'])
+        ->name('demo.reset');
 });
 
 // Guest & User Route
@@ -96,3 +98,4 @@ Route::middleware('auth')->group(function () {
     Route::get('/rentals/{rental}', [RentalController::class, 'show'])
         ->name('rentals.show');
 });
+

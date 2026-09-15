@@ -67,5 +67,7 @@
         @include('components.footer')
     @endif
 
+    @include('components.portfolio-modal')
+
 </body>
 </html>

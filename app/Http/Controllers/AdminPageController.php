@@ -12,13 +12,8 @@ class AdminPageController extends Controller
 {
     public function dashboard()
     {
-        $totalProduk = Cache::remember('admin_total_produk', 300, function () {
-            return Product::count();
-        });
-
-        $totalPelangganAktif = Cache::remember('admin_pelanggan_aktif', 300, function () {
-            return Rental::where('status', 'ongoing')->distinct('user_id')->count('user_id');
-        });
+        $totalProduk = Product::count();
+        $totalPelangganAktif = Rental::where('status', 'ongoing')->distinct('user_id')->count('user_id');
 
         $rentalsPaymentPending = Rental::with(['user', 'payment'])->whereHas('payment', function ($query) {
             $query->where(
@@ -32,5 +27,13 @@ class AdminPageController extends Controller
             'totalPelangganAktif',
             'rentalsPaymentPending'
         ));
+    }
+
+    public function resetDemo()
+    {
+        $seeder = new \Database\Seeders\DatabaseSeeder();
+        $seeder->run();
+
+        return redirect()->route('dashboard')->with('success', 'Data website berhasil disegarkan ke kondisi awal demo!');
     }
 }

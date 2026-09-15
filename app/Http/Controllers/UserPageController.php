@@ -10,9 +10,7 @@ class UserPageController extends Controller
 {
     public function home(Request $request)
     {
-        $recommendations = Cache::remember('recommendations', 600, function () {
-            return Product::inRandomOrder()->take(4)->get();
-        });
+        $recommendations = Product::where('stok', '>', 0)->inRandomOrder()->take(4)->get();
 
         $query = Product::query();
 

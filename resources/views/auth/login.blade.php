@@ -41,6 +41,34 @@
                 </div>
             @endif
 
+            <!-- Quick Demo Autofill Card -->
+            <div class="mb-5 p-4 rounded-2xl bg-zinc-50 border border-zinc-200/80 space-y-2.5">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-zinc-900 flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                        Akses Cepat Akun Demo
+                    </span>
+                    <span class="text-[10px] font-medium text-zinc-400">Pilih Peran</span>
+                </div>
+                <p class="text-[11px] text-zinc-500">Pilih salah satu peran demo untuk mengisi form secara otomatis:</p>
+                <div class="grid grid-cols-2 gap-2 pt-0.5">
+                    <button 
+                        type="button" 
+                        onclick="fillCredentials('admin@gmail.com', '123456')"
+                        class="py-2 px-3 rounded-xl bg-white hover:bg-zinc-900 hover:text-white text-zinc-800 font-semibold text-xs border border-zinc-200 shadow-2xs transition-all cursor-pointer text-center"
+                    >
+                        Admin Demo
+                    </button>
+                    <button 
+                        type="button" 
+                        onclick="fillCredentials('user1@gmail.com', '123456')"
+                        class="py-2 px-3 rounded-xl bg-white hover:bg-zinc-900 hover:text-white text-zinc-800 font-semibold text-xs border border-zinc-200 shadow-2xs transition-all cursor-pointer text-center"
+                    >
+                        Pelanggan Demo
+                    </button>
+                </div>
+            </div>
+
             <form action="{{ route('login.process') }}" method="POST" hx-boost="false" class="space-y-4">
                 @csrf 
                 
@@ -50,7 +78,7 @@
                         type="email" 
                         name="email" 
                         id="email" 
-                        value="{{ old('email') }}"
+                        value="{{ old('email', request('demo') === 'admin' ? 'admin@gmail.com' : (request('demo') === 'user' ? 'user1@gmail.com' : '')) }}"
                         required 
                         autofocus 
                         class="w-full bg-zinc-50 border border-zinc-200 text-zinc-900 text-xs rounded-xl focus:border-zinc-400 focus:bg-white block p-3 outline-none transition-colors"
@@ -67,6 +95,7 @@
                         type="password" 
                         name="password" 
                         id="password" 
+                        value="{{ (request('demo') === 'admin' || request('demo') === 'user') ? '123456' : '' }}"
                         required 
                         class="w-full bg-zinc-50 border border-zinc-200 text-zinc-900 text-xs rounded-xl focus:border-zinc-400 focus:bg-white block p-3 outline-none transition-colors"
                         placeholder="••••••••"
@@ -90,4 +119,15 @@
         </div>
     </div>
 </div>
+
+<script>
+    function fillCredentials(email, password) {
+        const emailInput = document.getElementById('email');
+        const passInput = document.getElementById('password');
+        if (emailInput && passInput) {
+            emailInput.value = email;
+            passInput.value = password;
+        }
+    }
+</script>
 @endsection

@@ -66,12 +66,12 @@
                             @if($product->stok > 0)
                                 <span class="inline-flex items-center text-xs font-medium text-emerald-700">
                                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>
-                                    Tersedia ({{ $product->stok }} unit)
+                                    {{ __('Available') }} ({{ $product->stok }} unit)
                                 </span>
                             @else
                                 <span class="inline-flex items-center text-xs font-medium text-zinc-400">
                                     <span class="w-1.5 h-1.5 rounded-full bg-zinc-300 mr-1.5"></span>
-                                    Stok Tidak Tersedia
+                                    {{ __('Out of Stock') }}
                                 </span>
                             @endif
                         </div>
@@ -84,12 +84,12 @@
                         <!-- Price Display -->
                         <div class="flex items-baseline gap-2 mb-8 pb-6 border-b border-zinc-100">
                             <span class="text-3xl font-bold text-zinc-900 tracking-tight">Rp {{ number_format($product->harga_sewa, 0, ',', '.') }}</span>
-                            <span class="text-xs font-normal text-zinc-400">/ hari sewa</span>
+                            <span class="text-xs font-normal text-zinc-400">{{ __('/ rental day') }}</span>
                         </div>
 
                         <!-- Description -->
                         <div class="mb-8">
-                            <h3 class="text-xs font-bold text-zinc-900 uppercase tracking-wider mb-2.5">Deskripsi Peralatan</h3>
+                            <h3 class="text-xs font-bold text-zinc-900 uppercase tracking-wider mb-2.5">{{ __('Equipment Description') }}</h3>
                             <p class="text-zinc-600 leading-relaxed text-sm whitespace-pre-line font-normal">
                                 {{ $product->deskripsi }}
                             </p>
@@ -97,7 +97,7 @@
 
                         <!-- Included in Package (Checklist) -->
                         <div class="mb-8 p-4 rounded-2xl bg-zinc-50/80 border border-zinc-100">
-                            <h4 class="text-xs font-bold text-zinc-900 uppercase tracking-wider mb-3">Kelengkapan Paket Sewa</h4>
+                            <h4 class="text-xs font-bold text-zinc-900 uppercase tracking-wider mb-3">{{ __('Included in Package') }}</h4>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-zinc-600 font-medium">
                                 <div class="flex items-center gap-2">
                                     <svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
@@ -105,15 +105,15 @@
                                 </div>
                                 <div class="flex items-center gap-2">
                                     <svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
-                                    <span>2x Baterai Original Siap Pakai</span>
+                                    <span>2x {{ __('Original Ready Batteries') }}</span>
                                 </div>
                                 <div class="flex items-center gap-2">
                                     <svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
-                                    <span>1x Dual Charger & Kabel Power</span>
+                                    <span>1x {{ __('Dual Charger & Power Cable') }}</span>
                                 </div>
                                 <div class="flex items-center gap-2">
                                     <svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
-                                    <span>1x Tas / Hardcase Pelindung</span>
+                                    <span>1x {{ __('Protective Bag / Hardcase') }}</span>
                                 </div>
                             </div>
                         </div>
@@ -163,7 +163,7 @@
                                         class="flex-1 h-12 flex items-center justify-center gap-2 px-4 sm:px-6 bg-zinc-900 text-white rounded-2xl font-medium text-xs sm:text-sm hover:bg-zinc-800 active:scale-[0.99] transition-all shadow-2xs cursor-pointer"
                                     >
                                         <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
-                                        <span>Tambahkan ke Keranjang</span>
+                                        <span>{{ __('Add to Cart') }}</span>
                                     </button>
                                 </div>
                             </form>
@@ -180,8 +180,8 @@
                             </script>
                         @else
                             <div class="p-4 rounded-xl bg-zinc-100 text-zinc-500 text-xs flex items-center justify-between">
-                                <span>Saat ini semua unit sedang disewa.</span>
-                                <a href="{{ route('home') }}#catalog" class="font-semibold text-zinc-900 hover:underline">Lihat Alternatif Lain &rarr;</a>
+                                <span>{{ __('Currently all units are rented out.') }}</span>
+                                <a href="{{ route('home') }}#catalog" class="font-semibold text-zinc-900 hover:underline">{{ __('View Other Alternatives') }} &rarr;</a>
                             </div>
                         @endif
                     </div>
