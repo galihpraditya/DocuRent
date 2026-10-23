@@ -43,6 +43,7 @@ COPY docker/nginx.conf /etc/nginx/nginx.conf
 COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY docker/start.sh /usr/local/bin/start.sh
 COPY docker/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+COPY docker/security.ini /usr/local/etc/php/conf.d/security.ini
 
 # Set permissions
 RUN chmod +x /usr/local/bin/start.sh \
