@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#27272a" />
+      <stop offset="100%" stop-color="#09090b" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Base Squircle -->
+  <rect width="64" height="64" rx="16" fill="url(#bgGrad)" />
+  <rect x="0.75" y="0.75" width="62.5" height="62.5" rx="15.25" fill="none" stroke="#3f3f46" stroke-width="1.5" stroke-opacity="0.8" />
+  
+  <!-- Camera Icon (Matching DocuRent Logo) -->
+  <g transform="translate(10, 10) scale(1.833)" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Camera Body -->
+    <path stroke-width="1.8" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+    <!-- Lens Circle -->
+    <circle cx="12" cy="13" r="3.2" stroke-width="1.8" />
+    <!-- Indicator / Red Dot Accent -->
+    <circle cx="17.2" cy="9.5" r="0.8" fill="#ef4444" stroke="none" />
+  </g>
+</svg>
+
